@@ -1,0 +1,29 @@
+
+#######################################################################################################
+# [For Unity 3D developpers]
+#######################################################################################################
+
+iOS:
+-----------------
+1. Create a normal Unity 3D project
+2. Copy AgoraRtcEngineKit.framework and libagoraSdkCWrapper.a to Assets/Plugins/iOS
+3. Copy AgoraGamingRtcEngine.cs, videoSurface.cs to your Unity 3D project
+4. Create a script file (like example.cs)
+5. Attach videoSurface.cs to your game objects
+6. Build your Unity 3D app
+
+In the generated xcode project, you need:
+Add VideoToolbox.frameworks, libresolv, CoreTelephony.frameworks
+
+Finally, build your xcode project
+
+
+Android:
+-----------------
+1. Create a normal Unity 3D project
+2. Copy AgoraUnitySdk/Android/bin to Assets/Plugins/Android/libs
+3. Remove arm64-v8a stuff
+4. Copy AndroidManifest.xml (or you modify your AndroidManifest.xml to add some permissions to your app later)
+5. Copy gradle/ and gradlew and gradlew.bat
+6. ./gradlew assembleDebug && adb install -r ./build/outputs/apk/VideoTexture-debug.apk
+
