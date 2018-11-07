@@ -29,7 +29,7 @@ Finally, Open project with Unity and run.
 ## Connect Us
 
 - You can find full API document at [Document Center](https://docs.agora.io/en/)
-- You can file bugs about this demo at [issue](https://github.com/AgoraIO/Hello-Video-Unity-Agora/issues)
+- You can file bugs about this demo at [issue](https://github.com/AgoraIO/Video-Call-for-Mobile-Gaming/issues)
 
 ## License
 
