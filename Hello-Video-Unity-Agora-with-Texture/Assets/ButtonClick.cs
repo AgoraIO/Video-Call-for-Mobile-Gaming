@@ -248,7 +248,7 @@ public class ButtonClick : MonoBehaviour {
 				break;
 			}
 
-			int r = app.mRtcEngine.SetClientRole (role, null);
+			int r = app.mRtcEngine.SetClientRole (role);
 			setApiReturn (r.ToString ());
 		} else if (api.CompareTo ("Pause") == 0) {
 			app.mRtcEngine.Pause ();
