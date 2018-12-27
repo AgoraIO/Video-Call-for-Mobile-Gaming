@@ -15,22 +15,41 @@ public class ButtonClick : MonoBehaviour {
 		List<string> options = new List<string>();
 		options.Add ("GetSdkVersion");
 		options.Add ("SetChannelProfile");
+		options.Add ("EnableDualStreamMode");
+		options.Add ("GetCallId");
+		options.Add ("SetVideoProfile");
 		options.Add ("SetClientRole");
 		options.Add ("Pause");
 		options.Add ("Resume");
-		options.Add ("GetCallId");
 		options.Add ("SwitchCamera");
-		options.Add ("SetVideoProfile");
 		options.Add ("MuteLocalVideoStream");
 		options.Add ("MuteAllRemoteVideoStreams");
-		options.Add ("MuteRemoteVideoStream");
-		options.Add ("EnableDualStreamMode");
+		options.Add ("SetDefaultMuteAllRemoteAudioStreams");
+		options.Add ("SetDefaultMuteAllRemoteVideoStreams");
+		options.Add ("MuteRemoteVideoStream");	
 		options.Add ("SetRemoteVideoStreamType");
 		options.Add ("EnableVideo");
 		options.Add ("DisableVideo");
 		options.Add ("EnableLocalVideo");
 		options.Add ("StartPreview");
 		options.Add ("StopPreview");
+		options.Add ("SetLocalVoicePitch");
+		options.Add ("SetRemoteVoicePosition");
+		options.Add ("SetVoiceOnlyMode");
+		options.Add ("EnableLocalAudio");
+		options.Add ("SetEnableSpeakerPhone");
+		options.Add ("IsSpeakerPhoneEnabled");
+		options.Add ("SetDefaultAudioRouteToSpeakerphone");
+		options.Add ("EnableAudioVolumeIndication");
+		options.Add ("MuteLocalAudioStream");
+		options.Add ("MuteAllRemoteAudioStreams");
+		options.Add ("MuteRemoteAudioStream");
+		options.Add ("AdjustRecordingSignalVolume");
+		options.Add ("AdjustPlaybackSignalVolume");
+		options.Add ("EnableVideoObserver");
+		options.Add ("DisableVideoObserver");
+		options.Add ("EnableAudio");
+		options.Add ("DisableAudio");
 		dd.AddOptions(options);
 
 		go = GameObject.Find ("VIDEOPROFILE");
@@ -210,7 +229,7 @@ public class ButtonClick : MonoBehaviour {
 			app = new exampleApp ();
 			app.loadEngine ();
 		}
-
+		app.mRtcEngine.SetParameters("{\"rtc.log_filter\": 65535}");
 		// these APIs do not require engine being created
 		if (api.CompareTo ("GetSdkVersion") == 0) {
 			string ret = agora_gaming_rtc.IRtcEngine.GetSdkVersion ();
@@ -223,12 +242,14 @@ public class ButtonClick : MonoBehaviour {
 
 			agora_gaming_rtc.CHANNEL_PROFILE chProfile;
 			switch (num) {
-			case 2:
+			case 0:
 				chProfile = agora_gaming_rtc.CHANNEL_PROFILE.GAME_FREE_MODE;
 				break;
-			case 3:
+			case 1:
+			    chProfile = agora_gaming_rtc.CHANNEL_PROFILE.GAME_COMMAND_MODE;
+				break;
 			default:
-				chProfile = agora_gaming_rtc.CHANNEL_PROFILE.GAME_COMMAND_MODE;
+				chProfile = agora_gaming_rtc.CHANNEL_PROFILE.GAME_FREE_MODE;
 				break;
 			}
 
@@ -236,7 +257,6 @@ public class ButtonClick : MonoBehaviour {
 			setApiReturn (r.ToString ());
 		} else if (api.CompareTo ("SetClientRole") == 0) {
 			int num = getApiParamInt (1);
-
 			agora_gaming_rtc.CLIENT_ROLE role;
 			switch (num) {
 			case 1:
@@ -285,22 +305,20 @@ public class ButtonClick : MonoBehaviour {
 		} else if (api.CompareTo ("MuteRemoteVideoStream") == 0) {
 			// auto fill in
 			setApiParam(1, app.mRemotePeer.ToString());
-
 			uint uid = app.mRemotePeer;// getApiParamInt (1);
 			int mute = getApiParamInt (2);
-
 			int r = app.mRtcEngine.MuteRemoteVideoStream (uid, (mute != 0));
 			setApiReturn (r.ToString ());
 		} else if (api.CompareTo ("EnableDualStreamMode") == 0) {
 			int enabled = getApiParamInt (1);
-
 			int r = app.mRtcEngine.EnableDualStreamMode (enabled != 0);
 			setApiReturn (r.ToString ());
 		} else if (api.CompareTo ("SetRemoteVideoStreamType") == 0) {
-			int uid = getApiParamInt (1);
+			setApiParam(1, app.mRemotePeer.ToString());
+			uint uid = app.mRemotePeer;// getApiParamInt (1);
+			//int uid = getApiParamInt (1);
 			int streamType = getApiParamInt (2);
-
-			int r = app.mRtcEngine.SetRemoteVideoStreamType ((uint)uid, streamType);
+			int r = app.mRtcEngine.SetRemoteVideoStreamType (uid, streamType);
 			setApiReturn (r.ToString ());
 		} else if (api.CompareTo ("EnableVideo") == 0) {
 			int r = app.mRtcEngine.EnableVideo ();
@@ -310,7 +328,6 @@ public class ButtonClick : MonoBehaviour {
 			setApiReturn (r.ToString ());
 		} else if (api.CompareTo ("EnableLocalVideo") == 0) {
 			int enabled = getApiParamInt (1);
-
 			int r = app.mRtcEngine.EnableLocalVideo (enabled != 0);
 			setApiReturn (r.ToString ());
 		} else if (api.CompareTo ("StartPreview") == 0) {
@@ -319,8 +336,82 @@ public class ButtonClick : MonoBehaviour {
 		} else if (api.CompareTo ("StopPreview") == 0) {
 			int r = app.mRtcEngine.StopPreview ();
 			setApiReturn (r.ToString ());
-		}
-		else {
+		} else if (api.CompareTo ("SetLocalVoicePitch") == 0) {
+			string pitch = getApiParam (1);
+			int r = app.mRtcEngine.SetLocalVoicePitch(double.Parse(pitch));
+			setApiReturn (r.ToString());
+		} else if (api.CompareTo ("SetRemoteVoicePosition") == 0) {
+			double pan = double.Parse (getApiParam(2));
+			double gain = double.Parse (getApiParam(3));
+			int r = app.mRtcEngine.SetRemoteVoicePosition (app.mRemotePeer, pan, gain);
+			setApiReturn (r.ToString());
+			
+		} else if (api.CompareTo ("SetVoiceOnlyMode") == 0) {
+			int enabled = int.Parse (getApiParam(1));
+			int r = app.mRtcEngine.SetVoiceOnlyMode (enabled != 0);
+			setApiReturn (r.ToString());			
+		} else if (api.CompareTo ("EnableLocalAudio") == 0) {
+			int enabled = int.Parse (getApiParam(1));		
+			int r = app.mRtcEngine.EnableLocalAudio (enabled != 0);
+			setApiReturn (r.ToString());			
+		} else if (api.CompareTo ("SetEnableSpeakerPhone") == 0) {
+			int enabled = int.Parse (getApiParam(1));
+			int r = app.mRtcEngine.SetEnableSpeakerphone (enabled != 0);
+			setApiReturn (r.ToString());			
+		} else if (api.CompareTo ("IsSpeakerPhoneEnabled") == 0) {
+			bool r = app.mRtcEngine.IsSpeakerphoneEnabled();
+			setApiReturn (r.ToString());		
+		}  else if (api.CompareTo ("SetDefaultAudioRouteToSpeakerphone") == 0) {
+			int enabled = int.Parse (getApiParam(1));	
+			Debug.Log("SetDefaultAudioRouteToSpeakerphone  enabled = " + (enabled != 0));
+			int r = app.mRtcEngine.SetDefaultAudioRouteToSpeakerphone(enabled != 0);
+			setApiReturn (r.ToString());	
+		}  else if (api.CompareTo ("EnableAudioVolumeIndication") == 0) {
+			int interval = int.Parse (getApiParam(1));
+			int smooth = int.Parse (getApiParam(2));
+			int r = app.mRtcEngine.EnableAudioVolumeIndication(interval, smooth);
+			setApiReturn (r.ToString());		
+		} else if (api.CompareTo ("MuteLocalAudioStream") == 0) {
+			int enabled = int.Parse (getApiParam(1));	
+			int r = app.mRtcEngine.MuteLocalAudioStream(enabled != 0);
+			setApiReturn (r.ToString());
+		} else if (api.CompareTo ("MuteAllRemoteAudioStreams") == 0) {
+			int enabled = int.Parse (getApiParam(1));	
+			int r = app.mRtcEngine.MuteAllRemoteAudioStreams(enabled != 0);
+			setApiReturn (r.ToString());		
+		} else if (api.CompareTo ("MuteRemoteAudioStream") == 0) {
+		    int muted = int.Parse (getApiParam(2));
+			int r = app.mRtcEngine.MuteRemoteAudioStream(app.mRemotePeer, muted != 0);
+			setApiReturn (r.ToString());
+		} else if (api.CompareTo ("AdjustRecordingSignalVolume") == 0) {
+			int volume = int.Parse (getApiParam(1));
+			int r = app.mRtcEngine.AdjustRecordingSignalVolume(volume);
+			setApiReturn (r.ToString());		
+		} else if (api.CompareTo ("AdjustPlaybackSignalVolume") == 0) {
+			int volume = int.Parse (getApiParam(1));
+			int r = app.mRtcEngine.AdjustPlaybackSignalVolume(volume);
+			setApiReturn (r.ToString());		
+		} else if (api.CompareTo ("EnableVideoObserver") == 0) {	
+			int r = app.mRtcEngine.EnableVideoObserver();
+			setApiReturn (r.ToString());		
+		} else if (api.CompareTo ("DisableVideoObserver") == 0) {
+			int r = app.mRtcEngine.DisableVideoObserver();
+			setApiReturn (r.ToString());		
+		}else if (api.CompareTo ("SetDefaultMuteAllRemoteAudioStreams") == 0) {
+			int volume = int.Parse (getApiParam(1));
+			int r = app.mRtcEngine.SetDefaultMuteAllRemoteAudioStreams(volume != 0);
+			setApiReturn (r.ToString());		
+		}else if (api.CompareTo ("SetDefaultMuteAllRemoteVideoStreams") == 0) {
+			int volume = int.Parse (getApiParam(1));
+			int r = app.mRtcEngine.SetDefaultMuteAllRemoteVideoStreams( volume != 0);
+			setApiReturn (r.ToString());		
+		}else if (api.CompareTo ("EnableAudio") == 0) {
+			int r = app.mRtcEngine.EnableAudio();
+			setApiReturn (r.ToString());
+		}else if (api.CompareTo ("DisableAudio") == 0) {
+			int r = app.mRtcEngine.DisableAudio ();
+			setApiReturn (r.ToString ());
+		} else {
 			Debug.Log ("onApiButtonClicked: unsupported API!");
 		}
 	}

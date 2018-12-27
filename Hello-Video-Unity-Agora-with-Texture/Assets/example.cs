@@ -7,7 +7,7 @@ using agora_gaming_rtc;
 // It demonstrates:
 // How to enable video
 // How to join/leave channel
-// 
+//
 public class exampleApp : MonoBehaviour {
 
 	public static void logD(string message){
@@ -38,20 +38,14 @@ public class exampleApp : MonoBehaviour {
 
 		if (mRtcEngine == null)
 			return;
-
 		// set callbacks (optional)
 		mRtcEngine.OnJoinChannelSuccess = onJoinChannelSuccess;
 		mRtcEngine.OnUserJoined = onUserJoined;
 		mRtcEngine.OnUserOffline = onUserOffline;
-////		mRtcEngine.OnWarning += (int warn, string msg) => {
-////		string descrition = IRtcEngineForGaming.GetErrorDescription(warn);
-////	string message = "hehe";
-////	Debug.Log(message);
-////		string warningMessage = string.Format("onWarning callback {0} {1} {2}",warn,msg,descrition);
-////		Debug.Log(warningMessage);
-////
-//		};
-		//mRtcEngine.SetChannelProfile(CHANNEL_PROFILE.GAME_FREE_MODE);
+		mRtcEngine.OnVolumeIndication = OnAudioVolumeIndication;
+		//mRtcEngine.SetDefaultAudioRouteToSpeakerphone(false);
+		//int a = mRtcEngine.SetChannelProfile(CHANNEL_PROFILE.GAME_COMMAND_MODE);
+		//Debug.Log("SetChannelProfile  =  " + a);
 		// enable video
 		mRtcEngine.EnableVideo();
 		mRtcEngine.EnableVideoObserver();
@@ -76,7 +70,7 @@ public class exampleApp : MonoBehaviour {
 		// leave channel
 		mRtcEngine.LeaveChannel();
 		// deregister video frame observers in native-c code
-		mRtcEngine.DisableVideoObserver();
+		//mRtcEngine.DisableVideoObserver();
 	}
 
 	// unload agora engine
@@ -100,8 +94,8 @@ public class exampleApp : MonoBehaviour {
 			logD ("BBBB: failed to find Cylinder");
 			return;
 		}
-		VideoSurface o = go.GetComponent<VideoSurface> ();
-		o.mAdjustTransfrom += onTransformDelegate;
+		// VideoSurface o = go.GetComponent<VideoSurface> ();
+		// o.mAdjustTransfrom += onTransformDelegate;
 	}
 
 	// instance of agora engine
@@ -117,6 +111,10 @@ public class exampleApp : MonoBehaviour {
 
 	Debug.Log ("onWarning  code = "+warningCode +"  message = "+message);
 
+	}
+
+	private void OnAudioVolumeIndication (AudioVolumeInfo[] speakers, int speakerNumber, int totalVolume){
+	Debug.Log ("OnAudioVolumeIndication   speakersNumber  =  " + speakerNumber + "  totalVolume  =  " + totalVolume);	
 	}
 
 	private void onJoinChannelSuccess (string channelName, uint uid, int elapsed)
@@ -137,12 +135,11 @@ public class exampleApp : MonoBehaviour {
 			return; // reuse
 		}
 
-		// create a GameObject and assigne to this new user
+
 		go = GameObject.CreatePrimitive (PrimitiveType.Plane);
 		if (!ReferenceEquals (go, null)) {
 			go.name = uid.ToString ();
 
-			// configure videoSurface
 			VideoSurface o = go.AddComponent<VideoSurface> ();
 			o.SetForUser (uid);
 			o.mAdjustTransfrom += onTransformDelegate;
