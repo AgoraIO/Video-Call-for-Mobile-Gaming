@@ -232,6 +232,23 @@ public class ButtonClick : MonoBehaviour
             int r = app.mRtcEngine.DisableAudio();
             setApiReturn(r.ToString());
         }
+         else if (api.CompareTo("EnableLocalAudio") == 0)
+        {
+            int enabled = int.Parse(getApiParam(1));
+            int r = app.mRtcEngine.EnableLocalAudio(enabled != 0);
+            setApiReturn(r.ToString());
+        }
+        else if (api.CompareTo("SetEnableSpeakerPhone") == 0)
+        {
+            int enabled = int.Parse(getApiParam(1));
+            int r = app.mRtcEngine.SetEnableSpeakerphone(enabled != 0);
+            setApiReturn(r.ToString());
+        }
+        else if (api.CompareTo("IsSpeakerPhoneEnabled") == 0)
+        {
+            bool r = app.mRtcEngine.IsSpeakerphoneEnabled();
+            setApiReturn(r.ToString());
+        }
         else
         {
             Debug.Log("onApiButtonClicked: unsupported API!");
