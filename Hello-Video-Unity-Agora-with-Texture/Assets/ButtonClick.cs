@@ -6,8 +6,6 @@ using UnityEngine;
 
 public class ButtonClick : MonoBehaviour
 {
-
-
     // Use this for initialization
     void Start()
     {
