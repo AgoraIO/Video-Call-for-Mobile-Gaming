@@ -7,150 +7,177 @@ using agora_gaming_rtc;
 // It demonstrates:
 // How to enable video
 // How to join/leave channel
-//
-public class exampleApp : MonoBehaviour
-{
+// 
+public class exampleApp : MonoBehaviour {
 
-    public static void logD(string message)
-    {
-        Debug.Log("zhangtest" + message);
-    }
+	public static void logD(string message){
+		Debug.Log("zhangtest"+message);
+	}
 
-    // load agora engine
-    public void loadEngine()
-    {
-        // start sdk
-        logD("initializeEngine");
+	// load agora engine
+	public void loadEngine()
+	{
+		// start sdk
+		logD ("initializeEngine");
 
-        if (mRtcEngine != null)
-        {
-            logD("Engine exists. Please unload it first!");
-            return;
-        }
+		if (mRtcEngine != null) {
+			logD ("Engine exists. Please unload it first!");
+			return;
+		}
 
-        // init engine
-        mRtcEngine = IRtcEngine.getEngine(mVendorKey);
+		// init engine
+		mRtcEngine = IRtcEngine.getEngine (mVendorKey);
 
-        // enable log
-        mRtcEngine.SetLogFilter(LOG_FILTER.DEBUG | LOG_FILTER.INFO | LOG_FILTER.WARNING | LOG_FILTER.ERROR | LOG_FILTER.CRITICAL);
-    }
+		// enable log
+		mRtcEngine.SetLogFilter (LOG_FILTER.DEBUG | LOG_FILTER.INFO | LOG_FILTER.WARNING | LOG_FILTER.ERROR | LOG_FILTER.CRITICAL);
+	}
 
-    public void join(string channel)
-    {
-        logD("calling join (channel = " + channel + ")");
+	public void join(string channel)
+	{
+		logD ("calling join (channel = " + channel + ")");
 
-        if (mRtcEngine == null)
-            return;
-        // set callbacks (optional)
-        mRtcEngine.OnJoinChannelSuccess = onJoinChannelSuccess;
-        mRtcEngine.OnUserJoined = onUserJoined;
-        mRtcEngine.OnUserOffline = onUserOffline;
-        mRtcEngine.OnVolumeIndication = OnAudioVolumeIndication;
-        // allow camera output callback
-        mRtcEngine.SetLogFilter(LOG_FILTER.DEBUG);
+		if (mRtcEngine == null)
+			return;
 
-        // join channel
-        mRtcEngine.JoinChannel(channel, null, 0);
-        logD("initializeEngine done");
-    }
+		// set callbacks (optional)
+		mRtcEngine.OnJoinChannelSuccess = onJoinChannelSuccess;
+		mRtcEngine.OnUserJoined = onUserJoined;
+		mRtcEngine.OnUserOffline = onUserOffline;
+////		mRtcEngine.OnWarning += (int warn, string msg) => {
+////		string descrition = IRtcEngineForGaming.GetErrorDescription(warn);
+////	string message = "hehe";
+////	Debug.Log(message);
+////		string warningMessage = string.Format("onWarning callback {0} {1} {2}",warn,msg,descrition);
+////		Debug.Log(warningMessage);
+////
+//		};
+		//mRtcEngine.SetChannelProfile(CHANNEL_PROFILE.GAME_FREE_MODE);
+		// enable video
+		mRtcEngine.EnableVideo();
+		mRtcEngine.EnableVideoObserver();
 
-    public void leave()
-    {
-        Debug.Log("calling leave");
+		// allow camera output callback
+		mRtcEngine.SetLogFilter(LOG_FILTER.DEBUG);
 
-        if (mRtcEngine == null)
-            return;
+		// join channel
+	   //mRtcEngine.EnableVideo();
+		mRtcEngine.JoinChannel(channel, null, 0);
+		
+		logD ("initializeEngine done");
+	}
 
-        // leave channel
-        mRtcEngine.LeaveChannel();
-        // deregister video frame observers in native-c code
-        //mRtcEngine.DisableVideoObserver();
-    }
+	public void leave()
+	{
+		Debug.Log ("calling leave");
 
-    // unload agora engine
-    public void unloadEngine()
-    {
-        logD("calling unloadEngine");
+		if (mRtcEngine == null)
+			return;
 
-        // delete
-        if (mRtcEngine != null)
-        {
-            IRtcEngine.Destroy();
-            mRtcEngine = null;
-        }
-    }
+		// leave channel
+		mRtcEngine.LeaveChannel();
+		// deregister video frame observers in native-c code
+		mRtcEngine.DisableVideoObserver();
+	}
 
-    // accessing GameObject in Scnene1
-    // set video transform delegate for statically created GameObject
-    public void onScene1Loaded()
-    {
-        GameObject go = GameObject.Find("Cylinder");
-        if (ReferenceEquals(go, null))
-        {
-            logD("BBBB: failed to find Cylinder");
-            return;
-        }
-        // VideoSurface o = go.GetComponent<VideoSurface> ();
-        // o.mAdjustTransfrom += onTransformDelegate;
-    }
+	// unload agora engine
+	public void unloadEngine()
+	{
+		logD ("calling unloadEngine");
 
-    // instance of agora engine
-    public IRtcEngine mRtcEngine;
-    private string mVendorKey = #YOUR_APPID;
+		// delete
+		if (mRtcEngine != null) {
+			IRtcEngine.Destroy ();
+			mRtcEngine = null;
+		}
+	}
 
-    // implement engine callbacks
+	// accessing GameObject in Scnene1
+	// set video transform delegate for statically created GameObject
+	public void onScene1Loaded()
+	{
+		GameObject go = GameObject.Find ("Cylinder");
+		if (ReferenceEquals (go, null)) {
+			logD ("BBBB: failed to find Cylinder");
+			return;
+		}
+		VideoSurface o = go.GetComponent<VideoSurface> ();
+		o.mAdjustTransfrom += onTransformDelegate;
+	}
 
-    public uint mRemotePeer = 0; // insignificant. only record one peer
+	// instance of agora engine
+	public IRtcEngine mRtcEngine;
+	private string mVendorKey = "f4637604af81440596a54254d53ade20";
+
+	// implement engine callbacks
+
+	public uint mRemotePeer = 0; // insignificant. only record one peer
 
 
-    private void onWarning(int warningCode, string message)
-    {
+	private void onWarning(int warningCode, string message){
 
-        Debug.Log("onWarning  code = " + warningCode + "  message = " + message);
+	Debug.Log ("onWarning  code = "+warningCode +"  message = "+message);
 
-    }
+	}
 
-    private void OnAudioVolumeIndication(AudioVolumeInfo[] speakers, int speakerNumber, int totalVolume)
-    {
-        Debug.Log("OnAudioVolumeIndication   speakersNumber  =  " + speakerNumber + "  totalVolume  =  " + totalVolume);
-    }
+	private void onJoinChannelSuccess (string channelName, uint uid, int elapsed)
+	{
+		logD ("JoinChannelSuccessHandler: uid = " + uid);
+	}
 
-    private void onJoinChannelSuccess(string channelName, uint uid, int elapsed)
-    {
-        logD("JoinChannelSuccessHandler: uid = " + uid);
-    }
+	// When a remote user joined, this delegate will be called. Typically
+	// create a GameObject to render video on it
+	private void onUserJoined(uint uid, int elapsed)
+	{
+		logD ("onUserJoined: uid = " + uid);
+		// this is called in main thread
 
-    // When a remote user joined, this delegate will be called. Typically
-    // create a GameObject to render video on it
-    private void onUserJoined(uint uid, int elapsed)
-    {
-        logD("onUserJoined: uid = " + uid);
-        // this is called in main thread
-        mRemotePeer = uid;
-    }
+		// find a game object to render video stream from 'uid'
+		GameObject go = GameObject.Find (uid.ToString ());
+		if (!ReferenceEquals (go, null)) {
+			return; // reuse
+		}
 
-    // When remote user is offline, this delegate will be called. Typically
-    // delete the GameObject for this user
-    private void onUserOffline(uint uid, USER_OFFLINE_REASON reason)
-    {
-        // remove video stream
-        logD("onUserOffline: uid = " + uid);
-        // this is called in main thread
-    }
+		// create a GameObject and assigne to this new user
+		go = GameObject.CreatePrimitive (PrimitiveType.Plane);
+		if (!ReferenceEquals (go, null)) {
+			go.name = uid.ToString ();
 
-    // delegate: adjust transfrom for game object 'objName' connected with user 'uid'
-    // you could save information for 'uid' (e.g. which GameObject is attached)
-    private void onTransformDelegate(uint uid, string objName, ref Transform transform)
-    {
-        if (uid == 0)
-        {
-            transform.position = new Vector3(0f, 2f, 0f);
-            transform.localScale = new Vector3(2.0f, 2.0f, 1.0f);
-            transform.Rotate(0f, 1f, 0f);
-        }
-        else
-        {
-            transform.Rotate(0.0f, 1.0f, 0.0f);
-        }
-    }
+			// configure videoSurface
+			VideoSurface o = go.AddComponent<VideoSurface> ();
+			o.SetForUser (uid);
+			o.mAdjustTransfrom += onTransformDelegate;
+			o.SetEnable (true);
+			o.transform.Rotate (-90.0f, 0.0f, 0.0f);
+			float r = Random.Range (-5.0f, 5.0f);
+			o.transform.position = new Vector3 (0f, r, 0f);
+			o.transform.localScale = new Vector3 (0.5f, 0.5f, 1.0f);
+		}
+		mRemotePeer = uid;
+	}
+
+	// When remote user is offline, this delegate will be called. Typically
+	// delete the GameObject for this user
+	private void onUserOffline(uint uid, USER_OFFLINE_REASON reason)
+	{
+		// remove video stream
+		logD ("onUserOffline: uid = " + uid);
+		// this is called in main thread
+		GameObject go = GameObject.Find (uid.ToString());
+		if (!ReferenceEquals (go, null)) {
+			Destroy (go);
+		}
+	}
+
+	// delegate: adjust transfrom for game object 'objName' connected with user 'uid'
+	// you could save information for 'uid' (e.g. which GameObject is attached)
+	private void onTransformDelegate (uint uid, string objName, ref Transform transform)
+	{
+		if (uid == 0) {
+			transform.position = new Vector3 (0f, 2f, 0f);
+			transform.localScale = new Vector3 (2.0f, 2.0f, 1.0f);
+			transform.Rotate (0f, 1f, 0f);
+		} else {
+			transform.Rotate (0.0f, 1.0f, 0.0f);
+		}
+	}
 }
