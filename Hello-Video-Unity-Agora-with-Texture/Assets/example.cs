@@ -46,11 +46,20 @@ public class exampleApp : MonoBehaviour
         mRtcEngine.OnUserJoined = onUserJoined;
         mRtcEngine.OnUserOffline = onUserOffline;
         mRtcEngine.OnVolumeIndication = OnAudioVolumeIndication;
+        //mRtcEngine.SetDefaultAudioRouteToSpeakerphone(false);
+        //int a = mRtcEngine.SetChannelProfile(CHANNEL_PROFILE.GAME_COMMAND_MODE);
+        //Debug.Log("SetChannelProfile  =  " + a);
+        // enable video
+        mRtcEngine.EnableVideo();
+        mRtcEngine.EnableVideoObserver();
+
         // allow camera output callback
         mRtcEngine.SetLogFilter(LOG_FILTER.DEBUG);
 
         // join channel
+        //mRtcEngine.EnableVideo();
         mRtcEngine.JoinChannel(channel, null, 0);
+
         logD("initializeEngine done");
     }
 
@@ -126,6 +135,29 @@ public class exampleApp : MonoBehaviour
     {
         logD("onUserJoined: uid = " + uid);
         // this is called in main thread
+
+        // find a game object to render video stream from 'uid'
+        GameObject go = GameObject.Find(uid.ToString());
+        if (!ReferenceEquals(go, null))
+        {
+            return; // reuse
+        }
+
+
+        go = GameObject.CreatePrimitive(PrimitiveType.Plane);
+        if (!ReferenceEquals(go, null))
+        {
+            go.name = uid.ToString();
+
+            VideoSurface o = go.AddComponent<VideoSurface>();
+            o.SetForUser(uid);
+            o.mAdjustTransfrom += onTransformDelegate;
+            o.SetEnable(true);
+            o.transform.Rotate(-90.0f, 0.0f, 0.0f);
+            float r = Random.Range(-5.0f, 5.0f);
+            o.transform.position = new Vector3(0f, r, 0f);
+            o.transform.localScale = new Vector3(0.5f, 0.5f, 1.0f);
+        }
         mRemotePeer = uid;
     }
 
@@ -136,6 +168,11 @@ public class exampleApp : MonoBehaviour
         // remove video stream
         logD("onUserOffline: uid = " + uid);
         // this is called in main thread
+        GameObject go = GameObject.Find(uid.ToString());
+        if (!ReferenceEquals(go, null))
+        {
+            Destroy(go);
+        }
     }
 
     // delegate: adjust transfrom for game object 'objName' connected with user 'uid'
