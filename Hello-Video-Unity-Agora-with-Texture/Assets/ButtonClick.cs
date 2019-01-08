@@ -26,6 +26,7 @@ public class ButtonClick : MonoBehaviour
         options.Add("SetDefaultAudioRouteToSpeakerphone");
         options.Add("EnableAudioVolumeIndication");
         options.Add("MuteLocalAudioStream");
+        options.Add("SetSpeakerphoneVolume");
         options.Add("MuteAllRemoteAudioStreams");
         options.Add("MuteRemoteAudioStream");
         options.Add("EnableAudio");
@@ -179,10 +180,12 @@ public class ButtonClick : MonoBehaviour
         else if (api.CompareTo("Pause") == 0)
         {
             app.mRtcEngine.Pause();
+            setApiReturn("0");
         }
         else if (api.CompareTo("Resume") == 0)
         {
             app.mRtcEngine.Resume();
+            setApiReturn("0");
         }
         else if (api.CompareTo("SetDefaultAudioRouteToSpeakerphone") == 0)
         {
@@ -247,6 +250,12 @@ public class ButtonClick : MonoBehaviour
         else if (api.CompareTo("IsSpeakerPhoneEnabled") == 0)
         {
             bool r = app.mRtcEngine.IsSpeakerphoneEnabled();
+            setApiReturn(r.ToString());
+        }
+        else if (api.CompareTo("SetSpeakerphoneVolume") == 0)
+        {
+            int volume = int.Parse(getApiParam(1));
+            int r = app.mRtcEngine.SetSpeakerphoneVolume(volume);
             setApiReturn(r.ToString());
         }
         else

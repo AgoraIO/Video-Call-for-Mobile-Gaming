@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using agora_gaming_rtc;
+using System.IO;
+
 
 // this is an example of using Agora unity sdk
 // It demonstrates:
@@ -32,7 +34,13 @@ public class exampleApp : MonoBehaviour
         mRtcEngine = IRtcEngine.getEngine(mVendorKey);
 
         // enable log
-        mRtcEngine.SetLogFilter(LOG_FILTER.DEBUG | LOG_FILTER.INFO | LOG_FILTER.WARNING | LOG_FILTER.ERROR | LOG_FILTER.CRITICAL);
+        string filePath = Application.persistentDataPath;
+        string fileName = "agoraSdkLog.txt";
+        string file = Application.persistentDataPath + "/" + fileName;
+        Createfile(filePath, fileName);
+        mRtcEngine.SetLogFile(file);
+        logD("sdklog  filePath =  " + file);
+        //Android :  /storage/emulated/0/Android/data/com.Agora.VideoTexture/files
     }
 
     public void join(string channel)
@@ -96,7 +104,7 @@ public class exampleApp : MonoBehaviour
 
     // instance of agora engine
     public IRtcEngine mRtcEngine;
-    private string mVendorKey = #YOUR_APPID;
+    private string mVendorKey = #YOUR_APPID#;
 
     // implement engine callbacks
 
@@ -153,4 +161,14 @@ public class exampleApp : MonoBehaviour
             transform.Rotate(0.0f, 1.0f, 0.0f);
         }
     }
+
+    void Createfile (string path, string name)
+    {
+        FileInfo t = new FileInfo (path + "//" + name);
+        if (!t.Exists) {//判断文件是否存在
+            t.CreateText ();//不存在，创建
+        } else {
+            t.AppendText ();//存在，则打开
+        }
+}
 }
