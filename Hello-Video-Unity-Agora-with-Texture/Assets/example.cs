@@ -13,7 +13,7 @@ public class exampleApp : MonoBehaviour
 
     public static void logD(string message)
     {
-        Debug.Log("zhangtest" + message);
+        Debug.Log("AgoraTest  " + message);
     }
 
     // load agora engine
@@ -46,9 +46,12 @@ public class exampleApp : MonoBehaviour
         mRtcEngine.OnUserJoined = onUserJoined;
         mRtcEngine.OnUserOffline = onUserOffline;
         mRtcEngine.OnVolumeIndication = OnAudioVolumeIndication;
-        //mRtcEngine.SetDefaultAudioRouteToSpeakerphone(false);
-        //int a = mRtcEngine.SetChannelProfile(CHANNEL_PROFILE.GAME_COMMAND_MODE);
-        //Debug.Log("SetChannelProfile  =  " + a);
+        mRtcEngine.OnAudioQuality = OnAudioQuality;
+        mRtcEngine.OnStreamInjectedStatus = OnStreamInjectedStatus;
+        mRtcEngine.OnStreamUnpublished = OnStreamUnpublished;
+        mRtcEngine.OnStreamMessageError = OnStreamMessageError;
+        mRtcEngine.OnStreamMessage = OnStreamMessage;
+        mRtcEngine.OnConnectionBanned = OnConnectionBanned;
         // enable video
         mRtcEngine.EnableVideo();
         mRtcEngine.EnableVideoObserver();
@@ -63,6 +66,40 @@ public class exampleApp : MonoBehaviour
         logD("initializeEngine done");
     }
 
+    public void OnStreamInjectedStatus(string url, uint userId, int status)
+    {
+        logD("OnStreamInjectedStatus  url = " + url + "  userId = " + userId);
+    }
+
+    public void OnStreamUnpublished(string url) 
+    {
+        logD("OnStreamUnpublished  url = " + url);
+    }
+
+    public void OnConnectionBanned()
+    {
+        logD("OnConnectionBanned  ");
+    }
+
+    public void OnStreamPublished (string url, int error)
+    {
+        logD("OnStreamPublished url = " + url + "  error = " + error);
+    }
+
+    public void OnStreamMessageError(uint userId, int streamId, int code, int missed, int cached)
+    {
+        logD("OnStreamMessageError  userId = " + userId + "  streamId = " + streamId);
+    }
+
+    public void OnStreamMessage (uint userId, int streamId, string data, int length)
+    {
+        logD("OnStreamMessage  userId = " + userId + "  streamId = " + streamId + "  data = " + data);
+    }
+
+    public void OnAudioQuality(uint userId, int quality, ushort delay, ushort lost){
+        logD("OnAudioQuality  userId = " + userId + "  quality = " + quality + "  delay = " + delay);
+    }
+
     public void leave()
     {
         Debug.Log("calling leave");
@@ -70,10 +107,7 @@ public class exampleApp : MonoBehaviour
         if (mRtcEngine == null)
             return;
 
-        // leave channel
         mRtcEngine.LeaveChannel();
-        // deregister video frame observers in native-c code
-        //mRtcEngine.DisableVideoObserver();
     }
 
     // unload agora engine
@@ -105,7 +139,7 @@ public class exampleApp : MonoBehaviour
 
     // instance of agora engine
     public IRtcEngine mRtcEngine;
-    private string mVendorKey = #YOUR_APPID;
+    private string mVendorKey = #YOUR_APPID#;
 
     // implement engine callbacks
 
