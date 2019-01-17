@@ -1,6 +1,6 @@
 # Hello Video Unity Agora
 
-*其他语言版本： [简体中文](README.md)*
+*其他语言版本： [简体中文](README.zh.md)*
 
 The Hello Video Unity Agora Sample App is an open-source demo that will help you get video chat integrated directly into your Unity game applications using the Agora Gaming SDK.
 
