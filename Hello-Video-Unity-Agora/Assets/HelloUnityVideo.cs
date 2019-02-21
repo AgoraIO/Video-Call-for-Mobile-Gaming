@@ -14,7 +14,7 @@ public class HelloUnityVideo : MonoBehaviour {
 	// PLEASE KEEP THIS App ID IN SAFE PLACE
 	// Get your own App ID at https://dashboard.agora.io/
 	// After you entered the App ID, remove ## outside of Your App ID
-	private static string appId = #YOUR_APPID;
+	private static string appId = #YOUR APP ID#;
 
 	// load agora engine
 	public void loadEngine()
