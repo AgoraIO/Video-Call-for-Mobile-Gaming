@@ -1,5 +1,7 @@
 # Hello Video Agora for Unity
 
+*Read this in other languages: [Chinese](README.zh.md)*
+
 This tutorial enables you to quickly get started with using a sample app to develop requests to the Agora Gaming SDK in [Unity 3D](https://unity3d.com).
 
 This sample app demonstrates the basic Agora SDK feature:
