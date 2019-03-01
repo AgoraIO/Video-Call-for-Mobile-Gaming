@@ -4,43 +4,64 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine;
 
-public class ButtonClick : MonoBehaviour {
+public class ButtonClick : MonoBehaviour
+{
 
-	// Use this for initialization
-	void Start () {
-		exampleApp.logD ("ButtonClick Start is called!");
-		GameObject go = GameObject.Find ("ApiList");
-		Dropdown dd = go.GetComponent<Dropdown> ();
-		dd.ClearOptions ();
-		List<string> options = new List<string>();
-		options.Add ("GetSdkVersion");
-		options.Add ("SetChannelProfile");
-		options.Add ("SetClientRole");
-		options.Add ("Pause");
-		options.Add ("Resume");
-		options.Add ("GetCallId");
-		options.Add ("SwitchCamera");
-		options.Add ("SetVideoProfile");
-		options.Add ("MuteLocalVideoStream");
-		options.Add ("MuteAllRemoteVideoStreams");
-		options.Add ("MuteRemoteVideoStream");
-		options.Add ("EnableDualStreamMode");
-		options.Add ("SetRemoteVideoStreamType");
-		options.Add ("EnableVideo");
-		options.Add ("DisableVideo");
-		options.Add ("EnableLocalVideo");
-		options.Add ("StartPreview");
-		options.Add ("StopPreview");
-		dd.AddOptions(options);
+    // Use this for initialization
+    void Start()
+    {
+        exampleApp.logD("ButtonClick Start is called!");
+        GameObject go = GameObject.Find("ApiList");
+        Dropdown dd = go.GetComponent<Dropdown>();
+        dd.ClearOptions();
+        List<string> options = new List<string>();
+        options.Add("GetSdkVersion");
+        options.Add("SetChannelProfile");
+        options.Add("EnableDualStreamMode");
+        options.Add("GetCallId");
+        options.Add("SetVideoProfile");
+        options.Add("SetClientRole");
+        options.Add("Pause");
+        options.Add("Resume");
+        options.Add("SwitchCamera");
+        options.Add("MuteLocalVideoStream");
+        options.Add("MuteAllRemoteVideoStreams");
+        options.Add("SetDefaultMuteAllRemoteAudioStreams");
+        options.Add("SetDefaultMuteAllRemoteVideoStreams");
+        options.Add("MuteRemoteVideoStream");
+        options.Add("SetRemoteVideoStreamType");
+        options.Add("EnableVideo");
+        options.Add("DisableVideo");
+        options.Add("EnableLocalVideo");
+        options.Add("StartPreview");
+        options.Add("StopPreview");
+        options.Add("SetLocalVoicePitch");
+        options.Add("SetRemoteVoicePosition");
+        options.Add("SetVoiceOnlyMode");
+        options.Add("EnableLocalAudio");
+        options.Add("SetEnableSpeakerPhone");
+        options.Add("IsSpeakerPhoneEnabled");
+        options.Add("SetDefaultAudioRouteToSpeakerphone");
+        options.Add("EnableAudioVolumeIndication");
+        options.Add("MuteLocalAudioStream");
+        options.Add("MuteAllRemoteAudioStreams");
+        options.Add("MuteRemoteAudioStream");
+        options.Add("AdjustRecordingSignalVolume");
+        options.Add("AdjustPlaybackSignalVolume");
+        options.Add("EnableVideoObserver");
+        options.Add("DisableVideoObserver");
+        options.Add("EnableAudio");
+        options.Add("DisableAudio");
+        dd.AddOptions(options);
 
-		go = GameObject.Find ("VIDEOPROFILE");
-		dd = go.GetComponent<Dropdown> ();
-		dd.ClearOptions ();
-		options = new List<string>();
-		options.Add ("-1 Invalid");
-		options.Add ("0 120P true (160x120)");
-		options.Add ("0 120P false (160x120)");
-		#if UNITY_IPHONE
+        go = GameObject.Find("VIDEOPROFILE");
+        dd = go.GetComponent<Dropdown>();
+        dd.ClearOptions();
+        options = new List<string>();
+        options.Add("-1 Invalid");
+        options.Add("0 120P true (160x120)");
+        options.Add("0 120P false (160x120)");
+#if UNITY_IPHONE
 		options.Add ("2 120P_3 true (120x120)");
 		options.Add ("2 120P_3 false (120x120)");
 		options.Add ("10 180P true (320x180)");
@@ -49,301 +70,469 @@ public class ButtonClick : MonoBehaviour {
 		options.Add ("12 180P_3 false (180x180)");
 		options.Add ("13 180P_4 true (240x180)");
 		options.Add ("13 180P_4 false (240x180)");
-		#endif
-		options.Add ("20 240P true (320x240)");
-		options.Add ("20 240P false (320x240)");
-		#if UNITY_IPHONE
+#endif
+        options.Add("20 240P true (320x240)");
+        options.Add("20 240P false (320x240)");
+#if UNITY_IPHONE
 		options.Add ("22 240P_3 true (240x240)");
 		options.Add ("22 240P_3 false (240x240)");
 		options.Add ("23 240P_4 true (420x240)");
 		options.Add ("23 240P_4 false (420x240)");
-		#endif
-		options.Add ("30 360P true (640x360)");
-		options.Add ("30 360P false (640x360)");
-		#if UNITY_IPHONE
+#endif
+        options.Add("30 360P true (640x360)");
+        options.Add("30 360P false (640x360)");
+#if UNITY_IPHONE
 		options.Add ("32 360P_3 true (360x360)");
 		options.Add ("32 360P_3 false (360x360)");
-		#endif
-		options.Add ("33 360P_4 true (640x360)");
-		options.Add ("33 360P_4 false (640x360)");
-		options.Add ("35 360P_6 true (360x360)");
-		options.Add ("35 360P_6 false (360x360)");
-		options.Add ("36 360P_7 true (480x360)");
-		options.Add ("36 360P_7 false (480x360)");
-		options.Add ("37 360P_8 true (480x360)");
-		options.Add ("37 360P_8 false (480x360)");
-		options.Add ("38 360P_9 true (640x360)");
-		options.Add ("38 360P_9 false (640x360)");
-		options.Add ("39 360P_10 true (640x360)");
-		options.Add ("39 360P_10 false (640x360)");
-		options.Add ("100 360P_11 true (640x360)");
-		options.Add ("100 360P_11 false (640x360)");
-		options.Add ("40 480P true (640x480)");
-		options.Add ("40 480P false (640x480)");
-		#if UNITY_IPHONE
+#endif
+        options.Add("33 360P_4 true (640x360)");
+        options.Add("33 360P_4 false (640x360)");
+        options.Add("35 360P_6 true (360x360)");
+        options.Add("35 360P_6 false (360x360)");
+        options.Add("36 360P_7 true (480x360)");
+        options.Add("36 360P_7 false (480x360)");
+        options.Add("37 360P_8 true (480x360)");
+        options.Add("37 360P_8 false (480x360)");
+        options.Add("38 360P_9 true (640x360)");
+        options.Add("38 360P_9 false (640x360)");
+        options.Add("39 360P_10 true (640x360)");
+        options.Add("39 360P_10 false (640x360)");
+        options.Add("100 360P_11 true (640x360)");
+        options.Add("100 360P_11 false (640x360)");
+        options.Add("40 480P true (640x480)");
+        options.Add("40 480P false (640x480)");
+#if UNITY_IPHONE
 		options.Add ("42 480P_3 true (480x480)");
 		options.Add ("42 480P_3 false (480x480)");
-		#endif
-		options.Add ("43 480P_4 true (640x480)");
-		options.Add ("43 480P_4 false (640x480)");
-		options.Add ("45 480P_6 true (480x480)");
-		options.Add ("45 480P_6 false (480x480)");
-		options.Add ("47 480P_8 true (840x480)");
-		options.Add ("47 480P_8 false (840x480)");
-		options.Add ("48 480P_9 true (840x480)");
-		options.Add ("48 480P_9 false (840x480)");
-		options.Add ("49 480P_10 true (640x480)");
-		options.Add ("49 480P_10 false (640x480)");
-		options.Add ("50 720P true (1280x720)");
-		options.Add ("50 720P false (1280x720)");
-		options.Add ("52 720P_3 true (1280x720)");
-		options.Add ("52 720P_3 false (1280x720)");
-		options.Add ("54 720P_5 true (960x720)");
-		options.Add ("54 720P_5 false (960x720)");
-		options.Add ("55 720P_6 true (960x720)");
-		options.Add ("55 720P_6 false (960x720)");
+#endif
+        options.Add("43 480P_4 true (640x480)");
+        options.Add("43 480P_4 false (640x480)");
+        options.Add("45 480P_6 true (480x480)");
+        options.Add("45 480P_6 false (480x480)");
+        options.Add("47 480P_8 true (840x480)");
+        options.Add("47 480P_8 false (840x480)");
+        options.Add("48 480P_9 true (840x480)");
+        options.Add("48 480P_9 false (840x480)");
+        options.Add("49 480P_10 true (640x480)");
+        options.Add("49 480P_10 false (640x480)");
+        options.Add("50 720P true (1280x720)");
+        options.Add("50 720P false (1280x720)");
+        options.Add("52 720P_3 true (1280x720)");
+        options.Add("52 720P_3 false (1280x720)");
+        options.Add("54 720P_5 true (960x720)");
+        options.Add("54 720P_5 false (960x720)");
+        options.Add("55 720P_6 true (960x720)");
+        options.Add("55 720P_6 false (960x720)");
 
 
-		dd.AddOptions(options);
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+        dd.AddOptions(options);
+    }
 
-	static exampleApp app = null;
+    // Update is called once per frame
+    void Update()
+    {
 
-	private void onJoinButtonClicked() {
-		// get parameters (channel name, channel profile, etc.)
-		GameObject go = GameObject.Find ("ChannelName");
-		InputField field = go.GetComponent<InputField>();
+    }
 
-		// create app if nonexistent
-		if (ReferenceEquals (app, null)) {
-			app = new exampleApp (); // create app
-			exampleApp.logD("zhangagora " + app);
-			app.loadEngine (); // load engine
-		}
+    static exampleApp app = null;
 
-		// join channel and jump to next scene
-		app.join (field.text);
-		SceneManager.sceneLoaded += OnLevelFinishedLoading; // configure GameObject after scene is loaded
-		SceneManager.LoadScene ("Scene1", LoadSceneMode.Single);
-	}
+    private void onJoinButtonClicked()
+    {
+        // get parameters (channel name, channel profile, etc.)
+        GameObject go = GameObject.Find("ChannelName");
+        InputField field = go.GetComponent<InputField>();
 
-	private void onLeaveButtonClicked() {
-		if (!ReferenceEquals (app, null)) {
-			app.leave (); // leave channel
-			app.unloadEngine (); // delete engine
-			app = null; // delete app
-			SceneManager.LoadScene ("Scene0", LoadSceneMode.Single);
-		}
-	}
+        // create app if nonexistent
+        if (ReferenceEquals(app, null))
+        {
+            app = new exampleApp(); // create app
+            exampleApp.logD("zhangagora " + app);
+            app.loadEngine(); // load engine
+        }
 
-	private void setApiParam(int param, string txt) {
-		string name;
-		switch (param) {
-		case 1:
-			name = "FieldParam1";
-			break;
-		case 2:
-			name = "FieldParam2";
-			break;
-		case 3:
-			name = "FieldParam3";
-			break;
-		case 4:
-		default:
-			name = "FieldParam4";
-			break;
-		}
+        // join channel and jump to next scene
+        app.join(field.text);
+        SceneManager.sceneLoaded += OnLevelFinishedLoading; // configure GameObject after scene is loaded
+        SceneManager.LoadScene("Scene1", LoadSceneMode.Single);
+    }
 
-		GameObject go = GameObject.Find (name);
-		InputField field = go.GetComponent<InputField>();
-		field.text = txt;
-	}
+    private void onLeaveButtonClicked()
+    {
+        if (!ReferenceEquals(app, null))
+        {
+            app.leave(); // leave channel
+            app.unloadEngine(); // delete engine
+            app = null; // delete app
+            SceneManager.LoadScene("Scene0", LoadSceneMode.Single);
+        }
+    }
 
-	private string getApiParam(int param) {
-		string name;
-		switch (param) {
-		case 1:
-			name = "FieldParam1";
-			break;
-		case 2:
-			name = "FieldParam2";
-			break;
-		case 3:
-			name = "FieldParam3";
-			break;
-		case 4:
-		default:
-			name = "FieldParam4";
-			break;
-		}
+    private void setApiParam(int param, string txt)
+    {
+        string name;
+        switch (param)
+        {
+            case 1:
+                name = "FieldParam1";
+                break;
+            case 2:
+                name = "FieldParam2";
+                break;
+            case 3:
+                name = "FieldParam3";
+                break;
+            case 4:
+            default:
+                name = "FieldParam4";
+                break;
+        }
 
-		GameObject go = GameObject.Find (name);
-		InputField field = go.GetComponent<InputField>();
-		string value = field.text;
+        GameObject go = GameObject.Find(name);
+        InputField field = go.GetComponent<InputField>();
+        field.text = txt;
+    }
 
-		return value;
-	}
+    private string getApiParam(int param)
+    {
+        string name;
+        switch (param)
+        {
+            case 1:
+                name = "FieldParam1";
+                break;
+            case 2:
+                name = "FieldParam2";
+                break;
+            case 3:
+                name = "FieldParam3";
+                break;
+            case 4:
+            default:
+                name = "FieldParam4";
+                break;
+        }
 
-	private int getApiParamInt(int param) {
-		string sValue = getApiParam (param);
-		return int.Parse (sValue);
-	}
+        GameObject go = GameObject.Find(name);
+        InputField field = go.GetComponent<InputField>();
+        string value = field.text;
 
-	private void setApiReturn(string v) {
-		GameObject go = GameObject.Find ("FieldResult");
-		InputField field = go.GetComponent<InputField>();
-		field.text = v;
-	}
+        return value;
+    }
 
-	private void onApiButtonClicked() {
-		GameObject go = GameObject.Find ("ApiList");
-		Dropdown dd = go.GetComponent<Dropdown> ();
-		string api = dd.captionText.text;
-		Debug.Log ("onApiButtonClicked: " + api);
+    private int getApiParamInt(int param)
+    {
+        string sValue = getApiParam(param);
+        return int.Parse(sValue);
+    }
 
-		if (ReferenceEquals (app, null)) {
-			app = new exampleApp ();
-			app.loadEngine ();
-		}
+    private void setApiReturn(string v)
+    {
+        GameObject go = GameObject.Find("FieldResult");
+        InputField field = go.GetComponent<InputField>();
+        field.text = v;
+    }
 
-		// these APIs do not require engine being created
-		if (api.CompareTo ("GetSdkVersion") == 0) {
-			string ret = agora_gaming_rtc.IRtcEngine.GetSdkVersion ();
-			setApiReturn (ret);
-			return;
-		}
+    private void onApiButtonClicked()
+    {
+        GameObject go = GameObject.Find("ApiList");
+        Dropdown dd = go.GetComponent<Dropdown>();
+        string api = dd.captionText.text;
+        Debug.Log("onApiButtonClicked: " + api);
 
-		if (api.CompareTo ("SetChannelProfile") == 0) {
-			int num = getApiParamInt (1);
+        if (ReferenceEquals(app, null))
+        {
+            app = new exampleApp();
+            app.loadEngine();
+        }
+        app.mRtcEngine.SetParameters("{\"rtc.log_filter\": 65535}");
+        // these APIs do not require engine being created
+        if (api.CompareTo("GetSdkVersion") == 0)
+        {
+            string ret = agora_gaming_rtc.IRtcEngine.GetSdkVersion();
+            setApiReturn(ret);
+            return;
+        }
 
-			agora_gaming_rtc.CHANNEL_PROFILE chProfile;
-			switch (num) {
-			case 2:
-				chProfile = agora_gaming_rtc.CHANNEL_PROFILE.GAME_FREE_MODE;
-				break;
-			case 3:
-			default:
-				chProfile = agora_gaming_rtc.CHANNEL_PROFILE.GAME_COMMAND_MODE;
-				break;
-			}
+        if (api.CompareTo("SetChannelProfile") == 0)
+        {
+            int num = getApiParamInt(1);
 
-			int r = app.mRtcEngine.SetChannelProfile (chProfile);
-			setApiReturn (r.ToString ());
-		} else if (api.CompareTo ("SetClientRole") == 0) {
-			int num = getApiParamInt (1);
+            agora_gaming_rtc.CHANNEL_PROFILE chProfile;
+            switch (num)
+            {
+                case 0:
+                    chProfile = agora_gaming_rtc.CHANNEL_PROFILE.GAME_FREE_MODE;
+                    break;
+                case 1:
+                    chProfile = agora_gaming_rtc.CHANNEL_PROFILE.GAME_COMMAND_MODE;
+                    break;
+                default:
+                    chProfile = agora_gaming_rtc.CHANNEL_PROFILE.GAME_FREE_MODE;
+                    break;
+            }
 
-			agora_gaming_rtc.CLIENT_ROLE role;
-			switch (num) {
-			case 1:
-				role = agora_gaming_rtc.CLIENT_ROLE.BROADCASTER;
-				break;
-			case 2:
-			default:
-				role = agora_gaming_rtc.CLIENT_ROLE.AUDIENCE;
-				break;
-			}
+            int r = app.mRtcEngine.SetChannelProfile(chProfile);
+            setApiReturn(r.ToString());
+        }
+        else if (api.CompareTo("SetClientRole") == 0)
+        {
+            int num = getApiParamInt(1);
+            agora_gaming_rtc.CLIENT_ROLE role;
+            switch (num)
+            {
+                case 1:
+                    role = agora_gaming_rtc.CLIENT_ROLE.BROADCASTER;
+                    break;
+                case 2:
+                default:
+                    role = agora_gaming_rtc.CLIENT_ROLE.AUDIENCE;
+                    break;
+            }
 
-			int r = app.mRtcEngine.SetClientRole (role);
-			setApiReturn (r.ToString ());
-		} else if (api.CompareTo ("Pause") == 0) {
-			app.mRtcEngine.Pause ();
-		} else if (api.CompareTo ("Resume") == 0) {
-			app.mRtcEngine.Resume ();
-		} else if (api.CompareTo ("GetCallId") == 0) {
-			string ret = app.mRtcEngine.GetCallId ();
-			setApiReturn (ret);
-		} else if (api.CompareTo ("SwitchCamera") == 0) {
-			int r = app.mRtcEngine.SwitchCamera ();
-			setApiReturn (r.ToString ());
-		} else if (api.CompareTo ("SetVideoProfile") == 0) {
-			GameObject go1 = GameObject.Find ("VIDEOPROFILE");
-			Dropdown dd1 = go1.GetComponent<Dropdown> ();
-			string s = dd1.captionText.text;
-			Debug.Log ("VideoProfile: " + s);
-			string[] sArray = s.Split (' ');
+            int r = app.mRtcEngine.SetClientRole(role);
+            setApiReturn(r.ToString());
+        }
+        else if (api.CompareTo("Pause") == 0)
+        {
+            app.mRtcEngine.Pause();
+        }
+        else if (api.CompareTo("Resume") == 0)
+        {
+            app.mRtcEngine.Resume();
+        }
+        else if (api.CompareTo("GetCallId") == 0)
+        {
+            string ret = app.mRtcEngine.GetCallId();
+            setApiReturn(ret);
+        }
+        else if (api.CompareTo("SwitchCamera") == 0)
+        {
+            int r = app.mRtcEngine.SwitchCamera();
+            setApiReturn(r.ToString());
+        }
+        else if (api.CompareTo("SetVideoProfile") == 0)
+        {
+            GameObject go1 = GameObject.Find("VIDEOPROFILE");
+            Dropdown dd1 = go1.GetComponent<Dropdown>();
+            string s = dd1.captionText.text;
+            Debug.Log("VideoProfile: " + s);
+            string[] sArray = s.Split(' ');
 
-			int profile = int.Parse (sArray [0]);//getApiParamInt (1);
-			int swap = sArray[2].CompareTo("true") == 0 ? 1 : 0;//getApiParamInt (2);
+            int profile = int.Parse(sArray[0]);//getApiParamInt (1);
+            int swap = sArray[2].CompareTo("true") == 0 ? 1 : 0;//getApiParamInt (2);
 
-			int r = app.mRtcEngine.SetVideoProfile (profile, (swap != 0));
-			setApiReturn (r.ToString ());
-		} else if (api.CompareTo ("MuteLocalVideoStream") == 0) {
-			int mute = getApiParamInt (1);
+            int r = app.mRtcEngine.SetVideoProfile(profile, (swap != 0));
+            setApiReturn(r.ToString());
+        }
+        else if (api.CompareTo("MuteLocalVideoStream") == 0)
+        {
+            int mute = getApiParamInt(1);
 
-			int r = app.mRtcEngine.MuteLocalVideoStream (mute != 0);
-			setApiReturn (r.ToString ());
-		} else if (api.CompareTo ("MuteAllRemoteVideoStreams") == 0) {
-			int mute = getApiParamInt (1);
+            int r = app.mRtcEngine.MuteLocalVideoStream(mute != 0);
+            setApiReturn(r.ToString());
+        }
+        else if (api.CompareTo("MuteAllRemoteVideoStreams") == 0)
+        {
+            int mute = getApiParamInt(1);
 
-			int r = app.mRtcEngine.MuteAllRemoteVideoStreams (mute != 0);
-			setApiReturn (r.ToString ());
-		} else if (api.CompareTo ("MuteRemoteVideoStream") == 0) {
-			// auto fill in
-			setApiParam(1, app.mRemotePeer.ToString());
+            int r = app.mRtcEngine.MuteAllRemoteVideoStreams(mute != 0);
+            setApiReturn(r.ToString());
+        }
+        else if (api.CompareTo("MuteRemoteVideoStream") == 0)
+        {
+            // auto fill in
+            setApiParam(1, app.mRemotePeer.ToString());
+            uint uid = app.mRemotePeer;// getApiParamInt (1);
+            int mute = getApiParamInt(2);
+            int r = app.mRtcEngine.MuteRemoteVideoStream(uid, (mute != 0));
+            setApiReturn(r.ToString());
+        }
+        else if (api.CompareTo("EnableDualStreamMode") == 0)
+        {
+            int enabled = getApiParamInt(1);
+            int r = app.mRtcEngine.EnableDualStreamMode(enabled != 0);
+            setApiReturn(r.ToString());
+        }
+        else if (api.CompareTo("SetRemoteVideoStreamType") == 0)
+        {
+            setApiParam(1, app.mRemotePeer.ToString());
+            uint uid = app.mRemotePeer;// getApiParamInt (1);
+                                       //int uid = getApiParamInt (1);
+            int streamType = getApiParamInt(2);
+            int r = app.mRtcEngine.SetRemoteVideoStreamType(uid, streamType);
+            setApiReturn(r.ToString());
+        }
+        else if (api.CompareTo("EnableVideo") == 0)
+        {
+            int r = app.mRtcEngine.EnableVideo();
+            setApiReturn(r.ToString());
+        }
+        else if (api.CompareTo("DisableVideo") == 0)
+        {
+            int r = app.mRtcEngine.DisableVideo();
+            setApiReturn(r.ToString());
+        }
+        else if (api.CompareTo("EnableLocalVideo") == 0)
+        {
+            int enabled = getApiParamInt(1);
+            int r = app.mRtcEngine.EnableLocalVideo(enabled != 0);
+            setApiReturn(r.ToString());
+        }
+        else if (api.CompareTo("StartPreview") == 0)
+        {
+            int r = app.mRtcEngine.StartPreview();
+            setApiReturn(r.ToString());
+        }
+        else if (api.CompareTo("StopPreview") == 0)
+        {
+            int r = app.mRtcEngine.StopPreview();
+            setApiReturn(r.ToString());
+        }
+        else if (api.CompareTo("SetLocalVoicePitch") == 0)
+        {
+            string pitch = getApiParam(1);
+            int r = app.mRtcEngine.SetLocalVoicePitch(double.Parse(pitch));
+            setApiReturn(r.ToString());
+        }
+        else if (api.CompareTo("SetRemoteVoicePosition") == 0)
+        {
+            double pan = double.Parse(getApiParam(2));
+            double gain = double.Parse(getApiParam(3));
+            int r = app.mRtcEngine.SetRemoteVoicePosition(app.mRemotePeer, pan, gain);
+            setApiReturn(r.ToString());
 
-			uint uid = app.mRemotePeer;// getApiParamInt (1);
-			int mute = getApiParamInt (2);
+        }
+        else if (api.CompareTo("SetVoiceOnlyMode") == 0)
+        {
+            int enabled = int.Parse(getApiParam(1));
+            int r = app.mRtcEngine.SetVoiceOnlyMode(enabled != 0);
+            setApiReturn(r.ToString());
+        }
+        else if (api.CompareTo("EnableLocalAudio") == 0)
+        {
+            int enabled = int.Parse(getApiParam(1));
+            int r = app.mRtcEngine.EnableLocalAudio(enabled != 0);
+            setApiReturn(r.ToString());
+        }
+        else if (api.CompareTo("SetEnableSpeakerPhone") == 0)
+        {
+            int enabled = int.Parse(getApiParam(1));
+            int r = app.mRtcEngine.SetEnableSpeakerphone(enabled != 0);
+            setApiReturn(r.ToString());
+        }
+        else if (api.CompareTo("IsSpeakerPhoneEnabled") == 0)
+        {
+            bool r = app.mRtcEngine.IsSpeakerphoneEnabled();
+            setApiReturn(r.ToString());
+        }
+        else if (api.CompareTo("SetDefaultAudioRouteToSpeakerphone") == 0)
+        {
+            int enabled = int.Parse(getApiParam(1));
+            Debug.Log("SetDefaultAudioRouteToSpeakerphone  enabled = " + (enabled != 0));
+            int r = app.mRtcEngine.SetDefaultAudioRouteToSpeakerphone(enabled != 0);
+            setApiReturn(r.ToString());
+        }
+        else if (api.CompareTo("EnableAudioVolumeIndication") == 0)
+        {
+            int interval = int.Parse(getApiParam(1));
+            int smooth = int.Parse(getApiParam(2));
+            int r = app.mRtcEngine.EnableAudioVolumeIndication(interval, smooth);
+            setApiReturn(r.ToString());
+        }
+        else if (api.CompareTo("MuteLocalAudioStream") == 0)
+        {
+            int enabled = int.Parse(getApiParam(1));
+            int r = app.mRtcEngine.MuteLocalAudioStream(enabled != 0);
+            setApiReturn(r.ToString());
+        }
+        else if (api.CompareTo("MuteAllRemoteAudioStreams") == 0)
+        {
+            int enabled = int.Parse(getApiParam(1));
+            int r = app.mRtcEngine.MuteAllRemoteAudioStreams(enabled != 0);
+            setApiReturn(r.ToString());
+        }
+        else if (api.CompareTo("MuteRemoteAudioStream") == 0)
+        {
+            int muted = int.Parse(getApiParam(2));
+            int r = app.mRtcEngine.MuteRemoteAudioStream(app.mRemotePeer, muted != 0);
+            setApiReturn(r.ToString());
+        }
+        else if (api.CompareTo("AdjustRecordingSignalVolume") == 0)
+        {
+            int volume = int.Parse(getApiParam(1));
+            int r = app.mRtcEngine.AdjustRecordingSignalVolume(volume);
+            setApiReturn(r.ToString());
+        }
+        else if (api.CompareTo("AdjustPlaybackSignalVolume") == 0)
+        {
+            int volume = int.Parse(getApiParam(1));
+            int r = app.mRtcEngine.AdjustPlaybackSignalVolume(volume);
+            setApiReturn(r.ToString());
+        }
+        else if (api.CompareTo("EnableVideoObserver") == 0)
+        {
+            int r = app.mRtcEngine.EnableVideoObserver();
+            setApiReturn(r.ToString());
+        }
+        else if (api.CompareTo("DisableVideoObserver") == 0)
+        {
+            int r = app.mRtcEngine.DisableVideoObserver();
+            setApiReturn(r.ToString());
+        }
+        else if (api.CompareTo("SetDefaultMuteAllRemoteAudioStreams") == 0)
+        {
+            int volume = int.Parse(getApiParam(1));
+            int r = app.mRtcEngine.SetDefaultMuteAllRemoteAudioStreams(volume != 0);
+            setApiReturn(r.ToString());
+        }
+        else if (api.CompareTo("SetDefaultMuteAllRemoteVideoStreams") == 0)
+        {
+            int volume = int.Parse(getApiParam(1));
+            int r = app.mRtcEngine.SetDefaultMuteAllRemoteVideoStreams(volume != 0);
+            setApiReturn(r.ToString());
+        }
+        else if (api.CompareTo("EnableAudio") == 0)
+        {
+            int r = app.mRtcEngine.EnableAudio();
+            setApiReturn(r.ToString());
+        }
+        else if (api.CompareTo("DisableAudio") == 0)
+        {
+            int r = app.mRtcEngine.DisableAudio();
+            setApiReturn(r.ToString());
+        }
+        else
+        {
+            Debug.Log("onApiButtonClicked: unsupported API!");
+        }
+    }
 
-			int r = app.mRtcEngine.MuteRemoteVideoStream (uid, (mute != 0));
-			setApiReturn (r.ToString ());
-		} else if (api.CompareTo ("EnableDualStreamMode") == 0) {
-			int enabled = getApiParamInt (1);
+    public void onButtonClicked()
+    {
+        // which GameObject?
+        if (name.CompareTo("JoinButton") == 0)
+        {
+            onJoinButtonClicked();
+        }
+        else if (name.CompareTo("LeaveButton") == 0)
+        {
+            onLeaveButtonClicked();
+        }
+        else if (name.CompareTo("Submit") == 0)
+        {
+            onApiButtonClicked();
+        }
+    }
 
-			int r = app.mRtcEngine.EnableDualStreamMode (enabled != 0);
-			setApiReturn (r.ToString ());
-		} else if (api.CompareTo ("SetRemoteVideoStreamType") == 0) {
-			int uid = getApiParamInt (1);
-			int streamType = getApiParamInt (2);
-
-			int r = app.mRtcEngine.SetRemoteVideoStreamType ((uint)uid, streamType);
-			setApiReturn (r.ToString ());
-		} else if (api.CompareTo ("EnableVideo") == 0) {
-			int r = app.mRtcEngine.EnableVideo ();
-			setApiReturn (r.ToString ());
-		} else if (api.CompareTo ("DisableVideo") == 0) {
-			int r = app.mRtcEngine.DisableVideo ();
-			setApiReturn (r.ToString ());
-		} else if (api.CompareTo ("EnableLocalVideo") == 0) {
-			int enabled = getApiParamInt (1);
-
-			int r = app.mRtcEngine.EnableLocalVideo (enabled != 0);
-			setApiReturn (r.ToString ());
-		} else if (api.CompareTo ("StartPreview") == 0) {
-			int r = app.mRtcEngine.StartPreview ();
-			setApiReturn (r.ToString ());
-		} else if (api.CompareTo ("StopPreview") == 0) {
-			int r = app.mRtcEngine.StopPreview ();
-			setApiReturn (r.ToString ());
-		}
-		else {
-			Debug.Log ("onApiButtonClicked: unsupported API!");
-		}
-	}
-
-	public void onButtonClicked() {
-		// which GameObject?
-		if (name.CompareTo ("JoinButton") == 0) {
-			onJoinButtonClicked ();
-		}
-		else if(name.CompareTo ("LeaveButton") == 0) {
-			onLeaveButtonClicked ();
-		}
-		else if(name.CompareTo ("Submit") == 0) {
-			onApiButtonClicked ();
-		}
-	}
-
-	public void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode) {
-		if (scene.name.CompareTo("Scene1") == 0) {
-			if (!ReferenceEquals (app, null)) {
-				app.onScene1Loaded (); // call this after scene is loaded
-			}
-			SceneManager.sceneLoaded -= OnLevelFinishedLoading;
-		}
-	}
+    public void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name.CompareTo("Scene1") == 0)
+        {
+            if (!ReferenceEquals(app, null))
+            {
+                app.onScene1Loaded(); // call this after scene is loaded
+            }
+            SceneManager.sceneLoaded -= OnLevelFinishedLoading;
+        }
+    }
 }
