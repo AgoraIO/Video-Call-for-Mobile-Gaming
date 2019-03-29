@@ -3,11 +3,27 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine;
+#if(UNITY_2018_3_OR_NEWER)
+using UnityEngine.Android;
+#endif
 
 public class Home : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		#if(UNITY_2018_3_OR_NEWER)
+		if (Permission.HasUserAuthorizedPermission(Permission.Microphone)){
+		
+		} else {
+			Permission.RequestUserPermission(Permission.Microphone);
+		}
+
+		if (Permission.HasUserAuthorizedPermission(Permission.Camera)){
+		
+		} else {
+			Permission.RequestUserPermission(Permission.Camera);
+		}
+		#endif
 	}
 
 	// Update is called once per frame
