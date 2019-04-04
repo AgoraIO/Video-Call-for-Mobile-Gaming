@@ -139,12 +139,22 @@ public class exampleApp : MonoBehaviour
 
     // instance of agora engine
     public IRtcEngine mRtcEngine;
-    private string mVendorKey = #YOUR_APPID#;
+    private string mVendorKey = "f73615b1269e45ecbc7f2337f089471a";
 
     // implement engine callbacks
 
     public uint mRemotePeer = 0; // insignificant. only record one peer
+    public int dataStreamId;
 
+    public string audioDeviceName = "";
+    public string audioDeviceId = "";
+
+    public string videoDeviceName = "";
+
+    public string videoDeviceId = "";
+
+    public string audioPlayDeviceName = "";
+    public string audioPlayDeviceId = "";
 
     private void onWarning(int warningCode, string message)
     {
