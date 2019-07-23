@@ -9,25 +9,38 @@ using UnityEngine.Android;
 
 public class Home : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
+ 	private ArrayList permissionList = new ArrayList();
+	void Start ()
+	{         
 		#if(UNITY_2018_3_OR_NEWER)
-		if (Permission.HasUserAuthorizedPermission(Permission.Microphone)){
-		
-		} else {
-			Permission.RequestUserPermission(Permission.Microphone);
-		}
-
-		if (Permission.HasUserAuthorizedPermission(Permission.Camera)){
-		
-		} else {
-			Permission.RequestUserPermission(Permission.Camera);
-		}
-		#endif
+		permissionList.Add(Permission.Microphone);         
+		permissionList.Add(Permission.Camera);               
+		#endif     
 	}
+	
+    private void CheckPermission()
+    {
+        #if(UNITY_2018_3_OR_NEWER)
+        foreach(string permission in permissionList)
+        {
+            if (Permission.HasUserAuthorizedPermission(permission))
+            {             
 
-	// Update is called once per frame
-	void Update () {
+			}
+            else
+            {                 
+				Permission.RequestUserPermission(permission);
+			}
+        }
+        #endif
+    }
+
+    // Update is called once per frame
+    void Update ()
+	{         
+		#if(UNITY_2018_3_OR_NEWER)
+		CheckPermission();
+		#endif     
 	}
 
 	static HelloUnityVideo app = null;
