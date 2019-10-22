@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine;
+using agora_gaming_rtc;
+using System.Runtime.InteropServices;
 
 public class ButtonClick : MonoBehaviour
 {
@@ -52,6 +54,17 @@ public class ButtonClick : MonoBehaviour
         options.Add("DisableVideoObserver");
         options.Add("EnableAudio");
         options.Add("DisableAudio");
+        options.Add("SetLiveTranscoding");
+        options.Add("AddPublishStreamUrl");
+        options.Add("RemovePublishStreamUrl");
+        options.Add("ConfigPublisher");
+        options.Add("SetVideoCompositingLayout");
+        options.Add("ClearVideoCompositingLayout");
+        options.Add("AddVideoWatermark");
+        options.Add("ClearVideoWatermarks");
+        options.Add("SetBeautyEffectOptions");
+        options.Add("AddInjectStreamUrl");
+        options.Add("RemoveInjectStreamUrl");
         dd.AddOptions(options);
 
         go = GameObject.Find("VIDEOPROFILE");
@@ -244,7 +257,7 @@ public class ButtonClick : MonoBehaviour
             app = new exampleApp();
             app.loadEngine();
         }
-        app.mRtcEngine.SetParameters("{\"rtc.log_filter\": 65535}");
+       
         // these APIs do not require engine being created
         if (api.CompareTo("GetSdkVersion") == 0)
         {
@@ -501,6 +514,74 @@ public class ButtonClick : MonoBehaviour
             int r = app.mRtcEngine.DisableAudio();
             setApiReturn(r.ToString());
         }
+        else if (api.CompareTo("SetLiveTranscoding") == 0)
+        {
+            LiveTranscoding liveTranscoding = new LiveTranscoding();
+            liveTranscoding.width = 360;
+            liveTranscoding.height = 640;
+            liveTranscoding.videoBitrate = 400;
+            liveTranscoding.videoFramerate = 30;
+            liveTranscoding.lowLatency = true;
+            liveTranscoding.videoGop = 30;
+            liveTranscoding.videoCodecProfile = VIDEO_CODEC_PROFILE_TYPE.VIDEO_CODEC_PROFILE_HIGH;
+            liveTranscoding.backgroundColor = 192192192;
+            liveTranscoding.userCount = 1;
+            liveTranscoding.transcodingExtraInfo = "";
+            liveTranscoding.metadata = "hehe";
+            int r = app.mRtcEngine.SetLiveTranscoding(liveTranscoding);
+            setApiReturn(r.ToString());
+        }
+        else if (api.CompareTo("AddPublishStreamUrl") == 0)
+        {
+            int r = app.mRtcEngine.AddPublishStreamUrl("http://www.baidu.com/", true);
+            setApiReturn(r.ToString());
+        }
+        else if (api.CompareTo("RemovePublishStreamUrl") == 0)
+        {
+            int r = app.mRtcEngine.RemovePublishStreamUrl("http://www.baidu.com/");
+            setApiReturn(r.ToString());
+        }
+        else if (api.CompareTo("ConfigPublisher") == 0)
+        {
+            PublisherConfiguration publisherConfiguration = new PublisherConfiguration();
+            int r = app.mRtcEngine.ConfigPublisher(publisherConfiguration);
+            setApiReturn(r.ToString());
+        }
+        else if (api.CompareTo("SetVideoCompositingLayout") == 0)
+        {
+           
+        }
+        else if (api.CompareTo("AddVideoWatermark") == 0)
+        {
+            RtcImage rtcImage = new RtcImage();
+            rtcImage.url = "http://pic16.nipic.com/20111006/6239936_092702973000_2.jpg";
+            int r = app.mRtcEngine.AddVideoWatermark(rtcImage);
+            setApiReturn(r.ToString());
+        }
+        else if (api.CompareTo("ClearVideoWatermarks") == 0)
+        {
+            int r = app.mRtcEngine.ClearVideoWatermarks();
+            setApiReturn(r.ToString());
+        }
+        else if (api.CompareTo("SetBeautyEffectOptions") == 0)
+        {
+            BeautyOptions beautyOptions = new BeautyOptions();
+            beautyOptions.lighteningContrastLevel = LIGHTENING_CONTRAST_LEVEL.LIGHTENING_CONTRAST_HIGH;
+            beautyOptions.lighteningLevel = 10.0f;
+            int r = app.mRtcEngine.SetBeautyEffectOptions(true, beautyOptions);
+            setApiReturn(r.ToString());
+        }
+        else if (api.CompareTo("AddInjectStreamUrl") == 0)
+        {
+            InjectStreamConfig injectStreamConfig = new InjectStreamConfig();
+            int r = app.mRtcEngine.AddInjectStreamUrl("http://www.baidu.com/", injectStreamConfig);
+            setApiReturn(r.ToString());
+        }
+        else if (api.CompareTo("RemoveInjectStreamUrl") == 0)
+        {
+            int r = app.mRtcEngine.RemoveInjectStreamUrl("http://www.baidu.com/");
+            setApiReturn(r.ToString());
+        }
         else
         {
             Debug.Log("onApiButtonClicked: unsupported API!");
@@ -534,5 +615,10 @@ public class ButtonClick : MonoBehaviour
             }
             SceneManager.sceneLoaded -= OnLevelFinishedLoading;
         }
+    }
+
+    void OnApplicationQuit()
+    {
+        IRtcEngine.Destroy();
     }
 }
