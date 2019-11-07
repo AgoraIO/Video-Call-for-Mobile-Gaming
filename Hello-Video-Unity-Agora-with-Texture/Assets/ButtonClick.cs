@@ -9,15 +9,19 @@ using System.Runtime.InteropServices;
 public class ButtonClick : MonoBehaviour
 {
 
+    string deviceName = "";
+    string deviceID = "";
     // Use this for initialization
     void Start()
     {
-        exampleApp.logD("ButtonClick Start is called!");
+        exampleApp.logAPICall("ButtonClick Start is called!");
         GameObject go = GameObject.Find("ApiList");
         Dropdown dd = go.GetComponent<Dropdown>();
         dd.ClearOptions();
         List<string> options = new List<string>();
         options.Add("GetSdkVersion");
+        options.Add("leaveChannel");
+        options.Add("JoinChannel");
         options.Add("SetChannelProfile");
         options.Add("EnableDualStreamMode");
         options.Add("GetCallId");
@@ -39,7 +43,7 @@ public class ButtonClick : MonoBehaviour
         options.Add("StopPreview");
         options.Add("SetLocalVoicePitch");
         options.Add("SetRemoteVoicePosition");
-        options.Add("SetVoiceOnlyMode");
+        //options.Add("SetVoiceOnlyMode");
         options.Add("EnableLocalAudio");
         options.Add("SetEnableSpeakerPhone");
         options.Add("IsSpeakerPhoneEnabled");
@@ -57,7 +61,7 @@ public class ButtonClick : MonoBehaviour
         options.Add("SetLiveTranscoding");
         options.Add("AddPublishStreamUrl");
         options.Add("RemovePublishStreamUrl");
-        options.Add("ConfigPublisher");
+        //options.Add("ConfigPublisher");
         options.Add("SetVideoCompositingLayout");
         options.Add("ClearVideoCompositingLayout");
         options.Add("AddVideoWatermark");
@@ -65,8 +69,113 @@ public class ButtonClick : MonoBehaviour
         options.Add("SetBeautyEffectOptions");
         options.Add("AddInjectStreamUrl");
         options.Add("RemoveInjectStreamUrl");
+        options.Add("EnableSoundPositionIndication");
+        options.Add("CreateDataStream");
+        options.Add("SendStreamMessage");
+        options.Add("SetVideoQualityParameters");
+        options.Add("SetSpeakerphoneVolume");
+        options.Add("StartEchoTest");
+        options.Add("StopEchoTest");
+        options.Add("StartLastmileProbeTest");
+        options.Add("StopLastmileProbeTest");
+        options.Add("SetMixedAudioFrameParameters");
+        options.Add("SetAudioMixingPosition");
+        options.Add("StartAudioMixing");
+        options.Add("StopAudioMixing");
+        options.Add("PauseAudioMixing");
+        options.Add("ResumeAudioMixing");
+        options.Add("AdjustAudioMixingVolume");
+        options.Add("GetAudioMixingCurrentPosition");
+        options.Add("StartAudioRecording");
+        options.Add("StopAudioRecording");
+        options.Add("EnableLastmileTest");
+        options.Add("DisableLastmileTest");
+        options.Add("GetConnectionState");
+        options.Add("SetVideoEncoderConfiguration");
+        options.Add("AdjustAudioMixingPlayoutVolume");
+        options.Add("AdjustAudioMixingPublishVolume");
+        options.Add("SetVolumeOfEffect");
+        options.Add("SetRecordingAudioFrameParameters");
+        options.Add("SetPlaybackAudioFrameParameters");
+        options.Add("SetLocalPublishFallbackOption");
+        options.Add("SetRemoteSubscribeFallbackOption");
+        options.Add("SetRemoteDefaultVideoStreamType");
+        options.Add("SetExternalVideoSource");
+        options.Add("SetExternalAudioSource");
+        options.Add("PushAudioFrame");
+        options.Add("PushAudioFrame2");
+        options.Add("GetAudioMixingPlayoutVolume");
+        options.Add("GetAudioMixingPublishVolume");
+        options.Add("EnableSoundPositionIndication");
+        options.Add("SetLocalVoiceChanger");
+        options.Add("SetLocalVoiceReverbPreset");
+        options.Add("SetLocalVoicePitch");
+        options.Add("SetLocalVoiceEqualization");
+        options.Add("SetLocalVoiceReverb");
+        options.Add("SetCameraCapturerConfiguration");
+        options.Add("SetRemoteUserPriority");
+        options.Add("SetLogFileSize");
+        options.Add("SetExternalAudioSink");
+        options.Add("RegisterLocalUserAccount");
+        options.Add("JoinChannelWithUserAccount");
+        options.Add("GetUserInfoByUserAccount");
+        options.Add("GetUserInfoByUid");
+        options.Add("StartScreenCaptureByDisplayId");
+        options.Add("StartScreenCaptureByScreenRect");
+        options.Add("SetScreenCaptureContentHint");
+        options.Add("UpdateScreenCaptureParameters");
+        options.Add("UpdateScreenCaptureRegion");
+        options.Add("StopScreenCapture");
+        options.Add("EnableLoopbackRecording");
+        options.Add("SetAudioSessionOperationRestriction");
+        options.Add("StartChannelMediaRelay");
+        options.Add("updateChannelMediaRelay");
+        options.Add("StopChannelMediaRelay");
+        options.Add("SwitchChannel");
+        options.Add("SetMirrorApplied");
+        options.Add("SetInEarMonitoringVolume");
+        options.Add("StartScreenCaptureByWindowId");
+        options.Add("EnableInEarMonitoring");
+        options.Add("EnableInEarMonitoring");
+        options.Add("RegisterVideoRawDataObserver");
+        options.Add("UnRegisterVideoRawDataObserver");
+        options.Add("RegisterAudioRawDataObserver");
+        options.Add("UnRegisterAudioRawDataObserver");
+        options.Add("PullAudioFrame");
+        options.Add("CreatAAudioPlaybackDeviceManager");
+        options.Add("ReleaseAAudioPlaybackDeviceManager");
+        options.Add("GetAudioPlaybackDeviceCount");
+        options.Add("GetAudioPlaybackDevice");
+        options.Add("SetAudioPlaybackDevice");
+        options.Add("SetAudioPlaybackDeviceVolume");
+        options.Add("GetAudioPlaybackDeviceVolume");
+        options.Add("SetAudioPlaybackDeviceMute");
+        options.Add("IsAudioPlaybackDeviceMute");
+        options.Add("StartAudioPlaybackDeviceTest");
+        options.Add("StopAudioPlaybackDeviceTest");
+        options.Add("CreatAAudioRecordingDeviceManager");
+        options.Add("ReleaseAAudioRecordingDeviceManager");
+        options.Add("GetAudioRecordingDeviceCount");
+        options.Add("GetAudioRecordingDevice");
+        options.Add("SetAudioRecordingDevice");
+        options.Add("StartAudioRecordingDeviceTest");
+        options.Add("StopAudioRecordingDeviceTest");
+        options.Add("CreateAVideoDeviceManager");
+        options.Add("ReleaseAVideoDeviceManager");
+        options.Add("StartVideoDeviceTest");
+        options.Add("StopVideoDeviceTest");
+        options.Add("GetVideoDeviceCollectionCount");
+        options.Add("GetVideoDeviceCollectionDevice");
+        options.Add("SetVideoDeviceCollectionDevice");
+        options.Add("RegisterMediaMetadataObserver");
+        options.Add("UnRegisterMediaMetadataObserver");
+        options.Add("SendMetadata");
+        options.Add("SetMaxMetadataSize");
+        options.Add("SendAudioPacket");
+        options.Add("SendVideoPacket");
+        options.Add("RegisterPacketObserver");
+        options.Add("UnRegisterPacketObserver");
         dd.AddOptions(options);
-
         go = GameObject.Find("VIDEOPROFILE");
         dd = go.GetComponent<Dropdown>();
         dd.ClearOptions();
@@ -136,8 +245,6 @@ public class ButtonClick : MonoBehaviour
         options.Add("54 720P_5 false (960x720)");
         options.Add("55 720P_6 true (960x720)");
         options.Add("55 720P_6 false (960x720)");
-
-
         dd.AddOptions(options);
     }
 
@@ -159,7 +266,6 @@ public class ButtonClick : MonoBehaviour
         if (ReferenceEquals(app, null))
         {
             app = new exampleApp(); // create app
-            exampleApp.logD("zhangagora " + app);
             app.loadEngine(); // load engine
         }
 
@@ -179,6 +285,7 @@ public class ButtonClick : MonoBehaviour
             SceneManager.LoadScene("Scene0", LoadSceneMode.Single);
         }
     }
+
 
     private void setApiParam(int param, string txt)
     {
@@ -240,6 +347,7 @@ public class ButtonClick : MonoBehaviour
 
     private void setApiReturn(string v)
     {
+        exampleApp.logAPICall(v);
         GameObject go = GameObject.Find("FieldResult");
         InputField field = go.GetComponent<InputField>();
         field.text = v;
@@ -262,7 +370,7 @@ public class ButtonClick : MonoBehaviour
         if (api.CompareTo("GetSdkVersion") == 0)
         {
             string ret = agora_gaming_rtc.IRtcEngine.GetSdkVersion();
-            setApiReturn(ret);
+            setApiReturn("GetSdkVersion " + ret);
             return;
         }
 
@@ -285,7 +393,17 @@ public class ButtonClick : MonoBehaviour
             }
 
             int r = app.mRtcEngine.SetChannelProfile(chProfile);
-            setApiReturn(r.ToString());
+            setApiReturn("SetChannelProfile " + r.ToString());
+        }
+        else if (api.CompareTo("leaveChannel") == 0)
+        {
+            int r = app.mRtcEngine.LeaveChannel();
+            setApiReturn("leaveChannel " + r.ToString());
+        }
+        else if (api.CompareTo("JoinChannel") == 0)
+        {
+            int r = app.mRtcEngine.JoinChannel(getApiParam(1), "", 0);
+            setApiReturn("JoinChannel " + r.ToString());
         }
         else if (api.CompareTo("SetClientRole") == 0)
         {
@@ -303,7 +421,7 @@ public class ButtonClick : MonoBehaviour
             }
 
             int r = app.mRtcEngine.SetClientRole(role);
-            setApiReturn(r.ToString());
+            setApiReturn("SetClientRole " + r.ToString());
         }
         else if (api.CompareTo("Pause") == 0)
         {
@@ -316,12 +434,12 @@ public class ButtonClick : MonoBehaviour
         else if (api.CompareTo("GetCallId") == 0)
         {
             string ret = app.mRtcEngine.GetCallId();
-            setApiReturn(ret);
+            setApiReturn("GetCallId " + ret);
         }
         else if (api.CompareTo("SwitchCamera") == 0)
         {
             int r = app.mRtcEngine.SwitchCamera();
-            setApiReturn(r.ToString());
+            setApiReturn("SwitchCamera " + r.ToString());
         }
         else if (api.CompareTo("SetVideoProfile") == 0)
         {
@@ -335,21 +453,21 @@ public class ButtonClick : MonoBehaviour
             int swap = sArray[2].CompareTo("true") == 0 ? 1 : 0;//getApiParamInt (2);
 
             int r = app.mRtcEngine.SetVideoProfile(profile, (swap != 0));
-            setApiReturn(r.ToString());
+            setApiReturn("SetVideoProfile " + r.ToString());
         }
         else if (api.CompareTo("MuteLocalVideoStream") == 0)
         {
             int mute = getApiParamInt(1);
 
             int r = app.mRtcEngine.MuteLocalVideoStream(mute != 0);
-            setApiReturn(r.ToString());
+            setApiReturn("MuteLocalVideoStream " + r.ToString());
         }
         else if (api.CompareTo("MuteAllRemoteVideoStreams") == 0)
         {
             int mute = getApiParamInt(1);
 
             int r = app.mRtcEngine.MuteAllRemoteVideoStreams(mute != 0);
-            setApiReturn(r.ToString());
+            setApiReturn("MuteAllRemoteVideoStreams " + r.ToString());
         }
         else if (api.CompareTo("MuteRemoteVideoStream") == 0)
         {
@@ -358,13 +476,13 @@ public class ButtonClick : MonoBehaviour
             uint uid = app.mRemotePeer;// getApiParamInt (1);
             int mute = getApiParamInt(2);
             int r = app.mRtcEngine.MuteRemoteVideoStream(uid, (mute != 0));
-            setApiReturn(r.ToString());
+            setApiReturn("MuteRemoteVideoStream " + r.ToString());
         }
         else if (api.CompareTo("EnableDualStreamMode") == 0)
         {
             int enabled = getApiParamInt(1);
             int r = app.mRtcEngine.EnableDualStreamMode(enabled != 0);
-            setApiReturn(r.ToString());
+            setApiReturn("EnableDualStreamMode " + r.ToString());
         }
         else if (api.CompareTo("SetRemoteVideoStreamType") == 0)
         {
@@ -372,147 +490,155 @@ public class ButtonClick : MonoBehaviour
             uint uid = app.mRemotePeer;// getApiParamInt (1);
                                        //int uid = getApiParamInt (1);
             int streamType = getApiParamInt(2);
-            int r = app.mRtcEngine.SetRemoteVideoStreamType(uid, streamType);
-            setApiReturn(r.ToString());
+            int r = app.mRtcEngine.SetRemoteVideoStreamType(uid, (REMOTE_VIDEO_STREAM_TYPE)streamType);
+            setApiReturn("SetRemoteVideoStreamType " + r.ToString());
         }
         else if (api.CompareTo("EnableVideo") == 0)
         {
             int r = app.mRtcEngine.EnableVideo();
-            setApiReturn(r.ToString());
+            setApiReturn("EnableVideo " + r.ToString());
         }
         else if (api.CompareTo("DisableVideo") == 0)
         {
             int r = app.mRtcEngine.DisableVideo();
-            setApiReturn(r.ToString());
+            setApiReturn("DisableVideo " + r.ToString());
         }
         else if (api.CompareTo("EnableLocalVideo") == 0)
         {
             int enabled = getApiParamInt(1);
             int r = app.mRtcEngine.EnableLocalVideo(enabled != 0);
-            setApiReturn(r.ToString());
+            setApiReturn("EnableLocalVideo " + r.ToString());
         }
         else if (api.CompareTo("StartPreview") == 0)
         {
             int r = app.mRtcEngine.StartPreview();
-            setApiReturn(r.ToString());
+            setApiReturn("StartPreview " + r.ToString());
         }
         else if (api.CompareTo("StopPreview") == 0)
         {
             int r = app.mRtcEngine.StopPreview();
-            setApiReturn(r.ToString());
+            setApiReturn("StopPreview " + r.ToString());
         }
         else if (api.CompareTo("SetLocalVoicePitch") == 0)
         {
             string pitch = getApiParam(1);
             int r = app.mRtcEngine.SetLocalVoicePitch(double.Parse(pitch));
-            setApiReturn(r.ToString());
+            setApiReturn("SetLocalVoicePitch " + r.ToString());
         }
         else if (api.CompareTo("SetRemoteVoicePosition") == 0)
         {
             double pan = double.Parse(getApiParam(2));
             double gain = double.Parse(getApiParam(3));
-            int r = app.mRtcEngine.SetRemoteVoicePosition(app.mRemotePeer, pan, gain);
-            setApiReturn(r.ToString());
-
+            //int r = app.mRtcEngine.SetRemoteVoicePosition(app.mRemotePeer, pan, gain);
+            AudioEffectManagerImpl audioEffectManager = (AudioEffectManagerImpl)app.mRtcEngine.GetAudioEffectManager();
+            int r = audioEffectManager.SetRemoteVoicePosition(app.mRemotePeer, pan, gain);
+            setApiReturn("SetRemoteVoicePosition " + r.ToString());
         }
         else if (api.CompareTo("SetVoiceOnlyMode") == 0)
         {
-            int enabled = int.Parse(getApiParam(1));
-            int r = app.mRtcEngine.SetVoiceOnlyMode(enabled != 0);
-            setApiReturn(r.ToString());
+            // int enabled = int.Parse(getApiParam(1));
+            // int r = app.mRtcEngine.SetVoiceOnlyMode(enabled != 0);
+            //setApiReturn(r.ToString());
         }
         else if (api.CompareTo("EnableLocalAudio") == 0)
         {
             int enabled = int.Parse(getApiParam(1));
             int r = app.mRtcEngine.EnableLocalAudio(enabled != 0);
-            setApiReturn(r.ToString());
+            setApiReturn("EnableLocalAudio " + r.ToString());
         }
         else if (api.CompareTo("SetEnableSpeakerPhone") == 0)
         {
             int enabled = int.Parse(getApiParam(1));
             int r = app.mRtcEngine.SetEnableSpeakerphone(enabled != 0);
-            setApiReturn(r.ToString());
+            setApiReturn("SetEnableSpeakerPhone " + r.ToString());
         }
         else if (api.CompareTo("IsSpeakerPhoneEnabled") == 0)
         {
             bool r = app.mRtcEngine.IsSpeakerphoneEnabled();
-            setApiReturn(r.ToString());
+            setApiReturn("IsSpeakerPhoneEnabled " + r.ToString());
         }
         else if (api.CompareTo("SetDefaultAudioRouteToSpeakerphone") == 0)
         {
             int enabled = int.Parse(getApiParam(1));
             Debug.Log("SetDefaultAudioRouteToSpeakerphone  enabled = " + (enabled != 0));
             int r = app.mRtcEngine.SetDefaultAudioRouteToSpeakerphone(enabled != 0);
-            setApiReturn(r.ToString());
+            setApiReturn("SetDefaultAudioRouteToSpeakerphone " + r.ToString());
+        }
+        else if (api.CompareTo("EnableSoundPositionIndication") == 0)
+        {
+            int enabled = int.Parse(getApiParam(1));
+            int r = app.mRtcEngine.EnableSoundPositionIndication(enabled != 0);
+            setApiReturn("EnableSoundPositionIndication " + r.ToString());
         }
         else if (api.CompareTo("EnableAudioVolumeIndication") == 0)
         {
             int interval = int.Parse(getApiParam(1));
             int smooth = int.Parse(getApiParam(2));
-            int r = app.mRtcEngine.EnableAudioVolumeIndication(interval, smooth);
-            setApiReturn(r.ToString());
+            int report_vad = int.Parse(getApiParam(3));
+            int r = app.mRtcEngine.EnableAudioVolumeIndication(interval, smooth, report_vad != 0);
+            setApiReturn("EnableAudioVolumeIndication " + r.ToString());
         }
         else if (api.CompareTo("MuteLocalAudioStream") == 0)
         {
             int enabled = int.Parse(getApiParam(1));
             int r = app.mRtcEngine.MuteLocalAudioStream(enabled != 0);
-            setApiReturn(r.ToString());
+            setApiReturn("MuteLocalAudioStream " + r.ToString());
         }
         else if (api.CompareTo("MuteAllRemoteAudioStreams") == 0)
         {
             int enabled = int.Parse(getApiParam(1));
             int r = app.mRtcEngine.MuteAllRemoteAudioStreams(enabled != 0);
-            setApiReturn(r.ToString());
+            setApiReturn("MuteAllRemoteAudioStreams " + r.ToString());
         }
         else if (api.CompareTo("MuteRemoteAudioStream") == 0)
         {
             int muted = int.Parse(getApiParam(2));
             int r = app.mRtcEngine.MuteRemoteAudioStream(app.mRemotePeer, muted != 0);
-            setApiReturn(r.ToString());
+            setApiReturn("MuteRemoteAudioStream " + r.ToString());
         }
         else if (api.CompareTo("AdjustRecordingSignalVolume") == 0)
         {
             int volume = int.Parse(getApiParam(1));
             int r = app.mRtcEngine.AdjustRecordingSignalVolume(volume);
-            setApiReturn(r.ToString());
+            setApiReturn("AdjustRecordingSignalVolume " + r.ToString());
         }
         else if (api.CompareTo("AdjustPlaybackSignalVolume") == 0)
         {
             int volume = int.Parse(getApiParam(1));
             int r = app.mRtcEngine.AdjustPlaybackSignalVolume(volume);
-            setApiReturn(r.ToString());
+            setApiReturn("AdjustPlaybackSignalVolume " + r.ToString());
         }
         else if (api.CompareTo("EnableVideoObserver") == 0)
         {
             int r = app.mRtcEngine.EnableVideoObserver();
-            setApiReturn(r.ToString());
+            setApiReturn("EnableVideoObserver " + r.ToString());
         }
         else if (api.CompareTo("DisableVideoObserver") == 0)
         {
             int r = app.mRtcEngine.DisableVideoObserver();
-            setApiReturn(r.ToString());
+            setApiReturn("DisableVideoObserver " + r.ToString());
         }
         else if (api.CompareTo("SetDefaultMuteAllRemoteAudioStreams") == 0)
         {
             int volume = int.Parse(getApiParam(1));
             int r = app.mRtcEngine.SetDefaultMuteAllRemoteAudioStreams(volume != 0);
-            setApiReturn(r.ToString());
+            setApiReturn("SetDefaultMuteAllRemoteAudioStreams " + r.ToString());
         }
         else if (api.CompareTo("SetDefaultMuteAllRemoteVideoStreams") == 0)
         {
             int volume = int.Parse(getApiParam(1));
             int r = app.mRtcEngine.SetDefaultMuteAllRemoteVideoStreams(volume != 0);
-            setApiReturn(r.ToString());
+            setApiReturn("SetDefaultMuteAllRemoteVideoStreams " + r.ToString());
         }
         else if (api.CompareTo("EnableAudio") == 0)
         {
             int r = app.mRtcEngine.EnableAudio();
-            setApiReturn(r.ToString());
+            setApiReturn("EnableAudio " + r.ToString());
         }
         else if (api.CompareTo("DisableAudio") == 0)
         {
             int r = app.mRtcEngine.DisableAudio();
-            setApiReturn(r.ToString());
+            setApiReturn("DisableAudio " + r.ToString());
         }
         else if (api.CompareTo("SetLiveTranscoding") == 0)
         {
@@ -529,23 +655,23 @@ public class ButtonClick : MonoBehaviour
             liveTranscoding.transcodingExtraInfo = "";
             liveTranscoding.metadata = "hehe";
             int r = app.mRtcEngine.SetLiveTranscoding(liveTranscoding);
-            setApiReturn(r.ToString());
+            setApiReturn("SetLiveTranscoding " + r.ToString());
         }
         else if (api.CompareTo("AddPublishStreamUrl") == 0)
         {
             int r = app.mRtcEngine.AddPublishStreamUrl("http://www.baidu.com/", true);
-            setApiReturn(r.ToString());
+            setApiReturn("AddPublishStreamUrl " + r.ToString());
         }
         else if (api.CompareTo("RemovePublishStreamUrl") == 0)
         {
             int r = app.mRtcEngine.RemovePublishStreamUrl("http://www.baidu.com/");
-            setApiReturn(r.ToString());
+            setApiReturn("RemovePublishStreamUrl " + r.ToString());
         }
         else if (api.CompareTo("ConfigPublisher") == 0)
         {
-            PublisherConfiguration publisherConfiguration = new PublisherConfiguration();
-            int r = app.mRtcEngine.ConfigPublisher(publisherConfiguration);
-            setApiReturn(r.ToString());
+            // PublisherConfiguration publisherConfiguration = new PublisherConfiguration();
+            // int r = app.mRtcEngine.ConfigPublisher(publisherConfiguration);
+            // setApiReturn(r.ToString());
         }
         else if (api.CompareTo("SetVideoCompositingLayout") == 0)
         {
@@ -556,31 +682,581 @@ public class ButtonClick : MonoBehaviour
             RtcImage rtcImage = new RtcImage();
             rtcImage.url = "http://pic16.nipic.com/20111006/6239936_092702973000_2.jpg";
             int r = app.mRtcEngine.AddVideoWatermark(rtcImage);
-            setApiReturn(r.ToString());
+            setApiReturn("AddVideoWatermark " + r.ToString());
         }
         else if (api.CompareTo("ClearVideoWatermarks") == 0)
         {
             int r = app.mRtcEngine.ClearVideoWatermarks();
-            setApiReturn(r.ToString());
+            setApiReturn("ClearVideoWatermarks " + r.ToString());
         }
         else if (api.CompareTo("SetBeautyEffectOptions") == 0)
         {
             BeautyOptions beautyOptions = new BeautyOptions();
-            beautyOptions.lighteningContrastLevel = LIGHTENING_CONTRAST_LEVEL.LIGHTENING_CONTRAST_HIGH;
+            beautyOptions.lighteningContrastLevel = BeautyOptions.LIGHTENING_CONTRAST_LEVEL.LIGHTENING_CONTRAST_HIGH;
             beautyOptions.lighteningLevel = 10.0f;
             int r = app.mRtcEngine.SetBeautyEffectOptions(true, beautyOptions);
-            setApiReturn(r.ToString());
+            setApiReturn("SetBeautyEffectOptions " + r.ToString());
         }
         else if (api.CompareTo("AddInjectStreamUrl") == 0)
         {
             InjectStreamConfig injectStreamConfig = new InjectStreamConfig();
             int r = app.mRtcEngine.AddInjectStreamUrl("http://www.baidu.com/", injectStreamConfig);
-            setApiReturn(r.ToString());
+            setApiReturn("AddInjectStreamUrl " + r.ToString());
         }
         else if (api.CompareTo("RemoveInjectStreamUrl") == 0)
         {
             int r = app.mRtcEngine.RemoveInjectStreamUrl("http://www.baidu.com/");
-            setApiReturn(r.ToString());
+            setApiReturn("RemoveInjectStreamUrl " + r.ToString());
+        }
+        else if (api.CompareTo("CreateDataStream") == 0)
+        {
+            int reliable = int.Parse(getApiParam(1));
+            int order = int.Parse(getApiParam(2));
+            int r = app.mRtcEngine.CreateDataStream(reliable != 0, order != 0);
+            setApiReturn("CreateDataStream " + r.ToString());
+        }
+        else if (api.CompareTo("SendStreamMessage") == 0)
+        {
+            int streamId = int.Parse(getApiParam(1));
+            int r = app.mRtcEngine.SendStreamMessage(streamId, getApiParam(2));
+            setApiReturn("SendStreamMessage " + r.ToString());
+        }
+        else if (api.CompareTo("SetSpeakerphoneVolume") == 0)
+        {
+            int volume = int.Parse(getApiParam(1));
+            int r = app.mRtcEngine.SetSpeakerphoneVolume(volume);
+            setApiReturn("SetSpeakerphoneVolume " + r.ToString());
+        }
+        else if (api.CompareTo("SetVideoQualityParameters") == 0)
+        {
+            int preferFrameRateOverImageQuality = int.Parse(getApiParam(1));
+            int r = app.mRtcEngine.SetVideoQualityParameters(preferFrameRateOverImageQuality != 0);
+            setApiReturn("SetVideoQualityParameters " + r.ToString());
+        }
+        else if (api.CompareTo("StartEchoTest") == 0)
+        {
+            int r = app.mRtcEngine.StartEchoTest();
+            setApiReturn("StartEchoTest " + r.ToString());
+        }
+        else if (api.CompareTo("StopEchoTest") == 0)
+        {
+            int r = app.mRtcEngine.StopEchoTest();
+            setApiReturn("StopEchoTest " + r.ToString());
+        }
+        else if (api.CompareTo("StartLastmileProbeTest") == 0)
+        {
+            LastmileProbeConfig lastmileProbeConfig = new LastmileProbeConfig();
+            lastmileProbeConfig.probeUplink = int.Parse(getApiParam(1)) != 0;
+            lastmileProbeConfig.probeDownlink = int.Parse(getApiParam(2)) != 0;
+            lastmileProbeConfig.expectedUplinkBitrate = uint.Parse(getApiParam(3));
+            lastmileProbeConfig.expectedDownlinkBitrate = uint.Parse(getApiParam(4));
+            int r = app.mRtcEngine.StartLastmileProbeTest(lastmileProbeConfig);
+            setApiReturn("StartLastmileProbeTest " + r.ToString());
+        }
+        else if (api.CompareTo("StopLastmileProbeTest") == 0)
+        {
+            int r = app.mRtcEngine.StopLastmileProbeTest();
+            setApiReturn("StopLastmileProbeTest " + r.ToString());
+        }
+        else if (api.CompareTo("SetMixedAudioFrameParameters") == 0)
+        {
+            int r = app.mRtcEngine.SetMixedAudioFrameParameters(int.Parse(getApiParam(1)), int.Parse(getApiParam(2)));
+            setApiReturn("SetMixedAudioFrameParameters " + r.ToString());
+        }
+        else if (api.CompareTo("SetAudioMixingPosition") == 0)
+        {
+            int r = app.mRtcEngine.SetAudioMixingPosition(int.Parse(getApiParam(1)));
+            setApiReturn("SetAudioMixingPosition " + r.ToString());
+        }
+        else if (api.CompareTo("StartAudioMixing") == 0)
+        {
+            int r = app.mRtcEngine.StartAudioMixing("", true, true, 1, 1);
+            setApiReturn("StartAudioMixing " + r.ToString());
+        }
+        else if (api.CompareTo("StopAudioMixing") == 0)
+        {
+            int r = app.mRtcEngine.StopAudioMixing();
+            setApiReturn("StopAudioMixing " + r.ToString());
+        }
+        else if (api.CompareTo("PauseAudioMixing") == 0)
+        {
+            int r = app.mRtcEngine.PauseAudioMixing();
+            setApiReturn("PauseAudioMixing " + r.ToString());
+        }
+        else if (api.CompareTo("ResumeAudioMixing") == 0)
+        {
+            int r = app.mRtcEngine.ResumeAudioMixing();
+            setApiReturn("ResumeAudioMixing " + r.ToString());
+        }
+        else if (api.CompareTo("AdjustAudioMixingVolume") == 0)
+        {
+            int r = app.mRtcEngine.AdjustAudioMixingVolume(int.Parse(getApiParam(1)));
+            setApiReturn("AdjustAudioMixingVolume " + r.ToString());
+        }
+        else if (api.CompareTo("GetAudioMixingDuration") == 0)
+        {
+            int r = app.mRtcEngine.GetAudioMixingDuration();
+            setApiReturn("GetAudioMixingDuration " + r.ToString());
+        }
+        else if (api.CompareTo("GetAudioMixingCurrentPosition") == 0)
+        {
+            int r = app.mRtcEngine.GetAudioMixingCurrentPosition();
+            setApiReturn("GetAudioMixingCurrentPosition " + r.ToString());
+        }
+        else if (api.CompareTo("StartAudioRecording") == 0)
+        {
+            int r = app.mRtcEngine.StartAudioRecording("/sdcard/test.pcm");
+            setApiReturn("StartAudioRecording " + r.ToString());
+        }
+        else if (api.CompareTo("StopAudioRecording") == 0)
+        {
+            int r = app.mRtcEngine.StopAudioRecording();
+            setApiReturn("StopAudioRecording " + r.ToString());
+        }
+        else if (api.CompareTo("EnableLastmileTest") == 0)
+        {
+            int r = app.mRtcEngine.EnableLastmileTest();
+            setApiReturn("EnableLastmileTest " + r.ToString());
+        }
+        else if (api.CompareTo("DisableLastmileTest") == 0)
+        {
+            int r = app.mRtcEngine.DisableLastmileTest();
+            setApiReturn("DisableLastmileTest " + r.ToString());
+        }
+        else if (api.CompareTo("GetConnectionState") == 0)
+        {
+            int r = app.mRtcEngine.GetConnectionState();
+            setApiReturn("GetConnectionState " + r.ToString());
+        }
+        else if (api.CompareTo("SetAudioProfile") == 0)
+        {
+            int r = app.mRtcEngine.SetAudioProfile((AUDIO_PROFILE_TYPE)int.Parse(getApiParam(1)), (AUDIO_SCENARIO_TYPE)int.Parse(getApiParam(2)));
+            setApiReturn("SetAudioProfile " + r.ToString());
+        }
+        else if (api.CompareTo("SetVideoEncoderConfiguration") == 0)
+        {
+            int r = app.mRtcEngine.SetVideoEncoderConfiguration(new VideoEncoderConfiguration());
+            setApiReturn("SetVideoEncoderConfiguration " + r.ToString());
+        }
+        else if (api.CompareTo("AdjustAudioMixingPlayoutVolume") == 0)
+        {
+            int r = app.mRtcEngine.AdjustAudioMixingPlayoutVolume(int.Parse(getApiParam(1)));
+            setApiReturn("AdjustAudioMixingPlayoutVolume " + r.ToString());
+        }
+        else if (api.CompareTo("AdjustAudioMixingPublishVolume") == 0)
+        {
+            int r = app.mRtcEngine.AdjustAudioMixingPublishVolume(int.Parse(getApiParam(1)));
+            setApiReturn("AdjustAudioMixingPublishVolume " + r.ToString());
+        }
+        else if (api.CompareTo("SetVolumeOfEffect") == 0)
+        {
+            int r = app.mRtcEngine.SetVolumeOfEffect(int.Parse(getApiParam(1)), int.Parse(getApiParam(2)));
+            setApiReturn("SetVolumeOfEffect " + r.ToString());
+        }
+        else if (api.CompareTo("SetRecordingAudioFrameParameters") == 0)
+        {
+            int r = app.mRtcEngine.SetRecordingAudioFrameParameters(int.Parse(getApiParam(1)), int.Parse(getApiParam(2)), (RAW_AUDIO_FRAME_OP_MODE_TYPE)int.Parse(getApiParam(3)), int.Parse(getApiParam(4)));
+            setApiReturn("SetRecordingAudioFrameParameters " + r.ToString());
+        }
+        else if (api.CompareTo("SetPlaybackAudioFrameParameters") == 0)
+        {
+            int r = app.mRtcEngine.SetPlaybackAudioFrameParameters(int.Parse(getApiParam(1)), int.Parse(getApiParam(2)), (RAW_AUDIO_FRAME_OP_MODE_TYPE)int.Parse(getApiParam(3)), int.Parse(getApiParam(4)));
+            setApiReturn("SetPlaybackAudioFrameParameters " + r.ToString());
+        }
+        else if (api.CompareTo("SetLocalPublishFallbackOption") == 0)
+        {
+            int r = app.mRtcEngine.SetLocalPublishFallbackOption(int.Parse(getApiParam(1)));
+            setApiReturn("SetLocalPublishFallbackOption " + r.ToString());
+        }
+        else if (api.CompareTo("SetRemoteSubscribeFallbackOption") == 0)
+        {
+            int r = app.mRtcEngine.SetRemoteSubscribeFallbackOption(int.Parse(getApiParam(1)));
+            setApiReturn("SetRemoteSubscribeFallbackOption " + r.ToString());
+        }
+        else if (api.CompareTo("SetRemoteDefaultVideoStreamType") == 0)
+        {
+            int r = app.mRtcEngine.SetRemoteDefaultVideoStreamType((REMOTE_VIDEO_STREAM_TYPE)int.Parse(getApiParam(1)));
+            setApiReturn("SetRemoteDefaultVideoStreamType " + r.ToString());
+        }
+        else if (api.CompareTo("GetErrorDescription") == 0)
+        {
+            string r = IRtcEngine.GetErrorDescription(int.Parse(getApiParam(1)));
+            setApiReturn("GetErrorDescription " + r.ToString());
+        }
+        else if (api.CompareTo("EnableWebSdkInteroperability") == 0)
+        {
+            int r = app.mRtcEngine.EnableWebSdkInteroperability(int.Parse(getApiParam(1)) != 0);
+            setApiReturn("EnableWebSdkInteroperability " + r.ToString());
+        }
+        else if (api.CompareTo("SetExternalVideoSource") == 0)
+        {
+            int r = app.mRtcEngine.SetExternalVideoSource(int.Parse(getApiParam(1))!=0 , int.Parse(getApiParam(2))!=0);
+            setApiReturn("SetExternalVideoSource " + r.ToString());
+        }
+        else if (api.CompareTo("SetExternalAudioSource") == 0)
+        {
+            int r = app.mRtcEngine.SetExternalAudioSource(int.Parse(getApiParam(1))!=0, int.Parse(getApiParam(2)), int.Parse(getApiParam(3)));
+            setApiReturn("SetExternalAudioSource " + r.ToString());
+        }
+        else if (api.CompareTo("PushAudioFrame") == 0)
+        {
+            int r = app.mRtcEngine.PushAudioFrame(new AudioFrame());
+            setApiReturn("PushAudioFrame " + r.ToString());
+        }
+        else if (api.CompareTo("PushAudioFrame2") == 0)
+        {
+            int r = app.mRtcEngine.PushAudioFrame2(MEDIA_SOURCE_TYPE.AUDIO_PLAYOUT_SOURCE, new AudioFrame(), true);
+            setApiReturn("PushAudioFrame2 " + r.ToString());
+        }
+        else if (api.CompareTo("GetAudioMixingPlayoutVolume") == 0)
+        {
+            int r = app.mRtcEngine.GetAudioMixingPublishVolume();
+            setApiReturn("GetAudioMixingPlayoutVolume " + r.ToString());
+        }
+        else if (api.CompareTo("EnableSoundPositionIndication") == 0)
+        {
+            int r = app.mRtcEngine.EnableSoundPositionIndication(int.Parse(getApiParam(1)) != 0);
+            setApiReturn("EnableSoundPositionIndication " + r.ToString());
+        }
+        else if (api.CompareTo("SetLocalVoiceChanger") == 0)
+        {
+            int r = app.mRtcEngine.SetLocalVoiceChanger(VOICE_CHANGER_PRESET.VOICE_CHANGER_BABYBOY);
+            setApiReturn("SetLocalVoiceChanger " + r.ToString());
+        }
+        else if (api.CompareTo("SetLocalVoiceReverbPreset") == 0)
+        {
+            int r = app.mRtcEngine.SetLocalVoiceReverbPreset(AUDIO_REVERB_PRESET.AUDIO_REVERB_HIPHOP);
+            setApiReturn("SetLocalVoiceReverbPreset " + r.ToString());
+        }
+        else if (api.CompareTo("SetLocalVoicePitch") == 0)
+        {
+            int r = app.mRtcEngine.SetLocalVoicePitch(double.Parse(getApiParam(1)));
+            setApiReturn("SetLocalVoicePitch " + r.ToString());
+        }
+        else if (api.CompareTo("SetLocalVoiceEqualization") == 0)
+        {
+            int r = app.mRtcEngine.SetLocalVoiceEqualization((AUDIO_EQUALIZATION_BAND_FREQUENCY)int.Parse(getApiParam(1)), int.Parse(getApiParam(2)));
+            setApiReturn("SetLocalVoiceEqualization " + r.ToString());
+        }
+        else if (api.CompareTo("SetLocalVoiceReverb") == 0)
+        {
+            int r = app.mRtcEngine.SetLocalVoiceReverb((AUDIO_REVERB_TYPE)int.Parse(getApiParam(1)), int.Parse(getApiParam(2)));
+            setApiReturn("SetLocalVoiceReverb " + r.ToString());
+        }
+        else if (api.CompareTo("SetCameraCapturerConfiguration") == 0)
+        {
+            int r = app.mRtcEngine.SetCameraCapturerConfiguration(new CameraCapturerConfiguration());
+            setApiReturn("SetCameraCapturerConfiguration " + r.ToString());
+        }
+        else if (api.CompareTo("SetRemoteUserPriority") == 0)
+        {
+            int r = app.mRtcEngine.SetRemoteUserPriority(uint.Parse(getApiParam(1)), (PRIORITY_TYPE)int.Parse(getApiParam(2)));
+            setApiReturn("SetRemoteUserPriority " + r.ToString());
+        }
+        else if (api.CompareTo("SetLogFileSize") == 0)
+        {
+            int r = app.mRtcEngine.SetLogFileSize(uint.Parse(getApiParam(1)));
+            setApiReturn("SetLogFileSize " + r.ToString());
+        }
+        else if (api.CompareTo("SetExternalAudioSink") == 0)
+        {
+            int r = app.mRtcEngine.SetExternalAudioSink(int.Parse(getApiParam(1))!=0, int.Parse(getApiParam(2)), int.Parse(getApiParam(3)));
+            setApiReturn("SetExternalAudioSink " + r.ToString());
+        }
+        else if (api.CompareTo("RegisterLocalUserAccount") == 0)
+        {
+            int r = app.mRtcEngine.RegisterLocalUserAccount(exampleApp.mVendorKey, getApiParam(1));
+            setApiReturn("RegisterLocalUserAccount " + r.ToString());
+        }
+        else if (api.CompareTo("JoinChannelWithUserAccount") == 0)
+        {
+            int r = app.mRtcEngine.JoinChannelWithUserAccount("", getApiParam(1), getApiParam(2));
+            setApiReturn("JoinChannelWithUserAccount " + r.ToString());
+        }
+        else if (api.CompareTo("GetUserInfoByUserAccount") == 0)
+        {
+            UserInfo r = app.mRtcEngine.GetUserInfoByUserAccount(getApiParam(1));
+            setApiReturn("GetUserInfoByUserAccount " + "userInfo userAccount = " + r.userAccount + "  ,uid = " + r.uid);
+        }
+        else if (api.CompareTo("GetUserInfoByUid") == 0)
+        {
+            UserInfo r = app.mRtcEngine.GetUserInfoByUid(uint.Parse(getApiParam(1)));
+            setApiReturn("GetUserInfoByUid " + "userInfo userAccount = " + r.userAccount + "  ,uid = " + r.uid);
+        }
+        else if (api.CompareTo("StartScreenCaptureByDisplayId") == 0)
+        {
+            int r = app.mRtcEngine.StartScreenCaptureByDisplayId(1, new Rectangle(), new ScreenCaptureParameters());
+            setApiReturn("StartScreenCaptureByDisplayId " + r.ToString());
+        }
+        else if (api.CompareTo("StartScreenCaptureByScreenRect") == 0)
+        {
+            int r = app.mRtcEngine.StartScreenCaptureByScreenRect(new Rectangle(), new Rectangle(), new ScreenCaptureParameters());
+            setApiReturn("StartScreenCaptureByScreenRect " + r.ToString());
+        }
+        else if (api.CompareTo("SetScreenCaptureContentHint") == 0)
+        {
+            int r = app.mRtcEngine.SetScreenCaptureContentHint(int.Parse(getApiParam(1)));
+            setApiReturn("SetScreenCaptureContentHint " + r.ToString());
+        }
+        else if (api.CompareTo("UpdateScreenCaptureParameters") == 0)
+        {
+            int r = app.mRtcEngine.UpdateScreenCaptureParameters(new ScreenCaptureParameters());
+            setApiReturn("UpdateScreenCaptureParameters " + r.ToString());
+        }
+        else if (api.CompareTo("UpdateScreenCaptureRegion") == 0)
+        {
+            int r = app.mRtcEngine.UpdateScreenCaptureRegion(new Rectangle());
+            setApiReturn("UpdateScreenCaptureRegion " + r.ToString());
+        }
+        else if (api.CompareTo("StopScreenCapture") == 0)
+        {
+            int r = app.mRtcEngine.StopScreenCapture();
+            setApiReturn("StopScreenCapture " + r.ToString());
+        }
+        else if (api.CompareTo("EnableLoopbackRecording") == 0)
+        {
+            int r = app.mRtcEngine.EnableLoopbackRecording(int.Parse(getApiParam(1)) != 0);
+            setApiReturn("EnableLoopbackRecording " + r.ToString());
+        }   
+        else if (api.CompareTo("SetAudioSessionOperationRestriction") == 0)
+        {
+            int r = app.mRtcEngine.SetAudioSessionOperationRestriction((AUDIO_SESSION_OPERATION_RESTRICTION)int.Parse(getApiParam(1)));
+            setApiReturn("SetAudioSessionOperationRestriction " + r.ToString());
+        }
+        else if (api.CompareTo("StartChannelMediaRelay") == 0)
+        {
+            int r = app.mRtcEngine.StartChannelMediaRelay(new ChannelMediaRelayConfiguration());
+            setApiReturn("StartChannelMediaRelay " + r.ToString());
+        }
+        else if (api.CompareTo("updateChannelMediaRelay") == 0)
+        {
+            int r = app.mRtcEngine.updateChannelMediaRelay(new ChannelMediaRelayConfiguration());
+            setApiReturn("updateChannelMediaRelay " + r.ToString());
+        }
+        else if (api.CompareTo("StopChannelMediaRelay") == 0)
+        {
+            int r = app.mRtcEngine.StopChannelMediaRelay();
+            setApiReturn("StopChannelMediaRelay " + r.ToString());
+        }
+        else if (api.CompareTo("SwitchChannel") == 0)
+        {
+            int r = app.mRtcEngine.SwitchChannel("", getApiParam(1));
+            setApiReturn("SwitchChannel " + r.ToString());
+        }
+        else if (api.CompareTo("SetMirrorApplied") == 0)
+        {
+            int r = app.mRtcEngine.SetMirrorApplied(int.Parse(getApiParam(1)) != 0);
+            setApiReturn("SetMirrorApplied " + r.ToString());
+        }
+        else if (api.CompareTo("SetInEarMonitoringVolume") == 0)
+        {
+            int r = app.mRtcEngine.SetInEarMonitoringVolume(int.Parse(getApiParam(1)));
+            setApiReturn("SetInEarMonitoringVolume " + r.ToString());
+        }
+        else if (api.CompareTo("StartScreenCaptureByWindowId") == 0)
+        {
+            int r = app.mRtcEngine.StartScreenCaptureByDisplayId(0, new Rectangle(), new ScreenCaptureParameters());
+            setApiReturn("StartScreenCaptureByWindowId " + r.ToString());
+        }
+        else if (api.CompareTo("EnableInEarMonitoring") == 0)
+        {
+            int r = app.mRtcEngine.EnableInEarMonitoring(int.Parse(getApiParam(1)) != 0);
+            setApiReturn("EnableInEarMonitoring " + r.ToString());
+        }
+        else if (api.CompareTo("RegisterVideoRawDataObserver") == 0)
+        {
+            int r = app.videoRawDataManager.RegisterVideoRawDataObserver();
+            setApiReturn("RegisterVideoRawDataObserver " + r.ToString());
+        }
+        else if (api.CompareTo("UnRegisterVideoRawDataObserver") == 0)
+        {
+            int r = app.videoRawDataManager.UnRegisterVideoRawDataObserver();
+            setApiReturn("UnRegisterVideoRawDataObserver " + r.ToString());
+        }
+        else if (api.CompareTo("RegisterAudioRawDataObserver") == 0)
+        {
+            int r = app.audioRawDataManager.RegisterAudioRawDataObserver();
+            setApiReturn("RegisterAudioRawDataObserver  " + r.ToString());
+        }
+        else if (api.CompareTo("UnRegisterAudioRawDataObserver") == 0)
+        {
+            int r = app.audioRawDataManager.UnRegisterAudioRawDataObserver();
+            setApiReturn("UnRegisterAudioRawDataObserver  " + r.ToString());
+        }
+        else if (api.CompareTo("PullAudioFrame") == 0)
+        {
+            int r = app.audioRawDataManager.PullAudioFrame();
+            setApiReturn("PullAudioFrame  " + r.ToString());
+        }
+        else if (api.CompareTo("CreatAAudioPlaybackDeviceManager") == 0)
+        {
+            bool r = app.audioPlaybackDeviceManager.CreatAAudioPlaybackDeviceManager();
+            setApiReturn("CreatAAudioPlaybackDeviceManager " + r.ToString());
+        }
+        else if (api.CompareTo("ReleaseAAudioPlaybackDeviceManager") == 0)
+        {
+            int r = app.audioPlaybackDeviceManager.ReleaseAAudioPlaybackDeviceManager();
+            setApiReturn("ReleaseAAudioPlaybackDeviceManager " + r.ToString());
+        }
+        else if (api.CompareTo("GetAudioPlaybackDeviceCount") == 0)
+        {
+            int r = app.audioPlaybackDeviceManager.GetAudioPlaybackDeviceCount();
+            setApiReturn("GetAudioPlaybackDeviceCount " + r.ToString());
+        }
+        else if (api.CompareTo("GetAudioPlaybackDevice") == 0)
+        {
+            int r = app.audioPlaybackDeviceManager.GetAudioPlaybackDevice(int.Parse(getApiParam(1)), ref deviceName, ref deviceID);
+            setApiReturn("GetAudioPlaybackDevice " + r.ToString());
+        }
+        else if (api.CompareTo("SetAudioPlaybackDevice") == 0)
+        {
+            int r = app.audioPlaybackDeviceManager.SetAudioPlaybackDevice(getApiParam(1));
+            setApiReturn("SetAudioPlaybackDevice  " + r.ToString());
+        }
+        else if (api.CompareTo("SetAudioPlaybackDeviceVolume") == 0)
+        {
+            int r = app.audioPlaybackDeviceManager.SetAudioPlaybackDeviceVolume(int.Parse(getApiParam(1)));
+            setApiReturn("SetAudioPlaybackDeviceVolume  " + r.ToString());
+        }
+        else if (api.CompareTo("GetAudioPlaybackDeviceVolume") == 0)
+        {
+            int r = app.audioPlaybackDeviceManager.GetAudioPlaybackDeviceVolume();
+            setApiReturn("GetAudioPlaybackDeviceVolume  " + r.ToString());
+        }
+        else if (api.CompareTo("SetAudioPlaybackDeviceMute") == 0)
+        {
+            int r = app.audioPlaybackDeviceManager.SetAudioPlaybackDeviceMute(int.Parse(getApiParam(1))!=0);
+            setApiReturn("SetAudioPlaybackDeviceMute  " + r.ToString());
+        }
+        else if (api.CompareTo("IsAudioPlaybackDeviceMute") == 0)
+        {
+            bool r = app.audioPlaybackDeviceManager.IsAudioPlaybackDeviceMute();
+            setApiReturn("IsAudioPlaybackDeviceMute  " + r.ToString());
+        }
+        else if (api.CompareTo("StartAudioPlaybackDeviceTest") == 0)
+        {
+            int r = app.audioPlaybackDeviceManager.StartAudioPlaybackDeviceTest(getApiParam(1));
+            setApiReturn("StartAudioPlaybackDeviceTest  " + r.ToString());
+        }
+        else if (api.CompareTo("StopAudioPlaybackDeviceTest") == 0)
+        {
+            int r = app.audioPlaybackDeviceManager.StopAudioPlaybackDeviceTest();
+            setApiReturn("StopAudioPlaybackDeviceTest  " + r.ToString());
+        }
+        else if (api.CompareTo("CreatAAudioRecordingDeviceManager") == 0)
+        {
+            bool r = app.audioRecordingoDeviceManager.CreatAAudioRecordingDeviceManager();
+            setApiReturn("CreatAAudioRecordingDeviceManager  " + r.ToString());
+        }
+        else if (api.CompareTo("ReleaseAAudioRecordingDeviceManager") == 0)
+        {
+            int r = app.audioRecordingoDeviceManager.ReleaseAAudioRecordingDeviceManager();
+            setApiReturn("ReleaseAAudioRecordingDeviceManager  " + r.ToString());
+        }
+        else if (api.CompareTo("GetAudioRecordingDeviceCount") == 0)
+        {
+            int r = app.audioRecordingoDeviceManager.GetAudioRecordingDeviceCount();
+            setApiReturn("GetAudioRecordingDeviceCount  " + r.ToString());
+        }
+        else if (api.CompareTo("GetAudioRecordingDevice") == 0)
+        {
+            int r = app.audioRecordingoDeviceManager.GetAudioRecordingDevice(int.Parse(getApiParam(1)), ref deviceName, ref deviceID);
+            setApiReturn("GetAudioRecordingDevice  " + r.ToString());
+        }
+        else if (api.CompareTo("SetAudioRecordingDevice") == 0)
+        {
+            int r = app.audioRecordingoDeviceManager.SetAudioRecordingDevice(deviceID);
+            setApiReturn("SetAudioRecordingDevice  " + r.ToString());
+        }
+        else if (api.CompareTo("StartAudioRecordingDeviceTest") == 0)
+        {
+            int r = app.audioRecordingoDeviceManager.StartAudioRecordingDeviceTest(int.Parse(getApiParam(1)));
+            setApiReturn("SetAudioRecordingDevice  " + r.ToString());
+        }
+        else if (api.CompareTo("StopAudioRecordingDeviceTest") == 0)
+        {
+            int r = app.audioRecordingoDeviceManager.StopAudioRecordingDeviceTest();
+            setApiReturn("StopAudioRecordingDeviceTest  " + r.ToString());
+        }
+        else if (api.CompareTo("StartVideoDeviceTest") == 0)
+        {
+            int r = app.videoDeviceManager.StartVideoDeviceTest(new System.IntPtr(1));
+            setApiReturn("StartVideoDeviceTest  " + r.ToString());
+        }
+        else if (api.CompareTo("StopVideoDeviceTest") == 0)
+        {
+            int r = app.videoDeviceManager.StopVideoDeviceTest();
+            setApiReturn("StopVideoDeviceTest  " + r.ToString());
+        }
+        else if (api.CompareTo("GetVideoDeviceCollectionCount") == 0)
+        {
+            int r = app.videoDeviceManager.GetVideoDeviceCollectionCount();
+            setApiReturn("GetVideoDeviceCollectionCount  " + r.ToString());
+        }
+        else if (api.CompareTo("GetVideoDeviceCollectionDevice") == 0)
+        {
+            int r = app.videoDeviceManager.GetVideoDeviceCollectionDevice(int.Parse(getApiParam(1)), ref deviceName, ref deviceID);
+            setApiReturn("GetVideoDeviceCollectionDevice  " + r.ToString());
+        }
+        else if (api.CompareTo("SetVideoDeviceCollectionDevice") == 0)
+        {
+            int r = app.videoDeviceManager.SetVideoDeviceCollectionDevice(deviceID);
+            setApiReturn("SetVideoDeviceCollectionDevice  " + r.ToString());
+        }
+        else if (api.CompareTo("RegisterMediaMetadataObserver") == 0)
+        {
+            int r = app.metaDataObserver.RegisterMediaMetadataObserver((METADATA_TYPE)int.Parse(getApiParam(1)));
+            setApiReturn("RegisterMediaMetadataObserver  " + r.ToString());
+        }
+        else if (api.CompareTo("UnRegisterMediaMetadataObserver") == 0)
+        {
+            int r = app.metaDataObserver.UnRegisterMediaMetadataObserver();
+            setApiReturn("UnRegisterMediaMetadataObserver  " + r.ToString());
+        }
+        else if (api.CompareTo("SendMetadata") == 0)
+        {
+            string ss= "hello world!";
+            byte[] byteArray = System.Text.Encoding.Default.GetBytes (ss);
+
+            Metadata metadata = new Metadata();
+            metadata.buffer = byteArray;
+            metadata.size = (uint)byteArray.Length;
+            int r = app.metaDataObserver.SendMetadata(metadata);
+            setApiReturn("SendMetadata  " + r.ToString());
+        }
+        else if (api.CompareTo("SetMaxMetadataSize") == 0)
+        {
+            int r = app.metaDataObserver.SetMaxMetadataSize(1024);
+            setApiReturn("SetMaxMetadataSize  " + r.ToString());
+        }
+        else if (api.CompareTo("SendAudioPacket") == 0)
+        {
+            string s = " hello , this is audio packet";
+            byte[] byteArray = System.Text.Encoding.Default.GetBytes (s);
+            Packet packet = new Packet();
+            packet.buffer = byteArray;
+            packet.size = (uint)byteArray.Length;
+            int r = app.packetObserver.SendAudioPacket(packet);
+            setApiReturn("SendAudioPacket  " + r.ToString());
+        }
+        else if (api.CompareTo("SendVideoPacket") == 0)
+        {
+            string s = " hello , this is video packet";
+            byte[] byteArray = System.Text.Encoding.Default.GetBytes (s);
+            Packet packet = new Packet();
+            packet.buffer = byteArray;
+            int r = app.packetObserver.SendVideoPacket(packet);
+            setApiReturn("SendVideoPacket  " + r.ToString());
+        }
+        else if (api.CompareTo("RegisterPacketObserver") == 0)
+        {
+            int r = app.packetObserver.RegisterPacketObserver();
+            setApiReturn("RegisterPacketObserver  " + r.ToString());
+        }
+        else if (api.CompareTo("UnRegisterPacketObserver") == 0)
+        {
+            int r = app.packetObserver.UnRegisterPacketObserver();
+            setApiReturn("UnRegisterPacketObserver  " + r.ToString());
         }
         else
         {
