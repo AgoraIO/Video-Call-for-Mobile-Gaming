@@ -136,7 +136,6 @@ public class ButtonClick : MonoBehaviour
         options.Add("SetInEarMonitoringVolume");
         options.Add("StartScreenCaptureByWindowId");
         options.Add("EnableInEarMonitoring");
-        options.Add("EnableInEarMonitoring");
         options.Add("RegisterVideoRawDataObserver");
         options.Add("UnRegisterVideoRawDataObserver");
         options.Add("RegisterAudioRawDataObserver");
@@ -175,6 +174,12 @@ public class ButtonClick : MonoBehaviour
         options.Add("SendVideoPacket");
         options.Add("RegisterPacketObserver");
         options.Add("UnRegisterPacketObserver");
+        options.Add("RenewToken");
+        options.Add("Rate");
+        options.Add("SetEncryptionMode");
+        options.Add("SetEncryptionSecret");
+        options.Add("SetVideoQualityParameters");
+        options.Add("PushVideoFrame");
         dd.AddOptions(options);
         go = GameObject.Find("VIDEOPROFILE");
         dd = go.GetComponent<Dropdown>();
@@ -920,12 +925,12 @@ public class ButtonClick : MonoBehaviour
         }
         else if (api.CompareTo("SetLocalVoiceChanger") == 0)
         {
-            int r = app.mRtcEngine.SetLocalVoiceChanger(VOICE_CHANGER_PRESET.VOICE_CHANGER_BABYBOY);
+            int r = app.mRtcEngine.SetLocalVoiceChanger((VOICE_CHANGER_PRESET)int.Parse(getApiParam(1)));
             setApiReturn("SetLocalVoiceChanger " + r.ToString());
         }
         else if (api.CompareTo("SetLocalVoiceReverbPreset") == 0)
         {
-            int r = app.mRtcEngine.SetLocalVoiceReverbPreset(AUDIO_REVERB_PRESET.AUDIO_REVERB_HIPHOP);
+            int r = app.mRtcEngine.SetLocalVoiceReverbPreset((AUDIO_REVERB_PRESET)int.Parse(getApiParam(1)));
             setApiReturn("SetLocalVoiceReverbPreset " + r.ToString());
         }
         else if (api.CompareTo("SetLocalVoicePitch") == 0)
@@ -1257,6 +1262,48 @@ public class ButtonClick : MonoBehaviour
         {
             int r = app.packetObserver.UnRegisterPacketObserver();
             setApiReturn("UnRegisterPacketObserver  " + r.ToString());
+        }
+        else if (api.CompareTo("RenewToken") == 0)
+        {
+            int r = app.mRtcEngine.RenewToken(getApiParam(1));
+            setApiReturn("RenewToken  " + r.ToString());
+        }
+        else if (api.CompareTo("Rate") == 0)
+        {
+            int r = app.mRtcEngine.Rate(getApiParam(1), int.Parse(getApiParam(2)), getApiParam(3));
+            setApiReturn("Rate " + r.ToString());
+        }
+        else if (api.CompareTo("Complain") == 0)
+        {
+            int r = app.mRtcEngine.Complain(getApiParam(1), getApiParam(2));
+            setApiReturn("Complain " + r.ToString());
+        }
+        else if (api.CompareTo("SetEncryptionMode") == 0)
+        {
+            int r = app.mRtcEngine.SetEncryptionMode(getApiParam(1));
+            setApiReturn("SetEncryptionMode " + r.ToString());
+        }
+        else if (api.CompareTo("SetEncryptionSecret") == 0)
+        {
+            int r = app.mRtcEngine.SetEncryptionSecret(getApiParam(1));
+            setApiReturn("SetEncryptionSecret  " + r.ToString());
+        }
+        else if (api.CompareTo("SetVideoQualityParameters") == 0)
+        {
+            int r = app.mRtcEngine.SetVideoQualityParameters(int.Parse(getApiParam(1)) !=0);
+            setApiReturn("SetVideoQualityParameters " + r.ToString());
+        }
+        else if (api.CompareTo("SetVideoQualityParameters") == 0)
+        {
+            int r = app.mRtcEngine.SetVideoQualityParameters(int.Parse(getApiParam(1)) !=0);
+            setApiReturn("SetVideoQualityParameters " + r.ToString());
+        }
+         else if (api.CompareTo("PushVideoFrame") == 0)
+        {
+            VideoFrame videoFrame = new VideoFrame();
+            ExternalVideoFrame externalVideo = new ExternalVideoFrame();
+            int r = app.mRtcEngine.PushVideoFrame(externalVideo);
+            setApiReturn("SetVideoQualityParameters " + r.ToString());
         }
         else
         {

@@ -125,7 +125,7 @@ public class exampleApp : MonoBehaviour
         packetObserver.SetOnReceiveVideoPacketCallback(OnReceiveVideoPacketHandler);
         // enable video
         mRtcEngine.EnableVideo();
-        mRtcEngine.EnableVideoObserver();
+        // mRtcEngine.EnableVideoObserver();
 
         // allow camera output callback
         mRtcEngine.SetLogFilter(LOG_FILTER.DEBUG);
