@@ -37,6 +37,9 @@ public class BL_BuildPostProcess {
 		proj.AddFrameworkToProject(target, "libresolv.tbd", true);
 		proj.AddFrameworkToProject(target, "libiPhone-lib.a", true);
 		proj.AddFrameworkToProject(target, "CoreText.framework", true);
+		proj.AddFrameworkToProject(target, "Metal.framework", true);
+		proj.AddFrameworkToProject(target, "CoreML.framework", true);
+		proj.AddFrameworkToProject(target, "Accelerate.framework", true);
 		File.WriteAllText(projPath, proj.WriteToString());
 
 		// permission

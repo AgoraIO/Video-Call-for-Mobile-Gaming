@@ -1,9 +1,12 @@
-﻿using System.Collections;
+﻿using UnityEngine;
+using System;
+using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using agora_gaming_rtc;
 using System.Runtime.InteropServices;
 using System.Threading;
+using AOT;
+using System.Globalization;
 
 // this is an example of using Agora unity sdk
 // It demonstrates:
@@ -16,7 +19,7 @@ public class exampleApp : MonoBehaviour
     public AudioPlaybackDeviceManager audioPlaybackDeviceManager;
     public AudioRecordingoDeviceManager audioRecordingoDeviceManager;
     public VideoDeviceManager videoDeviceManager;
-    public MetaDataObserver metaDataObserver;
+    public MetadataObserver metaDataObserver;
     public PacketObserver packetObserver;
     public AudioRawDataManager audioRawDataManager;
     public VideoRawDataManager videoRawDataManager;
@@ -45,15 +48,13 @@ public class exampleApp : MonoBehaviour
         audioPlaybackDeviceManager = AudioPlaybackDeviceManager.GetInstance(mRtcEngine);
         audioRecordingoDeviceManager = AudioRecordingoDeviceManager.GetInstance(mRtcEngine);
         videoDeviceManager = VideoDeviceManager.GetInstance(mRtcEngine);
-        metaDataObserver = MetaDataObserver.GetInstance(mRtcEngine);
+        metaDataObserver = MetadataObserver.GetInstance(mRtcEngine);
         packetObserver = PacketObserver.GetInstance(mRtcEngine);
         audioRawDataManager = AudioRawDataManager.GetInstance(mRtcEngine);
         videoRawDataManager = VideoRawDataManager.GetInstance(mRtcEngine);
-        //mRtcEngine.EnableSoundPositionIndication(true);
         // enable log
         mRtcEngine.SetLogFilter(LOG_FILTER.DEBUG | LOG_FILTER.INFO | LOG_FILTER.WARNING | LOG_FILTER.ERROR | LOG_FILTER.CRITICAL);
     }
-
 
     public void join(string channel)
     {
@@ -112,6 +113,8 @@ public class exampleApp : MonoBehaviour
         mRtcEngine.OnLocalVideoStats = OnLocalVideoStatsHandler;
         mRtcEngine.OnRemoteVideoStats = OnRemoteVideoStatsHandler;
         mRtcEngine.OnRemoteAudioStats = OnRemoteAudioStatsHandler;
+        mRtcEngine.OnUserInfoUpdated = OnUserInfoUpdatedHandler;
+        mRtcEngine.OnLocalUserRegistered = OnLocalUserRegisteredHandler;
         mRtcEngine.OnAudioDeviceStateChanged = OnAudioDeviceStateChangedHandler;
         videoRawDataManager.SetOnCaptureVideoFrameCallback(OnCaptureVideoFrameHandler);
         videoRawDataManager.SetOnRenderVideoFrameCallback(OnRenderVideoFrameHandler);
@@ -120,9 +123,14 @@ public class exampleApp : MonoBehaviour
         audioRawDataManager.SetOnPlaybackAudioFrameCallback(OnPlaybackAudioFrameHandler);
         audioRawDataManager.SetOnRecordAudioFrameCallback(OnRecordAudioFrameHandler);
         audioRawDataManager.SetOnPullAudioFrameCallback(OnPullAudioFrameHandler);
-        metaDataObserver.SetOnOnMediaMetaDataReceivedCallback(OnMediaMetaDataReceivedHandler);
-        packetObserver.SetOnReceiveAudioPacketCallback(OnReceiveAudioPacketHandler);
-        packetObserver.SetOnReceiveVideoPacketCallback(OnReceiveVideoPacketHandler);
+        packetObserver._OnReceiveAudioPacket = OnReceiveAudioPacketHandler;
+        packetObserver._OnReceiveVideoPacket = OnReceiveVideoPacketHandler;
+        packetObserver._OnSendAudioPacket = OnSendAudioPacketCallback;
+        packetObserver._OnSendVideoPacket = OnSendVideoPacketCallback;
+        metaDataObserver._OnMediaMetaDataReceived = OnMediaMetaDataReceivedHandler;
+        metaDataObserver._OnReadyToSendMetadata = OnReadyToSend;
+        metaDataObserver._OnGetMaxMetadataSize = OnGetMaxSize;
+
         // enable video
         mRtcEngine.EnableVideo();
         // mRtcEngine.EnableVideoObserver();
@@ -136,23 +144,58 @@ public class exampleApp : MonoBehaviour
         logAPICall("initializeEngine done");
     }
 
-    void OnReceiveVideoPacketHandler(Packet packet)
+    bool OnReceiveVideoPacketHandler(Packet packet)
     {
-        string str = System.Text.Encoding.Default.GetString (packet.buffer);
-        logCallback("OnReceiveVideoPacketHandler  buffer = " + str + "  ,size = " + packet.size);
+        //string str = System.Text.Encoding.Default.GetString (packet.buffer);
+        logCallback("OnReceiveVideoPacketHandler  buffer = "  + "  ,size = " + packet.size);
+        return true;
     }
 
-    void OnReceiveAudioPacketHandler(Packet packet)
+    bool OnSendAudioPacketCallback (Packet packet)
     {
-        string str = System.Text.Encoding.Default.GetString (packet.buffer);
-        logCallback("OnReceiveAudioPacketHandler  buffer = " + str + "  ,size = " + packet.size);
+        logCallback("OnSendAudioPacketCallback  buffer = "  + "  ,size = " + packet.size);
+        return true;
+    }
+
+    bool OnSendVideoPacketCallback (Packet packet)
+    {
+        logCallback("OnSendVideoPacketCallback  buffer = "  + "  ,size = " + packet.size);
+        return true;
+    }
+
+    bool OnReceiveAudioPacketHandler(Packet packet)
+    {
+        //string str = System.Text.Encoding.Default.GetString (packet.buffer);
+        //logCallback("OnReceiveAudioPacketHandler  buffer = " + "  ,size = " + packet.size);
+        return true;
+    }
+
+    int i = 1;
+    bool OnReadyToSend(ref Metadata metadata)
+    {
+        if (i%2 == 0)
+        {
+             string mBuffer = "Hello this is " + i;
+            uint mUid = 12323;
+            long timeStamp = 892384;
+            byte[] bufferByte = System.Text.Encoding.UTF8.GetBytes(mBuffer);
+            metadata.size = (uint)bufferByte.Length;
+            metadata.uid = mUid;
+            metadata.buffer = bufferByte;
+        // logCallback("MediaMetaData; OnReadyToSend " + System.Text.Encoding.Default.GetString(bufferByte));
+        }
+        i++;
+        return true;
+    }
+
+    int OnGetMaxSize()
+    {
+        return 1024;
     }
 
     void OnMediaMetaDataReceivedHandler(Metadata metadata)
     {
-        
-        string str = System.Text.Encoding.Default.GetString (metadata.buffer);
-        logCallback("OnMediaMetaDataReceivedHandler  buffer = " + str + "  ,uid = " + metadata.uid + "  ,length = " + metadata.size);
+        logCallback("MediaMetaData:  OnMediaMetaDataReceivedHandler" + "  ,uid = " + metadata.uid + "  ,size = " + metadata.size + "  ,buffer = " + System.Text.Encoding.UTF8.GetString(metadata.buffer) + "  ,timeStamp = " + metadata.timeStampMs);
     }
     void OnPullAudioFrameHandler(AudioFrame audioFrame)
     {
@@ -209,6 +252,16 @@ public class exampleApp : MonoBehaviour
     void OnRemoteSubscribeFallbackToAudioOnlyHandler(uint uid, bool isFallbackOrRecover)
     {
         logCallback("OnRemoteSubscribeFallbackToAudioOnlyHandler uid = " + uid + " ,isFallbackOrRecover " + isFallbackOrRecover);
+    }
+
+    void OnLocalUserRegisteredHandler(uint uid, string userAccount)
+    {
+        logCallback("OnLocalUserRegisteredHandler uid = " + uid + "  ,account = " + userAccount);
+    }
+
+    void OnUserInfoUpdatedHandler(uint uid, UserInfo userInfo)
+    {
+        logCallback("OnUserInfoUpdatedHandler  uid = " + uid + " userInfo.uid = " + userInfo.uid + "  userInfo.account = " + userInfo.userAccount);
     }
 
     void OnLocalPublishFallbackToAudioOnlyHandler(bool isFallbackOrRecover)
@@ -511,7 +564,7 @@ public class exampleApp : MonoBehaviour
 
     // instance of agora engine
     public IRtcEngine mRtcEngine;
-    public static string mVendorKey = #YOUR_APPID;
+    public static string mVendorKey = "";
 
     // implement engine callbacks
 
@@ -596,7 +649,7 @@ public class exampleApp : MonoBehaviour
             o.mAdjustTransfrom += onTransformDelegate;
             o.SetEnable(true);
             o.transform.Rotate(-90.0f, 0.0f, 0.0f);
-            float r = Random.Range(-5.0f, 5.0f);
+            float r = UnityEngine.Random.Range(-5.0f, 5.0f);
             o.transform.position = new Vector3(0f, r, 0f);
             o.transform.localScale = new Vector3(0.5f, 0.5f, 1.0f);
         }

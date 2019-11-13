@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine;
 using agora_gaming_rtc;
 using System.Runtime.InteropServices;
+using System.IO;
 
 public class ButtonClick : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class ButtonClick : MonoBehaviour
     string deviceName = "";
     string deviceID = "";
     // Use this for initialization
+
     void Start()
     {
         exampleApp.logAPICall("ButtonClick Start is called!");
@@ -19,7 +21,11 @@ public class ButtonClick : MonoBehaviour
         Dropdown dd = go.GetComponent<Dropdown>();
         dd.ClearOptions();
         List<string> options = new List<string>();
+        options.Add("createEngine");
+        options.Add("destroyEngine");
         options.Add("GetSdkVersion");
+        options.Add("SetLogFile");
+        options.Add("SetAudioProfile"); 
         options.Add("leaveChannel");
         options.Add("JoinChannel");
         options.Add("SetChannelProfile");
@@ -168,18 +174,17 @@ public class ButtonClick : MonoBehaviour
         options.Add("SetVideoDeviceCollectionDevice");
         options.Add("RegisterMediaMetadataObserver");
         options.Add("UnRegisterMediaMetadataObserver");
-        options.Add("SendMetadata");
-        options.Add("SetMaxMetadataSize");
-        options.Add("SendAudioPacket");
-        options.Add("SendVideoPacket");
         options.Add("RegisterPacketObserver");
         options.Add("UnRegisterPacketObserver");
         options.Add("RenewToken");
         options.Add("Rate");
+        options.Add("Complain");
         options.Add("SetEncryptionMode");
         options.Add("SetEncryptionSecret");
         options.Add("SetVideoQualityParameters");
         options.Add("PushVideoFrame");
+        options.Add("GetErrorDescription");
+        options.Add("EnableWebSdkInteroperability");
         dd.AddOptions(options);
         go = GameObject.Find("VIDEOPROFILE");
         dd = go.GetComponent<Dropdown>();
@@ -285,7 +290,6 @@ public class ButtonClick : MonoBehaviour
         if (!ReferenceEquals(app, null))
         {
             app.leave(); // leave channel
-            app.unloadEngine(); // delete engine
             app = null; // delete app
             SceneManager.LoadScene("Scene0", LoadSceneMode.Single);
         }
@@ -698,7 +702,9 @@ public class ButtonClick : MonoBehaviour
         {
             BeautyOptions beautyOptions = new BeautyOptions();
             beautyOptions.lighteningContrastLevel = BeautyOptions.LIGHTENING_CONTRAST_LEVEL.LIGHTENING_CONTRAST_HIGH;
-            beautyOptions.lighteningLevel = 10.0f;
+            beautyOptions.lighteningLevel = 0.5f;
+            beautyOptions.rednessLevel = 0.5f;
+            beautyOptions.smoothnessLevel = 0.5f;
             int r = app.mRtcEngine.SetBeautyEffectOptions(true, beautyOptions);
             setApiReturn("SetBeautyEffectOptions " + r.ToString());
         }
@@ -810,7 +816,7 @@ public class ButtonClick : MonoBehaviour
         }
         else if (api.CompareTo("StartAudioRecording") == 0)
         {
-            int r = app.mRtcEngine.StartAudioRecording("/sdcard/test.pcm");
+            int r = app.mRtcEngine.StartAudioRecording("/sdcard/test.wav");
             setApiReturn("StartAudioRecording " + r.ToString());
         }
         else if (api.CompareTo("StopAudioRecording") == 0)
@@ -840,7 +846,18 @@ public class ButtonClick : MonoBehaviour
         }
         else if (api.CompareTo("SetVideoEncoderConfiguration") == 0)
         {
-            int r = app.mRtcEngine.SetVideoEncoderConfiguration(new VideoEncoderConfiguration());
+            VideoEncoderConfiguration videoEncoder = new VideoEncoderConfiguration();
+            VideoDimensions videoDimensions = new VideoDimensions();
+            videoDimensions.width = 640;
+            videoDimensions.height = 360;
+            videoEncoder.dimensions = videoDimensions;
+            videoEncoder.frameRate = FRAME_RATE.FRAME_RATE_FPS_15;
+            videoEncoder.minFrameRate = 10;
+            videoEncoder.bitrate = 350;
+            videoEncoder.minBitrate = 100;
+            videoEncoder.orientationMode = ORIENTATION_MODE.ORIENTATION_MODE_FIXED_LANDSCAPE;
+            videoEncoder.degradationPreference = DEGRADATION_PREFERENCE.MAINTAIN_BALANCED;
+            int r = app.mRtcEngine.SetVideoEncoderConfiguration(videoEncoder);
             setApiReturn("SetVideoEncoderConfiguration " + r.ToString());
         }
         else if (api.CompareTo("AdjustAudioMixingPlayoutVolume") == 0)
@@ -950,7 +967,9 @@ public class ButtonClick : MonoBehaviour
         }
         else if (api.CompareTo("SetCameraCapturerConfiguration") == 0)
         {
-            int r = app.mRtcEngine.SetCameraCapturerConfiguration(new CameraCapturerConfiguration());
+            CameraCapturerConfiguration cameraCapturerConfiguration = new CameraCapturerConfiguration();
+            cameraCapturerConfiguration.preference = CAPTURER_OUTPUT_PREFERENCE.CAPTURER_OUTPUT_PREFERENCE_AUTO;
+            int r = app.mRtcEngine.SetCameraCapturerConfiguration(cameraCapturerConfiguration);
             setApiReturn("SetCameraCapturerConfiguration " + r.ToString());
         }
         else if (api.CompareTo("SetRemoteUserPriority") == 0)
@@ -1030,12 +1049,40 @@ public class ButtonClick : MonoBehaviour
         }
         else if (api.CompareTo("StartChannelMediaRelay") == 0)
         {
-            int r = app.mRtcEngine.StartChannelMediaRelay(new ChannelMediaRelayConfiguration());
+            ChannelMediaInfo src = new ChannelMediaInfo();
+            src.channelName = "23";
+            src.token = null;
+            src.uid = 100;
+
+            ChannelMediaInfo dest = new ChannelMediaInfo();
+            dest.channelName = "23";
+            dest.token = null;
+            dest.uid = 100;
+
+            ChannelMediaRelayConfiguration channelMediaRelayConfiguration = new ChannelMediaRelayConfiguration();
+            channelMediaRelayConfiguration.srcInfo = src;
+            channelMediaRelayConfiguration.destInfos = dest;
+            channelMediaRelayConfiguration.destCount = 1;
+            int r = app.mRtcEngine.StartChannelMediaRelay(channelMediaRelayConfiguration);
             setApiReturn("StartChannelMediaRelay " + r.ToString());
         }
         else if (api.CompareTo("updateChannelMediaRelay") == 0)
         {
-            int r = app.mRtcEngine.updateChannelMediaRelay(new ChannelMediaRelayConfiguration());
+            ChannelMediaInfo src = new ChannelMediaInfo();
+            src.channelName = "23";
+            src.token = null;
+            src.uid = 100;
+
+            ChannelMediaInfo dest = new ChannelMediaInfo();
+            dest.channelName = "23";
+            dest.token = null;
+            dest.uid = 100;
+
+            ChannelMediaRelayConfiguration channelMediaRelayConfiguration = new ChannelMediaRelayConfiguration();
+            channelMediaRelayConfiguration.srcInfo = src;
+            channelMediaRelayConfiguration.destInfos = dest;
+            channelMediaRelayConfiguration.destCount = 1;
+            int r = app.mRtcEngine.updateChannelMediaRelay(channelMediaRelayConfiguration);
             setApiReturn("updateChannelMediaRelay " + r.ToString());
         }
         else if (api.CompareTo("StopChannelMediaRelay") == 0)
@@ -1220,38 +1267,27 @@ public class ButtonClick : MonoBehaviour
         }
         else if (api.CompareTo("SendMetadata") == 0)
         {
-            string ss= "hello world!";
-            byte[] byteArray = System.Text.Encoding.Default.GetBytes (ss);
+            // string ss= "hello world!";
+            // byte[] byteArray = System.Text.Encoding.Default.GetBytes (ss);
 
-            Metadata metadata = new Metadata();
-            metadata.buffer = byteArray;
-            metadata.size = (uint)byteArray.Length;
-            int r = app.metaDataObserver.SendMetadata(metadata);
-            setApiReturn("SendMetadata  " + r.ToString());
+            // Metadata metadata = new Metadata();
+            // metadata.buffer = byteArray;
+            // metadata.size = (uint)byteArray.Length;
+            // int r = app.metaDataObserver.SendMetadata(metadata);
+           // setApiReturn("SendMetadata  " + r.ToString());
         }
         else if (api.CompareTo("SetMaxMetadataSize") == 0)
         {
-            int r = app.metaDataObserver.SetMaxMetadataSize(1024);
-            setApiReturn("SetMaxMetadataSize  " + r.ToString());
+            // int r = app.metaDataObserver.SetMaxMetadataSize(1024);
+            // setApiReturn("SetMaxMetadataSize  " + r.ToString());
         }
         else if (api.CompareTo("SendAudioPacket") == 0)
         {
-            string s = " hello , this is audio packet";
-            byte[] byteArray = System.Text.Encoding.Default.GetBytes (s);
-            Packet packet = new Packet();
-            packet.buffer = byteArray;
-            packet.size = (uint)byteArray.Length;
-            int r = app.packetObserver.SendAudioPacket(packet);
-            setApiReturn("SendAudioPacket  " + r.ToString());
+
         }
         else if (api.CompareTo("SendVideoPacket") == 0)
         {
-            string s = " hello , this is video packet";
-            byte[] byteArray = System.Text.Encoding.Default.GetBytes (s);
-            Packet packet = new Packet();
-            packet.buffer = byteArray;
-            int r = app.packetObserver.SendVideoPacket(packet);
-            setApiReturn("SendVideoPacket  " + r.ToString());
+
         }
         else if (api.CompareTo("RegisterPacketObserver") == 0)
         {
@@ -1302,8 +1338,34 @@ public class ButtonClick : MonoBehaviour
         {
             VideoFrame videoFrame = new VideoFrame();
             ExternalVideoFrame externalVideo = new ExternalVideoFrame();
+            externalVideo.format = ExternalVideoFrame.VIDEO_PIXEL_FORMAT.VIDEO_PIXEL_I420;
+            externalVideo.type = ExternalVideoFrame.VIDEO_BUFFER_TYPE.VIDEO_BUFFER_RAW_DATA;
+            externalVideo.buffer = new byte[1024];
+            
             int r = app.mRtcEngine.PushVideoFrame(externalVideo);
             setApiReturn("SetVideoQualityParameters " + r.ToString());
+        }
+        else if (api.CompareTo("createEngine") == 0)
+        {
+            app.loadEngine();
+            setApiReturn("createEngine");
+        }
+        else if (api.CompareTo("destroyEngine") == 0)
+        {
+            app.unloadEngine();
+            setApiReturn("destroyEngine");
+        }
+        else if (api.CompareTo("SetLogFile") == 0)
+        {   
+            //string file = createFile();
+            app.mRtcEngine.SetLogFile(getApiParam(1));
+            setApiReturn("setLogFile  file = " + getApiParam(1));
+        }
+        else if (api.CompareTo("GetErrorDescription") == 0)
+        {
+             string rc = IRtcEngine.GetErrorDescription(int.Parse(getApiParam(1)));
+             setApiReturn("GetErrorDescription rc = " + rc);
+
         }
         else
         {
@@ -1339,6 +1401,24 @@ public class ButtonClick : MonoBehaviour
             SceneManager.sceneLoaded -= OnLevelFinishedLoading;
         }
     }
+
+    void OnApplicationPause(bool paused)
+	{
+		if (paused)
+		{
+			if(IRtcEngine.QueryEngine() != null)
+			{
+				IRtcEngine.QueryEngine().DisableVideo();
+			}
+		}
+		else
+		{
+			if(IRtcEngine.QueryEngine() != null)
+			{
+				IRtcEngine.QueryEngine().EnableVideo();
+			}
+		}
+	}
 
     void OnApplicationQuit()
     {
