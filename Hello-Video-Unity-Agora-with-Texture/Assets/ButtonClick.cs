@@ -151,6 +151,7 @@ public class ButtonClick : MonoBehaviour
         options.Add("ReleaseAAudioPlaybackDeviceManager");
         options.Add("GetAudioPlaybackDeviceCount");
         options.Add("GetAudioPlaybackDevice");
+        options.Add("GetCurrentPlaybackDevice");
         options.Add("SetAudioPlaybackDevice");
         options.Add("SetAudioPlaybackDeviceVolume");
         options.Add("GetAudioPlaybackDeviceVolume");
@@ -162,6 +163,7 @@ public class ButtonClick : MonoBehaviour
         options.Add("ReleaseAAudioRecordingDeviceManager");
         options.Add("GetAudioRecordingDeviceCount");
         options.Add("GetAudioRecordingDevice");
+        options.Add("GetCurrentRecordingDevice");
         options.Add("SetAudioRecordingDevice");
         options.Add("StartAudioRecordingDeviceTest");
         options.Add("StopAudioRecordingDeviceTest");
@@ -171,6 +173,7 @@ public class ButtonClick : MonoBehaviour
         options.Add("StopVideoDeviceTest");
         options.Add("GetVideoDeviceCollectionCount");
         options.Add("GetVideoDeviceCollectionDevice");
+        options.Add("GetCurrentVideoDevice");
         options.Add("SetVideoDeviceCollectionDevice");
         options.Add("RegisterMediaMetadataObserver");
         options.Add("UnRegisterMediaMetadataObserver");
@@ -927,7 +930,10 @@ public class ButtonClick : MonoBehaviour
         }
         else if (api.CompareTo("PushAudioFrame2") == 0)
         {
-            int r = app.mRtcEngine.PushAudioFrame2(MEDIA_SOURCE_TYPE.AUDIO_PLAYOUT_SOURCE, new AudioFrame(), true);
+            AudioFrame audioFrame = new AudioFrame();
+            audioFrame.type = AUDIO_FRAME_TYPE.FRAME_TYPE_PCM16;
+            audioFrame.buffer = new byte[10];
+            int r = app.mRtcEngine.PushAudioFrame2(MEDIA_SOURCE_TYPE.AUDIO_PLAYOUT_SOURCE, audioFrame, false);
             setApiReturn("PushAudioFrame2 " + r.ToString());
         }
         else if (api.CompareTo("GetAudioMixingPlayoutVolume") == 0)
@@ -968,7 +974,8 @@ public class ButtonClick : MonoBehaviour
         else if (api.CompareTo("SetCameraCapturerConfiguration") == 0)
         {
             CameraCapturerConfiguration cameraCapturerConfiguration = new CameraCapturerConfiguration();
-            cameraCapturerConfiguration.preference = CAPTURER_OUTPUT_PREFERENCE.CAPTURER_OUTPUT_PREFERENCE_AUTO;
+            cameraCapturerConfiguration.preference = (CAPTURER_OUTPUT_PREFERENCE)int.Parse(getApiParam(1));
+            cameraCapturerConfiguration.cameraDirection = (CAMERA_DIRECTION)int.Parse(getApiParam(2));
             int r = app.mRtcEngine.SetCameraCapturerConfiguration(cameraCapturerConfiguration);
             setApiReturn("SetCameraCapturerConfiguration " + r.ToString());
         }
@@ -1009,7 +1016,7 @@ public class ButtonClick : MonoBehaviour
         }
         else if (api.CompareTo("StartScreenCaptureByDisplayId") == 0)
         {
-            int r = app.mRtcEngine.StartScreenCaptureByDisplayId(1, new Rectangle(), new ScreenCaptureParameters());
+            int r = app.mRtcEngine.StartScreenCaptureByDisplayId(0, new Rectangle(), new ScreenCaptureParameters());
             setApiReturn("StartScreenCaptureByDisplayId " + r.ToString());
         }
         else if (api.CompareTo("StartScreenCaptureByScreenRect") == 0)
@@ -1142,7 +1149,7 @@ public class ButtonClick : MonoBehaviour
         }
         else if (api.CompareTo("CreatAAudioPlaybackDeviceManager") == 0)
         {
-            bool r = app.audioPlaybackDeviceManager.CreatAAudioPlaybackDeviceManager();
+            bool r = app.audioPlaybackDeviceManager.CreateAAudioPlaybackDeviceManager();
             setApiReturn("CreatAAudioPlaybackDeviceManager " + r.ToString());
         }
         else if (api.CompareTo("ReleaseAAudioPlaybackDeviceManager") == 0)
@@ -1162,8 +1169,8 @@ public class ButtonClick : MonoBehaviour
         }
         else if (api.CompareTo("SetAudioPlaybackDevice") == 0)
         {
-            int r = app.audioPlaybackDeviceManager.SetAudioPlaybackDevice(getApiParam(1));
-            setApiReturn("SetAudioPlaybackDevice  " + r.ToString());
+            int r = app.audioPlaybackDeviceManager.SetAudioPlaybackDevice(deviceID);
+            setApiReturn("SetAudioPlaybackDevice  r = " + r.ToString() + "  , devcieId = " + deviceID);
         }
         else if (api.CompareTo("SetAudioPlaybackDeviceVolume") == 0)
         {
@@ -1185,6 +1192,12 @@ public class ButtonClick : MonoBehaviour
             bool r = app.audioPlaybackDeviceManager.IsAudioPlaybackDeviceMute();
             setApiReturn("IsAudioPlaybackDeviceMute  " + r.ToString());
         }
+        else if (api.CompareTo("GetCurrentPlaybackDevice") == 0)
+        {
+            string deviceId = "";
+            int r = app.audioPlaybackDeviceManager.GetCurrentPlaybackDevice(ref deviceId);
+            setApiReturn("GetCurrentPlaybackDevice  deviceId = " + deviceId);
+        }
         else if (api.CompareTo("StartAudioPlaybackDeviceTest") == 0)
         {
             int r = app.audioPlaybackDeviceManager.StartAudioPlaybackDeviceTest(getApiParam(1));
@@ -1197,7 +1210,7 @@ public class ButtonClick : MonoBehaviour
         }
         else if (api.CompareTo("CreatAAudioRecordingDeviceManager") == 0)
         {
-            bool r = app.audioRecordingoDeviceManager.CreatAAudioRecordingDeviceManager();
+            bool r = app.audioRecordingoDeviceManager.CreateAAudioRecordingDeviceManager();
             setApiReturn("CreatAAudioRecordingDeviceManager  " + r.ToString());
         }
         else if (api.CompareTo("ReleaseAAudioRecordingDeviceManager") == 0)
@@ -1218,17 +1231,33 @@ public class ButtonClick : MonoBehaviour
         else if (api.CompareTo("SetAudioRecordingDevice") == 0)
         {
             int r = app.audioRecordingoDeviceManager.SetAudioRecordingDevice(deviceID);
-            setApiReturn("SetAudioRecordingDevice  " + r.ToString());
+            setApiReturn("SetAudioRecordingDevice  r = " + r.ToString() + "  , deviceID = " + deviceID);
         }
         else if (api.CompareTo("StartAudioRecordingDeviceTest") == 0)
         {
             int r = app.audioRecordingoDeviceManager.StartAudioRecordingDeviceTest(int.Parse(getApiParam(1)));
             setApiReturn("SetAudioRecordingDevice  " + r.ToString());
         }
+        else if (api.CompareTo("GetCurrentRecordingDevice") == 0)
+        {
+            string deviceId = "";
+            int r = app.audioRecordingoDeviceManager.GetCurrentRecordingDevice(ref deviceId);
+            setApiReturn("GetCurrentRecordingDevice devieId = " + deviceId);
+        }
         else if (api.CompareTo("StopAudioRecordingDeviceTest") == 0)
         {
             int r = app.audioRecordingoDeviceManager.StopAudioRecordingDeviceTest();
             setApiReturn("StopAudioRecordingDeviceTest  " + r.ToString());
+        }
+        else if (api.CompareTo("CreateAVideoDeviceManager") == 0)
+        {
+            bool r = app.videoDeviceManager.CreateAVideoDeviceManager();
+            setApiReturn("CreateAVideoDeviceManager  r = " + r);
+        }
+        else if (api.CompareTo("ReleaseAVideoDeviceManager") == 0)
+        {
+            int r = app.videoDeviceManager.ReleaseAVideoDeviceManager();
+            setApiReturn("ReleaseAVideoDeviceManager r = " + r );
         }
         else if (api.CompareTo("StartVideoDeviceTest") == 0)
         {
@@ -1242,17 +1271,23 @@ public class ButtonClick : MonoBehaviour
         }
         else if (api.CompareTo("GetVideoDeviceCollectionCount") == 0)
         {
-            int r = app.videoDeviceManager.GetVideoDeviceCollectionCount();
+            int r = app.videoDeviceManager.GetVideoDeviceCount();
             setApiReturn("GetVideoDeviceCollectionCount  " + r.ToString());
         }
         else if (api.CompareTo("GetVideoDeviceCollectionDevice") == 0)
         {
-            int r = app.videoDeviceManager.GetVideoDeviceCollectionDevice(int.Parse(getApiParam(1)), ref deviceName, ref deviceID);
-            setApiReturn("GetVideoDeviceCollectionDevice  " + r.ToString());
+            int r = app.videoDeviceManager.GetVideoDeviceCollection(int.Parse(getApiParam(1)), ref deviceName, ref deviceID);
+            setApiReturn("GetVideoDeviceCollectionDevice deviceName = " + deviceName + " ,deviceId  = " + deviceID + r.ToString());
+        }
+        else if (api.CompareTo("GetCurrentVideoDevice") == 0)
+        {
+            string deviceId = "";
+            int r = app.videoDeviceManager.GetCurrentVideoDevice(ref deviceId);
+            setApiReturn("GetCurrentVideoDevice  deviceId = " + deviceId);
         }
         else if (api.CompareTo("SetVideoDeviceCollectionDevice") == 0)
         {
-            int r = app.videoDeviceManager.SetVideoDeviceCollectionDevice(deviceID);
+            int r = app.videoDeviceManager.SetVideoDevice(deviceID);
             setApiReturn("SetVideoDeviceCollectionDevice  " + r.ToString());
         }
         else if (api.CompareTo("RegisterMediaMetadataObserver") == 0)
@@ -1260,6 +1295,7 @@ public class ButtonClick : MonoBehaviour
             int r = app.metaDataObserver.RegisterMediaMetadataObserver((METADATA_TYPE)int.Parse(getApiParam(1)));
             setApiReturn("RegisterMediaMetadataObserver  " + r.ToString());
         }
+        
         else if (api.CompareTo("UnRegisterMediaMetadataObserver") == 0)
         {
             int r = app.metaDataObserver.UnRegisterMediaMetadataObserver();

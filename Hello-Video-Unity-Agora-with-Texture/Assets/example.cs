@@ -42,8 +42,6 @@ public class exampleApp : MonoBehaviour
 
         // init engine
         mRtcEngine = IRtcEngine.getEngine(mVendorKey);
-        mRtcEngine.SetChannelProfile(CHANNEL_PROFILE.GAME_COMMAND_MODE);
-        mRtcEngine.SetClientRole(CLIENT_ROLE.BROADCASTER);
         mRtcEngine.SetParameters("{\"rtc.log_filter\": 65535}");
         audioPlaybackDeviceManager = AudioPlaybackDeviceManager.GetInstance(mRtcEngine);
         audioRecordingoDeviceManager = AudioRecordingoDeviceManager.GetInstance(mRtcEngine);
@@ -76,7 +74,6 @@ public class exampleApp : MonoBehaviour
         mRtcEngine.OnRtcStats =  RtcStatsHandler;
         mRtcEngine.OnConnectionLost = ConnectionLostHandler;
         mRtcEngine.OnConnectionInterrupted = ConnectionInterruptedHandler;
-        mRtcEngine.OnUserOffline = UserOfflineHandler;
         mRtcEngine.OnVolumeIndication = VolumeIndicationHandler;
         mRtcEngine.OnUserMutedAudio = UserMutedAudioHandler;
         mRtcEngine.OnWarning = onWarning;
@@ -584,7 +581,7 @@ public class exampleApp : MonoBehaviour
         
     public Texture2D mTexture;
     public Rect mRect;
-	void cutScreen()
+	public void cutScreen()
 	{
 		//yield return new WaitForEndOfFrame();
         //videoBytes = Marshal.AllocHGlobal(Screen.width * Screen.height * 4);
@@ -614,11 +611,14 @@ public class exampleApp : MonoBehaviour
         }  
     private void onJoinChannelSuccess(string channelName, uint uid, int elapsed)
     {
-        // mRect = new Rect(0, 0, Screen.width, Screen.height);
-        // mTexture = new Texture2D((int)mRect.width, (int)mRect.height,TextureFormat.RGBA32 ,false);  
-        // cutScreen();
-        ExternalVideoFrame externalVideoFrame = new ExternalVideoFrame();
-        mRtcEngine.PushVideoFrame(externalVideoFrame);
+        mRect = new Rect(0, 0, Screen.width, Screen.height);
+        mTexture = new Texture2D((int)mRect.width, (int)mRect.height,TextureFormat.RGBA32 ,false);  
+        cutScreen();
+        // ExternalVideoFrame externalVideoFrame = new ExternalVideoFrame();
+        // externalVideoFrame.type = ExternalVideoFrame.VIDEO_BUFFER_TYPE.VIDEO_BUFFER_RAW_DATA;
+        // externalVideoFrame.format = ExternalVideoFrame.VIDEO_PIXEL_FORMAT.VIDEO_PIXEL_I420;
+        // externalVideoFrame.buffer = new byte[1024];
+        // mRtcEngine.PushVideoFrame(externalVideoFrame);
         logCallback("JoinChannelSuccessHandler: uid = " + uid);
         AudioFrame audioFrame = new AudioFrame();
         mRtcEngine.PushAudioFrame(audioFrame);
