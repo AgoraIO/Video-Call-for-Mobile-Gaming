@@ -1,33 +1,56 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine;
-#if(UNITY_2018_3_OR_NEWER)
+#if(UNITY_2018_3_OR_NEWER && UNITY_ANDROID)
 using UnityEngine.Android;
 #endif
+using agora_gaming_rtc;
 
-public class Home : MonoBehaviour {
+/// <summary>
+///    TestHome serves a game controller object for this application.
+/// </summary>
+public class TestHome : MonoBehaviour {
 
- 	private ArrayList permissionList = new ArrayList();
-	void Start ()
+	// Use this for initialization
+	#if(UNITY_2018_3_OR_NEWER && UNITY_ANDROID)
+    private ArrayList permissionList = new ArrayList();
+	#endif
+	static TestHelloUnityVideo app = null;
+
+	[SerializeField] private string HomeSceneName = "SceneHome";
+	[SerializeField]
+	private string PlaySceneName = "SceneHelloVideo";
+
+	// PLEASE KEEP THIS App ID IN SAFE PLACE
+	// Get your own App ID at https://dashboard.agora.io/
+	[SerializeField] private string AppID = "Your_AppId";
+	
+	void Awake ()
 	{         
-		#if(UNITY_2018_3_OR_NEWER)
+		#if(UNITY_2018_3_OR_NEWER && UNITY_ANDROID)
 		permissionList.Add(Permission.Microphone);         
 		permissionList.Add(Permission.Camera);               
 		#endif     
+		
+		// keep this alive across scenes
+		DontDestroyOnLoad(this.gameObject);
 	}
 	
-    private void CheckPermission()
+	void Start ()
+	{         
+		CheckPermissions();
+	}
+	
+	/// <summary>
+	///   Checks for platform dependent permissions.
+	/// </summary>
+    private void CheckPermissions()
     {
-        #if(UNITY_2018_3_OR_NEWER)
+        #if(UNITY_2018_3_OR_NEWER && UNITY_ANDROID)
         foreach(string permission in permissionList)
         {
-            if (Permission.HasUserAuthorizedPermission(permission))
-            {             
-
-			}
-            else
+            if (!Permission.HasUserAuthorizedPermission(permission))
             {                 
 				Permission.RequestUserPermission(permission);
 			}
@@ -35,54 +58,36 @@ public class Home : MonoBehaviour {
         #endif
     }
 
-    // Update is called once per frame
-    void Update ()
-	{         
-		#if(UNITY_2018_3_OR_NEWER)
-		CheckPermission();
-		#endif     
-	}
-
-	static HelloUnityVideo app = null;
-
-	private void onJoinButtonClicked() {
+	public void onJoinButtonClicked() {
 		// get parameters (channel name, channel profile, etc.)
 		GameObject go = GameObject.Find ("ChannelName");
 		InputField field = go.GetComponent<InputField>();
 
 		// create app if nonexistent
 		if (ReferenceEquals (app, null)) {
-			app = new HelloUnityVideo (); // create app
-			app.loadEngine (); // load engine
+			app = new TestHelloUnityVideo (); // create app
+			app.loadEngine (AppID); // load engine
 		}
 
 		// join channel and jump to next scene
 		app.join (field.text);
 		SceneManager.sceneLoaded += OnLevelFinishedLoading; // configure GameObject after scene is loaded
-		SceneManager.LoadScene ("SceneHelloVideo", LoadSceneMode.Single);
+		SceneManager.LoadScene (PlaySceneName, LoadSceneMode.Single);
 	}
 
-	private void onLeaveButtonClicked() {
+	public void onLeaveButtonClicked() {
 		if (!ReferenceEquals (app, null)) {
 			app.leave (); // leave channel
 			app.unloadEngine (); // delete engine
 			app = null; // delete app
-			SceneManager.LoadScene ("SceneHome", LoadSceneMode.Single);
+			SceneManager.LoadScene (HomeSceneName, LoadSceneMode.Single);
 		}
+		Destroy(gameObject);
 	}
 
-	public void onButtonClicked() {
-		// which GameObject?
-		if (name.CompareTo ("JoinButton") == 0) {
-			onJoinButtonClicked ();
-		}
-		else if(name.CompareTo ("LeaveButton") == 0) {
-			onLeaveButtonClicked ();
-		}
-	}
 
 	public void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode) {
-		if (scene.name.CompareTo("SceneHelloVideo") == 0) {
+		if (scene.name == PlaySceneName) {
 			if (!ReferenceEquals (app, null)) {
 				app.onSceneHelloVideoLoaded (); // call this after scene is loaded
 			}
@@ -110,9 +115,6 @@ public class Home : MonoBehaviour {
 
 	void OnApplicationQuit()
 	{
-		if(IRtcEngine.QueryEngine() != null)
-		{
-		 	IRtcEngine.Destroy();
-		 }
+		IRtcEngine.Destroy();
 	}
 }
