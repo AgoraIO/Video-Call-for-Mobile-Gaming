@@ -118,7 +118,7 @@ public class TestHelloUnityVideo {
 		}
 
 		// create a GameObject and assign to this new user
-		VideoSurface videoSurface = makeVideoSurface(uid.ToString());
+		VideoSurface videoSurface = makeImageSurface(uid.ToString());
 		if (!ReferenceEquals (videoSurface, null)) {
 			// configure videoSurface
 			videoSurface.SetForUser (uid);
@@ -127,7 +127,7 @@ public class TestHelloUnityVideo {
 		}
 	}
 
-	public VideoSurface makeVideoSurface(string goName)
+	public VideoSurface makePlaneSurface(string goName)
 	{
 		GameObject go = GameObject.CreatePrimitive (PrimitiveType.Plane);
 
@@ -147,8 +147,41 @@ public class TestHelloUnityVideo {
 		VideoSurface videoSurface = go.AddComponent<VideoSurface> ();
 		return videoSurface;
 	}
-	
-	
+
+	private const float Offset = 100;
+	public VideoSurface makeImageSurface(string goName)
+	{
+		GameObject go = new GameObject();
+
+		if (go == null)
+		{
+			return null;
+		}
+
+		go.name = goName;
+		
+		// to be renderered onto
+		go.AddComponent<RawImage>();
+		
+		// make the object draggable
+		go.AddComponent<UIElementDragger>();
+		
+		GameObject canvas = GameObject.Find("Canvas");
+		if (canvas != null)
+		{
+			go.transform.parent = canvas.transform;
+		}
+		// set up transform
+		go.transform.Rotate (0f, 0.0f, 180.0f);
+		float xPos = Random.Range (Offset - Screen.width/2f, Screen.width/2f - Offset);
+		float yPos = Random.Range (Offset, Screen.height/2f - Offset);
+		go.transform.localPosition = new Vector3 (xPos, yPos, 0f);
+		go.transform.localScale = new Vector3 (3f, 3f, 1f);
+		
+		// configure videoSurface
+		VideoSurface videoSurface = go.AddComponent<VideoSurface> ();
+		return videoSurface;
+	}	
 	// When remote user is offline, this delegate will be called. Typically
 	// delete the GameObject for this user
 	private void onUserOffline(uint uid, USER_OFFLINE_REASON reason)
