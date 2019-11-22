@@ -92,8 +92,6 @@ public class TestHelloUnityVideo {
 			Debug.Log ("BBBB: failed to find Cylinder");
 			return;
 		}
-		VideoSurface o = go.GetComponent<VideoSurface> ();
-		o.mAdjustTransfrom += onTransformDelegate;
 	}
 
 	// implement engine callbacks
@@ -122,7 +120,6 @@ public class TestHelloUnityVideo {
 		if (!ReferenceEquals (videoSurface, null)) {
 			// configure videoSurface
 			videoSurface.SetForUser (uid);
-			videoSurface.mAdjustTransfrom += onTransformDelegate;
 			videoSurface.SetEnable (true);
 		}
 	}
@@ -187,24 +184,11 @@ public class TestHelloUnityVideo {
 	private void onUserOffline(uint uid, USER_OFFLINE_REASON reason)
 	{
 		// remove video stream
-		Debug.Log ("onUserOffline: uid = " + uid);
+		Debug.Log ("onUserOffline: uid = " + uid + " reason = " + reason);
 		// this is called in main thread
 		GameObject go = GameObject.Find (uid.ToString());
 		if (!ReferenceEquals (go, null)) {
 			Object.Destroy (go);
-		}
-	}
-
-	// delegate: adjust transfrom for game object 'objName' connected with user 'uid'
-	// you could save information for 'uid' (e.g. which GameObject is attached)
-	private void onTransformDelegate (uint uid, string objName, ref Transform transform)
-	{
-		if (uid == 0) {
-			transform.position = new Vector3 (0f, 2f, 0f);
-			transform.localScale = new Vector3 (2.0f, 2.0f, 1.0f);
-			transform.Rotate (0f, 1f, 0f);
-		} else {
-			transform.Rotate (0.0f, 1.0f, 0.0f);
 		}
 	}
 }
