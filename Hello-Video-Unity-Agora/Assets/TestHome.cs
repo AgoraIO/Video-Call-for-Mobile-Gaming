@@ -39,7 +39,13 @@ public class TestHome : MonoBehaviour {
 	
 	void Start ()
 	{         
+		CheckAppId();
 		CheckPermissions();
+	}
+
+	private void CheckAppId()
+	{
+		Debug.Assert(AppID.Length > 10, "Please fill in your AppId first on Game Controller object.");
 	}
 	
 	/// <summary>
