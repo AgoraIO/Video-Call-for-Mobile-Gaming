@@ -97,7 +97,6 @@ public class HelloUnityVideo : MonoBehaviour {
 			return;
 		}
 		VideoSurface o = go.GetComponent<VideoSurface> ();
-		o.mAdjustTransfrom += onTransformDelegate;
 	}
 
 	// instance of agora engine
@@ -135,7 +134,6 @@ public class HelloUnityVideo : MonoBehaviour {
 			// configure videoSurface
 			VideoSurface o = go.AddComponent<VideoSurface> ();
 			o.SetForUser (uid);
-			o.mAdjustTransfrom += onTransformDelegate;
 			o.SetEnable (true);
 			o.transform.Rotate (-90.0f, 0.0f, 0.0f);
 			float r = Random.Range (-5.0f, 5.0f);
@@ -156,19 +154,6 @@ public class HelloUnityVideo : MonoBehaviour {
 		GameObject go = GameObject.Find (uid.ToString());
 		if (!ReferenceEquals (go, null)) {
 			Destroy (go);
-		}
-	}
-
-	// delegate: adjust transfrom for game object 'objName' connected with user 'uid'
-	// you could save information for 'uid' (e.g. which GameObject is attached)
-	private void onTransformDelegate (uint uid, string objName, ref Transform transform)
-	{
-		if (uid == 0) {
-			transform.position = new Vector3 (0f, 2f, 0f);
-			transform.localScale = new Vector3 (2.0f, 2.0f, 1.0f);
-			transform.Rotate (0f, 1f, 0f);
-		} else {
-			transform.Rotate (0.0f, 1.0f, 0.0f);
 		}
 	}
 }
