@@ -89,4 +89,30 @@ public class Home : MonoBehaviour {
 			SceneManager.sceneLoaded -= OnLevelFinishedLoading;
 		}
 	}
+
+	void OnApplicationPause(bool paused)
+	{
+		if (paused)
+		{
+			if(IRtcEngine.QueryEngine() != null)
+			{
+				IRtcEngine.QueryEngine().DisableVideo();
+			}
+		}
+		else
+		{
+			if(IRtcEngine.QueryEngine() != null)
+			{
+				IRtcEngine.QueryEngine().EnableVideo();
+			}
+		}
+	}
+
+	void OnApplicationQuit()
+	{
+		if(IRtcEngine.QueryEngine() != null)
+		{
+		 	IRtcEngine.Destroy();
+		 }
+	}
 }

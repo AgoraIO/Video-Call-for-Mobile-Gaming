@@ -28,6 +28,7 @@ public class ButtonClick : MonoBehaviour
         options.Add("SetAudioProfile"); 
         options.Add("leaveChannel");
         options.Add("JoinChannel");
+        options.Add("SetDefaultEngineSettings");
         options.Add("SetChannelProfile");
         options.Add("EnableDualStreamMode");
         options.Add("GetCallId");
@@ -88,9 +89,14 @@ public class ButtonClick : MonoBehaviour
         options.Add("SetAudioMixingPosition");
         options.Add("StartAudioMixing");
         options.Add("StopAudioMixing");
+        options.Add("GetAudioMixingPlayoutVolume");
+        options.Add("GetAudioMixingPublishVolume");
+        options.Add("GetAudioMixingDuration");
         options.Add("PauseAudioMixing");
         options.Add("ResumeAudioMixing");
         options.Add("AdjustAudioMixingVolume");
+        options.Add("AdjustAudioMixingPlayoutVolume");
+        options.Add("AdjustAudioMixingPublishVolume");
         options.Add("GetAudioMixingCurrentPosition");
         options.Add("StartAudioRecording");
         options.Add("StopAudioRecording");
@@ -98,8 +104,6 @@ public class ButtonClick : MonoBehaviour
         options.Add("DisableLastmileTest");
         options.Add("GetConnectionState");
         options.Add("SetVideoEncoderConfiguration");
-        options.Add("AdjustAudioMixingPlayoutVolume");
-        options.Add("AdjustAudioMixingPublishVolume");
         options.Add("SetVolumeOfEffect");
         options.Add("SetRecordingAudioFrameParameters");
         options.Add("SetPlaybackAudioFrameParameters");
@@ -110,8 +114,6 @@ public class ButtonClick : MonoBehaviour
         options.Add("SetExternalAudioSource");
         options.Add("PushAudioFrame");
         options.Add("PushAudioFrame2");
-        options.Add("GetAudioMixingPlayoutVolume");
-        options.Add("GetAudioMixingPublishVolume");
         options.Add("EnableSoundPositionIndication");
         options.Add("SetLocalVoiceChanger");
         options.Add("SetLocalVoiceReverbPreset");
@@ -163,6 +165,10 @@ public class ButtonClick : MonoBehaviour
         options.Add("ReleaseAAudioRecordingDeviceManager");
         options.Add("GetAudioRecordingDeviceCount");
         options.Add("GetAudioRecordingDevice");
+        options.Add("GetAudioRecordingDeviceVolume");
+        options.Add("SetAudioRecordingDeviceVolume");
+        options.Add("IsAudioRecordingDeviceMute");
+        options.Add("SetAudioRecordingDeviceMute");
         options.Add("GetCurrentRecordingDevice");
         options.Add("SetAudioRecordingDevice");
         options.Add("StartAudioRecordingDeviceTest");
@@ -394,13 +400,13 @@ public class ButtonClick : MonoBehaviour
             switch (num)
             {
                 case 0:
-                    chProfile = agora_gaming_rtc.CHANNEL_PROFILE.GAME_FREE_MODE;
+                    chProfile = agora_gaming_rtc.CHANNEL_PROFILE.CHANNEL_PROFILE_COMMUNICATION;
                     break;
                 case 1:
-                    chProfile = agora_gaming_rtc.CHANNEL_PROFILE.GAME_COMMAND_MODE;
+                    chProfile = agora_gaming_rtc.CHANNEL_PROFILE.CHANNEL_PROFILE_LIVE_BROADCASTING;
                     break;
                 default:
-                    chProfile = agora_gaming_rtc.CHANNEL_PROFILE.GAME_FREE_MODE;
+                    chProfile = agora_gaming_rtc.CHANNEL_PROFILE.CHANNEL_PROFILE_GAME;
                     break;
             }
 
@@ -416,6 +422,11 @@ public class ButtonClick : MonoBehaviour
         {
             int r = app.mRtcEngine.JoinChannel(getApiParam(1), "", 0);
             setApiReturn("JoinChannel " + r.ToString());
+        }
+        else if (api.CompareTo("SetDefaultEngineSettings") == 0)
+        {
+            int r = app.mRtcEngine.SetDefaultEngineSettings();
+            setApiReturn("SetDefaultEngineSettings " + r.ToString());
         }
         else if (api.CompareTo("SetClientRole") == 0)
         {
@@ -464,7 +475,7 @@ public class ButtonClick : MonoBehaviour
             int profile = int.Parse(sArray[0]);//getApiParamInt (1);
             int swap = sArray[2].CompareTo("true") == 0 ? 1 : 0;//getApiParamInt (2);
 
-            int r = app.mRtcEngine.SetVideoProfile(profile, (swap != 0));
+            int r = app.mRtcEngine.SetVideoProfile((VIDEO_PROFILE_TYPE)profile, (swap != 0));
             setApiReturn("SetVideoProfile " + r.ToString());
         }
         else if (api.CompareTo("MuteLocalVideoStream") == 0)
@@ -784,7 +795,7 @@ public class ButtonClick : MonoBehaviour
         }
         else if (api.CompareTo("StartAudioMixing") == 0)
         {
-            int r = app.mRtcEngine.StartAudioMixing("", true, true, 1, 1);
+            int r = app.mRtcEngine.StartAudioMixing(getApiParam(1), true, true, 1, 1);
             setApiReturn("StartAudioMixing " + r.ToString());
         }
         else if (api.CompareTo("StopAudioMixing") == 0)
@@ -839,7 +850,7 @@ public class ButtonClick : MonoBehaviour
         }
         else if (api.CompareTo("GetConnectionState") == 0)
         {
-            int r = app.mRtcEngine.GetConnectionState();
+            int r = (int)app.mRtcEngine.GetConnectionState();
             setApiReturn("GetConnectionState " + r.ToString());
         }
         else if (api.CompareTo("SetAudioProfile") == 0)
@@ -890,12 +901,12 @@ public class ButtonClick : MonoBehaviour
         }
         else if (api.CompareTo("SetLocalPublishFallbackOption") == 0)
         {
-            int r = app.mRtcEngine.SetLocalPublishFallbackOption(int.Parse(getApiParam(1)));
+            int r = app.mRtcEngine.SetLocalPublishFallbackOption((STREAM_FALLBACK_OPTIONS)int.Parse(getApiParam(1)));
             setApiReturn("SetLocalPublishFallbackOption " + r.ToString());
         }
         else if (api.CompareTo("SetRemoteSubscribeFallbackOption") == 0)
         {
-            int r = app.mRtcEngine.SetRemoteSubscribeFallbackOption(int.Parse(getApiParam(1)));
+            int r = app.mRtcEngine.SetRemoteSubscribeFallbackOption((STREAM_FALLBACK_OPTIONS)int.Parse(getApiParam(1)));
             setApiReturn("SetRemoteSubscribeFallbackOption " + r.ToString());
         }
         else if (api.CompareTo("SetRemoteDefaultVideoStreamType") == 0)
@@ -931,15 +942,18 @@ public class ButtonClick : MonoBehaviour
         else if (api.CompareTo("PushAudioFrame2") == 0)
         {
             AudioFrame audioFrame = new AudioFrame();
-            audioFrame.type = AUDIO_FRAME_TYPE.FRAME_TYPE_PCM16;
-            audioFrame.buffer = new byte[10];
-            int r = app.mRtcEngine.PushAudioFrame2(MEDIA_SOURCE_TYPE.AUDIO_PLAYOUT_SOURCE, audioFrame, false);
+            int r = app.mRtcEngine.PushAudioFrame2(MEDIA_SOURCE_TYPE.AUDIO_PLAYOUT_SOURCE, audioFrame, true);
             setApiReturn("PushAudioFrame2 " + r.ToString());
         }
         else if (api.CompareTo("GetAudioMixingPlayoutVolume") == 0)
         {
-            int r = app.mRtcEngine.GetAudioMixingPublishVolume();
+            int r = app.mRtcEngine.GetAudioMixingPlayoutVolume();
             setApiReturn("GetAudioMixingPlayoutVolume " + r.ToString());
+        }
+        else if (api.CompareTo("GetAudioMixingPublishVolume") == 0)
+        {
+            int r = app.mRtcEngine.GetAudioMixingPublishVolume();
+            setApiReturn("GetAudioMixingPublishVolume  r = " + r);
         }
         else if (api.CompareTo("EnableSoundPositionIndication") == 0)
         {
@@ -1026,7 +1040,7 @@ public class ButtonClick : MonoBehaviour
         }
         else if (api.CompareTo("SetScreenCaptureContentHint") == 0)
         {
-            int r = app.mRtcEngine.SetScreenCaptureContentHint(int.Parse(getApiParam(1)));
+            int r = app.mRtcEngine.SetScreenCaptureContentHint((VideoContentHint)int.Parse(getApiParam(1)));
             setApiReturn("SetScreenCaptureContentHint " + r.ToString());
         }
         else if (api.CompareTo("UpdateScreenCaptureParameters") == 0)
@@ -1046,7 +1060,7 @@ public class ButtonClick : MonoBehaviour
         }
         else if (api.CompareTo("EnableLoopbackRecording") == 0)
         {
-            int r = app.mRtcEngine.EnableLoopbackRecording(int.Parse(getApiParam(1)) != 0);
+            int r = app.mRtcEngine.EnableLoopbackRecording(int.Parse(getApiParam(1)) != 0, getApiParam(2));
             setApiReturn("EnableLoopbackRecording " + r.ToString());
         }   
         else if (api.CompareTo("SetAudioSessionOperationRestriction") == 0)
@@ -1089,7 +1103,7 @@ public class ButtonClick : MonoBehaviour
             channelMediaRelayConfiguration.srcInfo = src;
             channelMediaRelayConfiguration.destInfos = dest;
             channelMediaRelayConfiguration.destCount = 1;
-            int r = app.mRtcEngine.updateChannelMediaRelay(channelMediaRelayConfiguration);
+            int r = app.mRtcEngine.UpdateChannelMediaRelay(channelMediaRelayConfiguration);
             setApiReturn("updateChannelMediaRelay " + r.ToString());
         }
         else if (api.CompareTo("StopChannelMediaRelay") == 0)
@@ -1243,6 +1257,25 @@ public class ButtonClick : MonoBehaviour
             string deviceId = "";
             int r = app.audioRecordingoDeviceManager.GetCurrentRecordingDevice(ref deviceId);
             setApiReturn("GetCurrentRecordingDevice devieId = " + deviceId);
+        }
+        else if (api.CompareTo("GetAudioRecordingDeviceVolume") == 0)
+        {
+            int r = app.audioRecordingoDeviceManager.GetAudioRecordingDeviceVolume();
+            setApiReturn("GetAudioRecordingDeviceVolume volume = " + r);
+        }
+        else if (api.CompareTo("SetAudioRecordingDeviceVolume") == 0)
+        {
+            int r = app.audioRecordingoDeviceManager.SetAudioRecordingDeviceVolume(int.Parse(getApiParam(1)));
+            setApiReturn("SetAudioRecordingDeviceVolume r = " + r);
+        }
+        else if (api.CompareTo("IsAudioRecordingDeviceMute") == 0)
+        {
+            bool r = app.audioRecordingoDeviceManager.IsAudioRecordingDeviceMute();
+            setApiReturn("IsAudioRecordingDeviceMute r = " + r);
+        }
+        else if (api.CompareTo("SetAudioRecordingDeviceMute") == 0)
+        {
+            int r = app.audioRecordingoDeviceManager.SetAudioRecordingDeviceMute(int.Parse(getApiParam(1))!=0);
         }
         else if (api.CompareTo("StopAudioRecordingDeviceTest") == 0)
         {

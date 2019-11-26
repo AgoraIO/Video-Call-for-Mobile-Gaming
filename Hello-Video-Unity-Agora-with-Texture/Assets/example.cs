@@ -42,6 +42,7 @@ public class exampleApp : MonoBehaviour
 
         // init engine
         mRtcEngine = IRtcEngine.getEngine(mVendorKey);
+        mRtcEngine.SetLogFile("/sdcard/test.agora.zhang/agora_sdk.log");
         mRtcEngine.SetParameters("{\"rtc.log_filter\": 65535}");
         audioPlaybackDeviceManager = AudioPlaybackDeviceManager.GetInstance(mRtcEngine);
         audioRecordingoDeviceManager = AudioRecordingoDeviceManager.GetInstance(mRtcEngine);
@@ -127,7 +128,6 @@ public class exampleApp : MonoBehaviour
         metaDataObserver._OnMediaMetaDataReceived = OnMediaMetaDataReceivedHandler;
         metaDataObserver._OnReadyToSendMetadata = OnReadyToSend;
         metaDataObserver._OnGetMaxMetadataSize = OnGetMaxSize;
-
         // enable video
         mRtcEngine.EnableVideo();
         // mRtcEngine.EnableVideoObserver();
@@ -162,8 +162,6 @@ public class exampleApp : MonoBehaviour
 
     bool OnReceiveAudioPacketHandler(Packet packet)
     {
-        //string str = System.Text.Encoding.Default.GetString (packet.buffer);
-        //logCallback("OnReceiveAudioPacketHandler  buffer = " + "  ,size = " + packet.size);
         return true;
     }
 
@@ -267,7 +265,7 @@ public class exampleApp : MonoBehaviour
     }
 
 
-    void OnRemoteVideoStateChangedHandler(uint uid, int state)
+    void OnRemoteVideoStateChangedHandler(uint uid, REMOTE_VIDEO_STATE state, REMOTE_VIDEO_STATE_REASON reason, int elapsed)
     {
         logCallback("OnRemoteVideoStateChangedHandler  uid = " + uid + " ,state = " + state);
     }
@@ -307,9 +305,9 @@ public class exampleApp : MonoBehaviour
         logCallback("OnActiveSpeakerHandler  uid = " + uid);
     }
 
-    void OnConnectionStateChangedHandler(int state, int reason)
+    void OnConnectionStateChangedHandler(CONNECTION_STATE_TYPE state, CONNECTION_CHANGED_REASON_TYPE reason)
     {
-        logCallback("OnConnectionStateChangedHandler  state = " + state + " ,reason = " + reason);
+        logCallback("OnConnectionStateChangedHandler  state = " + (int)state + " ,reason = " + (int)reason);
     }
 
 
@@ -381,7 +379,7 @@ public class exampleApp : MonoBehaviour
         logCallback("OnUserMuteVideoHandler  uid = " + uid + "  ,muted = " + muted);
     }
 
-    void OnClientRoleChangedHandler(int oldRole, int newRole)
+    void OnClientRoleChangedHandler(CLIENT_ROLE_TYPE oldRole, CLIENT_ROLE_TYPE newRole)
     {
         logCallback("OnClientRoleChangedHandler oldRole = " + oldRole + " ,newRole = " + newRole);
     }
@@ -561,7 +559,7 @@ public class exampleApp : MonoBehaviour
 
     // instance of agora engine
     public IRtcEngine mRtcEngine;
-    public static string mVendorKey = "";
+    public static string mVendorKey = #YOUR_APPID;
 
     // implement engine callbacks
 
@@ -613,7 +611,7 @@ public class exampleApp : MonoBehaviour
     {
         mRect = new Rect(0, 0, Screen.width, Screen.height);
         mTexture = new Texture2D((int)mRect.width, (int)mRect.height,TextureFormat.RGBA32 ,false);  
-        cutScreen();
+       // cutScreen();
         // ExternalVideoFrame externalVideoFrame = new ExternalVideoFrame();
         // externalVideoFrame.type = ExternalVideoFrame.VIDEO_BUFFER_TYPE.VIDEO_BUFFER_RAW_DATA;
         // externalVideoFrame.format = ExternalVideoFrame.VIDEO_PIXEL_FORMAT.VIDEO_PIXEL_I420;
@@ -646,7 +644,7 @@ public class exampleApp : MonoBehaviour
 
             VideoSurface o = go.AddComponent<VideoSurface>();
             o.SetForUser(uid);
-            o.mAdjustTransfrom += onTransformDelegate;
+            //o.mAdjustTransfrom += onTransformDelegate;
             o.SetEnable(true);
             o.transform.Rotate(-90.0f, 0.0f, 0.0f);
             float r = UnityEngine.Random.Range(-5.0f, 5.0f);
