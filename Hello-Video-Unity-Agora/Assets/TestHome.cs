@@ -18,13 +18,16 @@ public class TestHome : MonoBehaviour {
 	#endif
 	static TestHelloUnityVideo app = null;
 
-	[SerializeField] private string HomeSceneName = "SceneHome";
+	[SerializeField] 
+	private string HomeSceneName = "SceneHome";
+	
 	[SerializeField]
 	private string PlaySceneName = "SceneHelloVideo";
 
 	// PLEASE KEEP THIS App ID IN SAFE PLACE
 	// Get your own App ID at https://dashboard.agora.io/
-	[SerializeField] private string AppID = "Your_AppId";
+	[SerializeField]
+	private string AppID = "your_appid";
 	
 	void Awake ()
 	{         
@@ -91,7 +94,6 @@ public class TestHome : MonoBehaviour {
 		Destroy(gameObject);
 	}
 
-
 	public void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode) {
 		if (scene.name == PlaySceneName) {
 			if (!ReferenceEquals (app, null)) {
@@ -103,24 +105,17 @@ public class TestHome : MonoBehaviour {
 
 	void OnApplicationPause(bool paused)
 	{
-		if (paused)
+		if (!ReferenceEquals(app, null))
 		{
-			if(IRtcEngine.QueryEngine() != null)
-			{
-				IRtcEngine.QueryEngine().DisableVideo();
-			}
-		}
-		else
-		{
-			if(IRtcEngine.QueryEngine() != null)
-			{
-				IRtcEngine.QueryEngine().EnableVideo();
-			}
+			app.EnableVideo(paused);
 		}
 	}
 
 	void OnApplicationQuit()
 	{
-		IRtcEngine.Destroy();
+		if (!ReferenceEquals(app, null))
+		{
+			app.unloadEngine();
+		}
 	}
 }

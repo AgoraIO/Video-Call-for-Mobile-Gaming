@@ -24,7 +24,7 @@ public class TestHelloUnityVideo {
 		}
 
 		// init engine
-		mRtcEngine = IRtcEngine.getEngine (appId);
+		mRtcEngine = IRtcEngine.GetEngine (appId);
 
 		// enable log
 		mRtcEngine.SetLogFilter (LOG_FILTER.DEBUG | LOG_FILTER.INFO | LOG_FILTER.WARNING | LOG_FILTER.ERROR | LOG_FILTER.CRITICAL);
@@ -44,7 +44,6 @@ public class TestHelloUnityVideo {
 
 		// enable video
 		mRtcEngine.EnableVideo();
-
 		// allow camera output callback
 		mRtcEngine.EnableVideoObserver();
 
@@ -80,6 +79,22 @@ public class TestHelloUnityVideo {
 		if (mRtcEngine != null) {
 			IRtcEngine.Destroy ();  // Place this call in ApplicationQuit
 			mRtcEngine = null;
+		}
+	}
+
+
+	public void EnableVideo(bool pauseVideo)
+	{
+		if (mRtcEngine != null)
+		{
+			if (!pauseVideo)
+			{
+				mRtcEngine.EnableVideo();
+			}
+			else 
+			{
+				mRtcEngine.DisableVideo();
+			}
 		}
 	}
 
@@ -121,6 +136,8 @@ public class TestHelloUnityVideo {
 			// configure videoSurface
 			videoSurface.SetForUser (uid);
 			videoSurface.SetEnable (true);
+			videoSurface.SetVideoSurfaceType(AgoraVideoSurfaceType.RawImage);
+			videoSurface.SetGameFps(30);
 		}
 	}
 
@@ -162,7 +179,6 @@ public class TestHelloUnityVideo {
 		
 		// make the object draggable
 		go.AddComponent<UIElementDragger>();
-		
 		GameObject canvas = GameObject.Find("Canvas");
 		if (canvas != null)
 		{
