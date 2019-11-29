@@ -941,9 +941,9 @@ public class ButtonClick : MonoBehaviour
         }
         else if (api.CompareTo("PushAudioFrame2") == 0)
         {
-            AudioFrame audioFrame = new AudioFrame();
-            int r = app.mRtcEngine.PushAudioFrame2(MEDIA_SOURCE_TYPE.AUDIO_PLAYOUT_SOURCE, audioFrame, true);
-            setApiReturn("PushAudioFrame2 " + r.ToString());
+            // AudioFrame audioFrame = new AudioFrame();
+            // int r = app.mRtcEngine.PushAudioFrame2(MEDIA_SOURCE_TYPE.AUDIO_PLAYOUT_SOURCE, audioFrame, true);
+            // setApiReturn("PushAudioFrame2 " + r.ToString());
         }
         else if (api.CompareTo("GetAudioMixingPlayoutVolume") == 0)
         {
