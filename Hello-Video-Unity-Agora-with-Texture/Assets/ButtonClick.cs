@@ -1309,7 +1309,7 @@ public class ButtonClick : MonoBehaviour
         }
         else if (api.CompareTo("GetVideoDeviceCollectionDevice") == 0)
         {
-            int r = app.videoDeviceManager.GetVideoDeviceCollection(int.Parse(getApiParam(1)), ref deviceName, ref deviceID);
+            int r = app.videoDeviceManager.GetVideoDevice(int.Parse(getApiParam(1)), ref deviceName, ref deviceID);
             setApiReturn("GetVideoDeviceCollectionDevice deviceName = " + deviceName + " ,deviceId  = " + deviceID + r.ToString());
         }
         else if (api.CompareTo("GetCurrentVideoDevice") == 0)
