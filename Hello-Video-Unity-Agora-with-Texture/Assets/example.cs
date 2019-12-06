@@ -44,6 +44,7 @@ public class exampleApp : MonoBehaviour
         mRtcEngine = IRtcEngine.getEngine(mVendorKey);
         mRtcEngine.SetLogFile("/sdcard/test.agora.zhang/agora_sdk.log");
         mRtcEngine.SetParameters("{\"rtc.log_filter\": 65535}");
+        mRtcEngine.SetVideoProfile(VIDEO_PROFILE_TYPE.VIDEO_PROFILE_PORTRAIT_480P_6, true);
         audioPlaybackDeviceManager = AudioPlaybackDeviceManager.GetInstance(mRtcEngine);
         audioRecordingoDeviceManager = AudioRecordingoDeviceManager.GetInstance(mRtcEngine);
         videoDeviceManager = VideoDeviceManager.GetInstance(mRtcEngine);
@@ -120,7 +121,7 @@ public class exampleApp : MonoBehaviour
         audioRawDataManager.SetOnPlaybackAudioFrameBeforeMixingCallback(OnPlaybackAudioFrameBeforeMixingHandler);
         audioRawDataManager.SetOnPlaybackAudioFrameCallback(OnPlaybackAudioFrameHandler);
         audioRawDataManager.SetOnRecordAudioFrameCallback(OnRecordAudioFrameHandler);
-        audioRawDataManager.SetOnPullAudioFrameCallback(OnPullAudioFrameHandler);
+       // audioRawDataManager.SetOnPullAudioFrameCallback(OnPullAudioFrameHandler);
         packetObserver._OnReceiveAudioPacket = OnReceiveAudioPacketHandler;
         packetObserver._OnReceiveVideoPacket = OnReceiveVideoPacketHandler;
         packetObserver._OnSendAudioPacket = OnSendAudioPacketCallback;
@@ -559,7 +560,7 @@ public class exampleApp : MonoBehaviour
 
     // instance of agora engine
     public IRtcEngine mRtcEngine;
-    public static string mVendorKey = #YOUR_APPID;
+    public static string mVendorKey = "";
 
     // implement engine callbacks
 
@@ -635,7 +636,6 @@ public class exampleApp : MonoBehaviour
         {
             return; // reuse
         }
-
 
         go = GameObject.CreatePrimitive(PrimitiveType.Plane);
         if (!ReferenceEquals(go, null))

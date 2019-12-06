@@ -6,13 +6,17 @@ using UnityEngine;
 using agora_gaming_rtc;
 using System.Runtime.InteropServices;
 using System.IO;
+using System;
 
 public class ButtonClick : MonoBehaviour
 {
 
     string deviceName = "";
     string deviceID = "";
+    IntPtr audioBuffer = IntPtr.Zero;
     // Use this for initialization
+    int sampleRate = 0;
+    int channels = 0;
 
     void Start()
     {
@@ -99,6 +103,7 @@ public class ButtonClick : MonoBehaviour
         options.Add("AdjustAudioMixingPublishVolume");
         options.Add("GetAudioMixingCurrentPosition");
         options.Add("StartAudioRecording");
+        options.Add("StartAudioRecording2");
         options.Add("StopAudioRecording");
         options.Add("EnableLastmileTest");
         options.Add("DisableLastmileTest");
@@ -830,8 +835,12 @@ public class ButtonClick : MonoBehaviour
         }
         else if (api.CompareTo("StartAudioRecording") == 0)
         {
-            int r = app.mRtcEngine.StartAudioRecording("/sdcard/test.wav");
+            int r = app.mRtcEngine.StartAudioRecording("/sdcard/test.wav", AUDIO_RECORDING_QUALITY_TYPE.AUDIO_RECORDING_QUALITY_HIGH);
             setApiReturn("StartAudioRecording " + r.ToString());
+        }
+        else if (api.CompareTo("StartAudioRecording2") == 0)
+        {
+            int r = app.mRtcEngine.StartAudioRecording("/sdcard/test.wav", 16000, AUDIO_RECORDING_QUALITY_TYPE.AUDIO_RECORDING_QUALITY_HIGH);
         }
         else if (api.CompareTo("StopAudioRecording") == 0)
         {
@@ -1006,6 +1015,14 @@ public class ButtonClick : MonoBehaviour
         else if (api.CompareTo("SetExternalAudioSink") == 0)
         {
             int r = app.mRtcEngine.SetExternalAudioSink(int.Parse(getApiParam(1))!=0, int.Parse(getApiParam(2)), int.Parse(getApiParam(3)));
+            if (audioBuffer != IntPtr.Zero)
+            {
+                Marshal.FreeHGlobal(audioBuffer);
+                audioBuffer = IntPtr.Zero; 
+            }
+            audioBuffer = Marshal.AllocHGlobal(int.Parse(getApiParam(2)) * 2 * int.Parse(getApiParam(3)) * 1000/100 * sizeof(Byte));
+            sampleRate = int.Parse(getApiParam(2));
+            channels = int.Parse(getApiParam(3));
             setApiReturn("SetExternalAudioSink " + r.ToString());
         }
         else if (api.CompareTo("RegisterLocalUserAccount") == 0)
@@ -1157,8 +1174,12 @@ public class ButtonClick : MonoBehaviour
             setApiReturn("UnRegisterAudioRawDataObserver  " + r.ToString());
         }
         else if (api.CompareTo("PullAudioFrame") == 0)
-        {
-            int r = app.audioRawDataManager.PullAudioFrame();
+        { 
+            int r = -1;
+            if (audioBuffer != IntPtr.Zero)
+            {
+                r = app.audioRawDataManager.PullAudioFrame(audioBuffer, sampleRate * 500, 2, channels, 2000);
+            }  
             setApiReturn("PullAudioFrame  " + r.ToString());
         }
         else if (api.CompareTo("CreatAAudioPlaybackDeviceManager") == 0)
