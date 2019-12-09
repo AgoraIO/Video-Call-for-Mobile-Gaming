@@ -17,7 +17,7 @@ public class exampleApp : MonoBehaviour
 {
 
     public AudioPlaybackDeviceManager audioPlaybackDeviceManager;
-    public AudioRecordingoDeviceManager audioRecordingoDeviceManager;
+    public AudioRecordingDeviceManager audioRecordingoDeviceManager;
     public VideoDeviceManager videoDeviceManager;
     public MetadataObserver metaDataObserver;
     public PacketObserver packetObserver;
@@ -49,7 +49,7 @@ public class exampleApp : MonoBehaviour
         mRtcEngine.SetParameters("{\"rtc.log_filter\": 65535}");
         mRtcEngine.SetVideoProfile(VIDEO_PROFILE_TYPE.VIDEO_PROFILE_PORTRAIT_480P_6, true);
         audioPlaybackDeviceManager = AudioPlaybackDeviceManager.GetInstance(mRtcEngine);
-        audioRecordingoDeviceManager = AudioRecordingoDeviceManager.GetInstance(mRtcEngine);
+        audioRecordingoDeviceManager = AudioRecordingDeviceManager.GetInstance(mRtcEngine);
         videoDeviceManager = VideoDeviceManager.GetInstance(mRtcEngine);
         metaDataObserver = MetadataObserver.GetInstance(mRtcEngine);
         packetObserver = PacketObserver.GetInstance(mRtcEngine);
@@ -568,7 +568,7 @@ public class exampleApp : MonoBehaviour
     // implement engine callbacks
 
     public uint mRemotePeer = 0; // insignificant. only record one peer
-    public IntPtr audioBuffer = IntPtr.Zero;
+    public IntPtr audioBuffer = Marshal.AllocHGlobal((44100/100 * 2 * 2 * 10 * 8));
     // Use this for initialization
     public int sampleRate = 0;
     public int channels = 0;

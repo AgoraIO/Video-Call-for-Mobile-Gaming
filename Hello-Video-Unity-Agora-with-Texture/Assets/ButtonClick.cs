@@ -1012,14 +1012,14 @@ public class ButtonClick : MonoBehaviour
         else if (api.CompareTo("SetExternalAudioSink") == 0)
         {
             int r = app.mRtcEngine.SetExternalAudioSink(int.Parse(getApiParam(1))!=0, int.Parse(getApiParam(2)), int.Parse(getApiParam(3)));
-            if (app.audioBuffer != IntPtr.Zero)
-            {
-                Marshal.FreeHGlobal(app.audioBuffer);
-                app.audioBuffer = IntPtr.Zero; 
-            }
-            app.audioBuffer = Marshal.AllocHGlobal(int.Parse(getApiParam(2)) * 2 * int.Parse(getApiParam(3)) * 1000/100 * sizeof(Byte));
-            app.sampleRate = int.Parse(getApiParam(2));
-            app.channels = int.Parse(getApiParam(3));
+            // if (app.audioBuffer != IntPtr.Zero)
+            // {
+            //     Marshal.FreeHGlobal(app.audioBuffer);
+            //     app.audioBuffer = IntPtr.Zero; 
+            // }
+            // app.audioBuffer = Marshal.AllocHGlobal(int.Parse(getApiParam(2)) * 2 * int.Parse(getApiParam(3)) * 1000/100 * sizeof(Byte));
+            // app.sampleRate = int.Parse(getApiParam(2));
+            // app.channels = int.Parse(getApiParam(3));
             setApiReturn("SetExternalAudioSink " + int.Parse(getApiParam(2)) * 2 * int.Parse(getApiParam(3)) * 1000/100 * sizeof(Byte) + "     audiobuffer = " + (app.audioBuffer == IntPtr.Zero));
         }
         else if (api.CompareTo("RegisterLocalUserAccount") == 0)
@@ -1180,7 +1180,7 @@ public class ButtonClick : MonoBehaviour
             int r = 100;
             if (app.audioBuffer != IntPtr.Zero)
             {
-                r = app.audioRawDataManager.PullAudioFrame(app.audioBuffer, app.sampleRate * 500, 2, app.channels, 2000);
+                r = app.audioRawDataManager.PullAudioFrame(app.audioBuffer, 0, app.sampleRate, 2, app.channels, 2000, 18928393, 0);
             }  
             setApiReturn("PullAudioFrame  " + r.ToString());
         }
