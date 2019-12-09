@@ -13,10 +13,7 @@ public class ButtonClick : MonoBehaviour
 
     string deviceName = "";
     string deviceID = "";
-    IntPtr audioBuffer = IntPtr.Zero;
-    // Use this for initialization
-    int sampleRate = 0;
-    int channels = 0;
+
 
     void Start()
     {
@@ -840,7 +837,7 @@ public class ButtonClick : MonoBehaviour
         }
         else if (api.CompareTo("StartAudioRecording2") == 0)
         {
-            int r = app.mRtcEngine.StartAudioRecording("/sdcard/test.wav", 16000, AUDIO_RECORDING_QUALITY_TYPE.AUDIO_RECORDING_QUALITY_HIGH);
+//            int r = app.mRtcEngine.StartAudioRecording("/sdcard/test.wav", 16000, AUDIO_RECORDING_QUALITY_TYPE.AUDIO_RECORDING_QUALITY_HIGH);
         }
         else if (api.CompareTo("StopAudioRecording") == 0)
         {
@@ -1015,15 +1012,15 @@ public class ButtonClick : MonoBehaviour
         else if (api.CompareTo("SetExternalAudioSink") == 0)
         {
             int r = app.mRtcEngine.SetExternalAudioSink(int.Parse(getApiParam(1))!=0, int.Parse(getApiParam(2)), int.Parse(getApiParam(3)));
-            if (audioBuffer != IntPtr.Zero)
+            if (app.audioBuffer != IntPtr.Zero)
             {
-                Marshal.FreeHGlobal(audioBuffer);
-                audioBuffer = IntPtr.Zero; 
+                Marshal.FreeHGlobal(app.audioBuffer);
+                app.audioBuffer = IntPtr.Zero; 
             }
-            audioBuffer = Marshal.AllocHGlobal(int.Parse(getApiParam(2)) * 2 * int.Parse(getApiParam(3)) * 1000/100 * sizeof(Byte));
-            sampleRate = int.Parse(getApiParam(2));
-            channels = int.Parse(getApiParam(3));
-            setApiReturn("SetExternalAudioSink " + r.ToString());
+            app.audioBuffer = Marshal.AllocHGlobal(int.Parse(getApiParam(2)) * 2 * int.Parse(getApiParam(3)) * 1000/100 * sizeof(Byte));
+            app.sampleRate = int.Parse(getApiParam(2));
+            app.channels = int.Parse(getApiParam(3));
+            setApiReturn("SetExternalAudioSink " + int.Parse(getApiParam(2)) * 2 * int.Parse(getApiParam(3)) * 1000/100 * sizeof(Byte) + "     audiobuffer = " + (app.audioBuffer == IntPtr.Zero));
         }
         else if (api.CompareTo("RegisterLocalUserAccount") == 0)
         {
@@ -1047,7 +1044,12 @@ public class ButtonClick : MonoBehaviour
         }
         else if (api.CompareTo("StartScreenCaptureByDisplayId") == 0)
         {
-            int r = app.mRtcEngine.StartScreenCaptureByDisplayId(0, new Rectangle(), new ScreenCaptureParameters());
+            Rectangle rectangle = new Rectangle();
+            rectangle.x = 100;
+            rectangle.y = 100;
+            rectangle.width = 500;
+            rectangle.height = 500;
+            int r = app.mRtcEngine.StartScreenCaptureByDisplayId(0, rectangle, new ScreenCaptureParameters());
             setApiReturn("StartScreenCaptureByDisplayId " + r.ToString());
         }
         else if (api.CompareTo("StartScreenCaptureByScreenRect") == 0)
@@ -1175,10 +1177,10 @@ public class ButtonClick : MonoBehaviour
         }
         else if (api.CompareTo("PullAudioFrame") == 0)
         { 
-            int r = -1;
-            if (audioBuffer != IntPtr.Zero)
+            int r = 100;
+            if (app.audioBuffer != IntPtr.Zero)
             {
-                r = app.audioRawDataManager.PullAudioFrame(audioBuffer, sampleRate * 500, 2, channels, 2000);
+                r = app.audioRawDataManager.PullAudioFrame(app.audioBuffer, app.sampleRate * 500, 2, app.channels, 2000);
             }  
             setApiReturn("PullAudioFrame  " + r.ToString());
         }

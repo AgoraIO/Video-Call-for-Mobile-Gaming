@@ -42,6 +42,9 @@ public class exampleApp : MonoBehaviour
 
         // init engine
         mRtcEngine = IRtcEngine.getEngine(mVendorKey);
+        videoRawDataManager = VideoRawDataManager.GetInstance(mRtcEngine);
+        mRtcEngine.EnableVideo();
+        mRtcEngine.EnableVideoObserver();
         mRtcEngine.SetLogFile("/sdcard/test.agora.zhang/agora_sdk.log");
         mRtcEngine.SetParameters("{\"rtc.log_filter\": 65535}");
         mRtcEngine.SetVideoProfile(VIDEO_PROFILE_TYPE.VIDEO_PROFILE_PORTRAIT_480P_6, true);
@@ -565,6 +568,10 @@ public class exampleApp : MonoBehaviour
     // implement engine callbacks
 
     public uint mRemotePeer = 0; // insignificant. only record one peer
+    public IntPtr audioBuffer = IntPtr.Zero;
+    // Use this for initialization
+    public int sampleRate = 0;
+    public int channels = 0;
 
     //private AudioRawDataManager audioRawDataManager = null;
 
@@ -612,7 +619,7 @@ public class exampleApp : MonoBehaviour
     {
         mRect = new Rect(0, 0, Screen.width, Screen.height);
         mTexture = new Texture2D((int)mRect.width, (int)mRect.height,TextureFormat.RGBA32 ,false);  
-       // cutScreen();
+        cutScreen();
         // ExternalVideoFrame externalVideoFrame = new ExternalVideoFrame();
         // externalVideoFrame.type = ExternalVideoFrame.VIDEO_BUFFER_TYPE.VIDEO_BUFFER_RAW_DATA;
         // externalVideoFrame.format = ExternalVideoFrame.VIDEO_PIXEL_FORMAT.VIDEO_PIXEL_I420;
