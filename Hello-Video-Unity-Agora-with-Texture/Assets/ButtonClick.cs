@@ -411,7 +411,6 @@ public class ButtonClick : MonoBehaviour
                     chProfile = agora_gaming_rtc.CHANNEL_PROFILE.CHANNEL_PROFILE_GAME;
                     break;
             }
-
             int r = app.mRtcEngine.SetChannelProfile(chProfile);
             setApiReturn("SetChannelProfile " + r.ToString());
         }
@@ -797,7 +796,7 @@ public class ButtonClick : MonoBehaviour
         }
         else if (api.CompareTo("StartAudioMixing") == 0)
         {
-            int r = app.mRtcEngine.StartAudioMixing(getApiParam(1), true, true, 1, 1);
+            int r = app.mRtcEngine.StartAudioMixing(getApiParam(1), true, true, 1);
             setApiReturn("StartAudioMixing " + r.ToString());
         }
         else if (api.CompareTo("StopAudioMixing") == 0)
