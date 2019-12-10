@@ -1017,8 +1017,8 @@ public class ButtonClick : MonoBehaviour
             //     app.audioBuffer = IntPtr.Zero; 
             // }
             // app.audioBuffer = Marshal.AllocHGlobal(int.Parse(getApiParam(2)) * 2 * int.Parse(getApiParam(3)) * 1000/100 * sizeof(Byte));
-            // app.sampleRate = int.Parse(getApiParam(2));
-            // app.channels = int.Parse(getApiParam(3));
+            app.sampleRate = int.Parse(getApiParam(2));
+            app.channels = int.Parse(getApiParam(3));
             setApiReturn("SetExternalAudioSink " + int.Parse(getApiParam(2)) * 2 * int.Parse(getApiParam(3)) * 1000/100 * sizeof(Byte) + "     audiobuffer = " + (app.audioBuffer == IntPtr.Zero));
         }
         else if (api.CompareTo("RegisterLocalUserAccount") == 0)
