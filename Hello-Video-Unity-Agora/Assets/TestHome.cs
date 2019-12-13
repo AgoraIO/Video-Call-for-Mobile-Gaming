@@ -43,8 +43,12 @@ public class TestHome : MonoBehaviour {
 	void Start ()
 	{         
 		CheckAppId();
-		CheckPermissions();
 	}
+
+    void Update()
+    {
+		CheckPermissions();
+    }
 
 	private void CheckAppId()
 	{
