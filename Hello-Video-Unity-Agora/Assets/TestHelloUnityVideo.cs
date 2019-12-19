@@ -1,6 +1,9 @@
 using UnityEngine;
-using agora_gaming_rtc;
 using UnityEngine.UI;
+
+using agora_gaming_rtc;
+using agora_utilities;
+
 
 // this is an example of using Agora Unity SDK
 // It demonstrates:
@@ -102,19 +105,36 @@ public class TestHelloUnityVideo {
 	// set video transform delegate for statically created GameObject
 	public void onSceneHelloVideoLoaded()
 	{
-		GameObject go = GameObject.Find ("Cylinder");
-		if (ReferenceEquals (go, null)) {
-			Debug.Log ("BBBB: failed to find Cylinder");
-			return;
-		}
-	}
+        // Attach the SDK Script VideoSurface for video rendering
+		GameObject quad = GameObject.Find ("Quad");
+        if (ReferenceEquals(quad, null))
+        {
+            Debug.Log("BBBB: failed to find Quad");
+            return;
+        }
+        else
+        {
+            quad.AddComponent<VideoSurface>();
+        }
+
+        GameObject cube = GameObject.Find("Cube");
+        if (ReferenceEquals(cube, null))
+        {
+            Debug.Log("BBBB: failed to find Cube");
+            return;
+        }
+        else
+        {
+            cube.AddComponent<VideoSurface>();
+        }
+    }
 
 	// implement engine callbacks
 	private void onJoinChannelSuccess (string channelName, uint uid, int elapsed)
 	{
 		Debug.Log ("JoinChannelSuccessHandler: uid = " + uid);
 		GameObject textVersionGameObject = GameObject.Find ("VersionText");
-		textVersionGameObject.GetComponent<Text> ().text = "Version : " + getSdkVersion ();
+		textVersionGameObject.GetComponent<Text> ().text = "SDK Version : " + getSdkVersion ();
 	}
 
 	// When a remote user joined, this delegate will be called. Typically
@@ -189,7 +209,7 @@ public class TestHelloUnityVideo {
 		float xPos = Random.Range (Offset - Screen.width/2f, Screen.width/2f - Offset);
 		float yPos = Random.Range (Offset, Screen.height/2f - Offset);
 		go.transform.localPosition = new Vector3 (xPos, yPos, 0f);
-		go.transform.localScale = new Vector3 (3f, 3f, 1f);
+		go.transform.localScale = new Vector3 (3f, 5f, 1f);
 		
 		// configure videoSurface
 		VideoSurface videoSurface = go.AddComponent<VideoSurface> ();
