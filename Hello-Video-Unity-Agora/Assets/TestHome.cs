@@ -18,10 +18,8 @@ public class TestHome : MonoBehaviour {
 	#endif
 	static TestHelloUnityVideo app = null;
 
-	[SerializeField] 
 	private string HomeSceneName = "SceneHome";
 	
-	[SerializeField]
 	private string PlaySceneName = "SceneHelloVideo";
 
 	// PLEASE KEEP THIS App ID IN SAFE PLACE
