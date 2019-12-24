@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-
 using agora_gaming_rtc;
 using agora_utilities;
 
@@ -10,7 +9,8 @@ using agora_utilities;
 // How to enable video
 // How to join/leave channel
 // 
-public class TestHelloUnityVideo {
+public class TestHelloUnityVideo 
+{
 
 	// instance of agora engine
 	private IRtcEngine mRtcEngine;
@@ -21,7 +21,8 @@ public class TestHelloUnityVideo {
 		// start sdk
 		Debug.Log ("initializeEngine");
 
-		if (mRtcEngine != null) {
+		if (mRtcEngine != null) 
+		{
 			Debug.Log ("Engine exists. Please unload it first!");
 			return;
 		}
@@ -56,7 +57,8 @@ public class TestHelloUnityVideo {
 		Debug.Log ("initializeEngine done");
 	}
 
-	public string getSdkVersion () {
+	public string getSdkVersion () 
+	{
 		return IRtcEngine.GetSdkVersion ();
 	}
 
@@ -146,13 +148,15 @@ public class TestHelloUnityVideo {
 
 		// find a game object to render video stream from 'uid'
 		GameObject go = GameObject.Find (uid.ToString ());
-		if (!ReferenceEquals (go, null)) {
+		if (!ReferenceEquals (go, null)) 
+		{
 			return; // reuse
 		}
 
 		// create a GameObject and assign to this new user
 		VideoSurface videoSurface = makeImageSurface(uid.ToString());
-		if (!ReferenceEquals (videoSurface, null)) {
+		if (!ReferenceEquals (videoSurface, null)) 
+		{
 			// configure videoSurface
 			videoSurface.SetForUser (uid);
 			videoSurface.SetEnable (true);
@@ -223,7 +227,8 @@ public class TestHelloUnityVideo {
 		Debug.Log ("onUserOffline: uid = " + uid + " reason = " + reason);
 		// this is called in main thread
 		GameObject go = GameObject.Find (uid.ToString());
-		if (!ReferenceEquals (go, null)) {
+		if (!ReferenceEquals (go, null)) 
+		{
 			Object.Destroy (go);
 		}
 	}
