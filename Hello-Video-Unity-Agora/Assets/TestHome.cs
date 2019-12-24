@@ -10,7 +10,8 @@ using agora_gaming_rtc;
 /// <summary>
 ///    TestHome serves a game controller object for this application.
 /// </summary>
-public class TestHome : MonoBehaviour {
+public class TestHome : MonoBehaviour 
+{
 
 	// Use this for initialization
 	#if(UNITY_2018_3_OR_NEWER && UNITY_ANDROID)
@@ -69,13 +70,15 @@ public class TestHome : MonoBehaviour {
         #endif
     }
 
-	public void onJoinButtonClicked() {
+	public void onJoinButtonClicked() 
+	{
 		// get parameters (channel name, channel profile, etc.)
 		GameObject go = GameObject.Find ("ChannelName");
 		InputField field = go.GetComponent<InputField>();
 
 		// create app if nonexistent
-		if (ReferenceEquals (app, null)) {
+		if (ReferenceEquals (app, null)) 
+		{
 			app = new TestHelloUnityVideo (); // create app
 			app.loadEngine (AppID); // load engine
 		}
@@ -86,8 +89,10 @@ public class TestHome : MonoBehaviour {
 		SceneManager.LoadScene (PlaySceneName, LoadSceneMode.Single);
 	}
 
-	public void onLeaveButtonClicked() {
-		if (!ReferenceEquals (app, null)) {
+	public void onLeaveButtonClicked() 
+	{
+		if (!ReferenceEquals (app, null)) 
+		{
 			app.leave (); // leave channel
 			app.unloadEngine (); // delete engine
 			app = null; // delete app
@@ -96,9 +101,12 @@ public class TestHome : MonoBehaviour {
 		Destroy(gameObject);
 	}
 
-	public void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode) {
-		if (scene.name == PlaySceneName) {
-			if (!ReferenceEquals (app, null)) {
+	public void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode) 
+	{
+		if (scene.name == PlaySceneName) 
+		{
+			if (!ReferenceEquals (app, null)) 
+			{
 				app.onSceneHelloVideoLoaded (); // call this after scene is loaded
 			}
 			SceneManager.sceneLoaded -= OnLevelFinishedLoading;
