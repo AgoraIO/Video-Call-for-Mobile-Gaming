@@ -93,7 +93,7 @@ public class TestHome : MonoBehaviour
                     if (CheckUnityVersionForAR())
                     {
                         Debug.LogWarning("Will run ARFoundation test..");
-
+                        app = new TestARfoundationController();
                     }
                     else
                     {
@@ -159,7 +159,7 @@ public class TestHome : MonoBehaviour
     bool CheckUnityVersionForAR()
     {
         string version = Application.unityVersion;
-        string first = Application.version.Split(new char[] { '.' }).FirstOrDefault();
+        string first = Application.unityVersion.Split(new char[] { '.' }).FirstOrDefault();
         return (first.CompareTo("2018") >= 0);
     }
 
