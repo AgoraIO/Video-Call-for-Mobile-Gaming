@@ -72,7 +72,7 @@ public class ScreenShareCtrl : MonoBehaviour
             //Set the buffer type of the video frame
             externalVideoFrame.type = ExternalVideoFrame.VIDEO_BUFFER_TYPE.VIDEO_BUFFER_RAW_DATA;
             // Set the video pixel format
-            externalVideoFrame.format = ExternalVideoFrame.VIDEO_PIXEL_FORMAT.VIDEO_PIXEL_UNKNOWN;
+            externalVideoFrame.format = ExternalVideoFrame.VIDEO_PIXEL_FORMAT.VIDEO_PIXEL_BGRA;
             //apply raw data you are pulling from the rectangle you created earlier to the video frame
             externalVideoFrame.buffer = bytes;
             //Set the width of the video frame (in pixels)
