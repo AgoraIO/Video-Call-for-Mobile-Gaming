@@ -7,22 +7,19 @@ public class ScreenShareCtrl : MonoBehaviour
 {
     Texture2D mTexture;
     Rect mRect;
-    private string _appId = "cd985f11138e431d87aebc748cd93a33";
-    private string _channelName = "unity3d";
     IRtcEngine mRtcEngine;
     int i = 100;
     private bool drawEnabled = false;
 
-    public void Setup(string appId, string channelName)
-    {
-        _appId = appId;
-        _channelName = channelName;
-    }
-
     void Start()
     {
         Debug.Log("ScreenShare Activated");
-        mRtcEngine = IRtcEngine.getEngine(_appId);
+        mRtcEngine = IRtcEngine.QueryEngine();
+        if (mRtcEngine == null)
+        {
+            Debug.LogWarning("RTCEngine should be initialized prior to the life of this script.");
+            return;
+        }
         // enable log
         mRtcEngine.SetLogFilter(LOG_FILTER.DEBUG | LOG_FILTER.INFO | LOG_FILTER.WARNING | LOG_FILTER.ERROR | LOG_FILTER.CRITICAL);
         // set callbacks (optional)
@@ -33,8 +30,6 @@ public class ScreenShareCtrl : MonoBehaviour
         mRtcEngine.EnableVideo();
         // allow camera output callback
         mRtcEngine.EnableVideoObserver();
-        // join channel
-        mRtcEngine.JoinChannel(_channelName, null, 0);
         //Create a rectangle width and height of the screen
         mRect = new Rect(0, 0, Screen.width, Screen.height);
         //Create a texture the size of the rectangle you just created
@@ -90,7 +85,7 @@ public class ScreenShareCtrl : MonoBehaviour
             externalVideoFrame.timestamp = i++;
             //Push the external video frame with the frame we just created
             int a = rtc.PushVideoFrame(externalVideoFrame);
-            Debug.Log(" pushVideoFrame =       " + a);
+            Debug.Log(" pushVideoFrame ts =       " + i + " result:" + (a == 0 ? "OK" : a.ToString()));
         }
     }
 
