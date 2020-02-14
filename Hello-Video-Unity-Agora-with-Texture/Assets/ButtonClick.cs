@@ -7,14 +7,26 @@ using agora_gaming_rtc;
 using System.Runtime.InteropServices;
 using System.IO;
 using System;
+#if(UNITY_2018_3_OR_NEWER && UNITY_ANDROID)
+using UnityEngine.Android;
+#endif
 
 public class ButtonClick : MonoBehaviour
 {
 
     string deviceName = "";
     string deviceID = "";
+    #if(UNITY_2018_3_OR_NEWER && UNITY_ANDROID)
+    private ArrayList permissionList = new ArrayList();
+    #endif
 
-
+    void Awake ()
+    {         
+        #if(UNITY_2018_3_OR_NEWER && UNITY_ANDROID)
+        permissionList.Add(Permission.Microphone);         
+        permissionList.Add(Permission.Camera);               
+        #endif     
+    }
     void Start()
     {
         exampleApp.logAPICall("ButtonClick Start is called!");
@@ -269,10 +281,23 @@ public class ButtonClick : MonoBehaviour
         dd.AddOptions(options);
     }
 
+    private void CheckPermissions()
+    {
+        #if(UNITY_2018_3_OR_NEWER && UNITY_ANDROID)
+        foreach(string permission in permissionList)
+        {
+            if (!Permission.HasUserAuthorizedPermission(permission))
+            {                 
+                Permission.RequestUserPermission(permission);
+            }
+        }
+        #endif
+    }
+
     // Update is called once per frame
     void Update()
     {
-
+        CheckPermissions();
     }
 
     static exampleApp app = null;
