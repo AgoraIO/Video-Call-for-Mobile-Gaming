@@ -6,8 +6,6 @@ using agora_gaming_rtc;
 
 public class ScreenShareAppController : TestHelloUnityVideo
 {
-
-
     protected override void onJoinChannelSuccess(string channelName, uint uid, int elapsed)
     {
         base.onJoinChannelSuccess(channelName, uid, elapsed);
@@ -26,14 +24,9 @@ public class ScreenShareAppController : TestHelloUnityVideo
     public override void onSceneHelloVideoLoaded()
     {
         GameObject sphere = GameObject.Find("Sphere");
-        sphere.AddComponent<ScreenShareCtrl>();
+        if (sphere != null)
+        {
+            sphere.AddComponent<ScreenShareCtrl>();
+        }
     }
-
-    public override void join(string channel)
-    {
-        // base.join(channel);
-        // Configure the external video source
-        // mRtcEngine.SetExternalVideoSource(true, false);
-    }
-
 }

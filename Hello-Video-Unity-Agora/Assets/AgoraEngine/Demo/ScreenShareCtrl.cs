@@ -2,11 +2,18 @@
 using agora_gaming_rtc;
 using System.Runtime.InteropServices;
 using System.Collections;
-using System;
+using UnityEngine.UI;
+
+/// <summary>
+///    This script should be attached to a game object and RTC engine should have
+///  been created prior to the life cycle.
+/// </summary>
 public class ScreenShareCtrl : MonoBehaviour
 {
     Texture2D mTexture;
     Rect mRect;
+    public string AppID = "";
+    private string _channelName = "";
     IRtcEngine mRtcEngine;
     int i = 100;
     private bool drawEnabled = false;
@@ -15,11 +22,6 @@ public class ScreenShareCtrl : MonoBehaviour
     {
         Debug.Log("ScreenShare Activated");
         mRtcEngine = IRtcEngine.QueryEngine();
-        if (mRtcEngine == null)
-        {
-            Debug.LogWarning("RTCEngine should be initialized prior to the life of this script.");
-            return;
-        }
         // enable log
         mRtcEngine.SetLogFilter(LOG_FILTER.DEBUG | LOG_FILTER.INFO | LOG_FILTER.WARNING | LOG_FILTER.ERROR | LOG_FILTER.CRITICAL);
         // set callbacks (optional)
@@ -35,6 +37,7 @@ public class ScreenShareCtrl : MonoBehaviour
         //Create a texture the size of the rectangle you just created
         mTexture = new Texture2D((int)mRect.width, (int)mRect.height, TextureFormat.RGBA32, false);
         drawEnabled = true;
+        SetupMic();
     }
     void Update()
     {
@@ -84,8 +87,7 @@ public class ScreenShareCtrl : MonoBehaviour
             // increment i with the video timestamp
             externalVideoFrame.timestamp = i++;
             //Push the external video frame with the frame we just created
-            int a = rtc.PushVideoFrame(externalVideoFrame);
-            Debug.Log(" pushVideoFrame ts =       " + i + " result:" + (a == 0 ? "OK" : a.ToString()));
+            rtc.PushVideoFrame(externalVideoFrame);
         }
     }
 
@@ -106,4 +108,28 @@ public class ScreenShareCtrl : MonoBehaviour
             mRtcEngine = null;
         }
     }
+
+    void SetupMic()
+    {
+        GameObject go = GameObject.Find("MicButton");
+        if (go != null)
+        {
+            Button but = go.GetComponent<Button>();
+            if (but != null)
+            {
+
+                but.onClick.AddListener(() =>
+                {
+                    micMuted = !micMuted;
+                    mRtcEngine.MuteLocalAudioStream(micMuted);
+                    Debug.Log("Mic has muted = " + micMuted);
+                    Text text = but.GetComponentInChildren<Text>();
+                    text.text = micMuted ? "Muted" : "MIC";
+
+                });
+            }
+        }
+    }
+
+    bool micMuted = false;
 }

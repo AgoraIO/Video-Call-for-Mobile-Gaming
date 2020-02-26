@@ -54,7 +54,6 @@ public class TestHome : MonoBehaviour
     private void CheckAppId()
     {
         Debug.Assert(AppID.Length > 10, "Please fill in your AppId first on Game Controller object.");
-        Debug.Log("Version full of the runtime: " + Application.unityVersion);
     }
 
     /// <summary>
