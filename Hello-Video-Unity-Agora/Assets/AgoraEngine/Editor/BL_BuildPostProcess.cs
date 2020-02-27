@@ -1,8 +1,9 @@
 ﻿#if UNITY_IPHONE
+using System.IO;
 using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEditor.iOS.Xcode;
-using System.IO;
+
 
 public class BL_BuildPostProcess
 {
@@ -10,11 +11,8 @@ public class BL_BuildPostProcess
     [PostProcessBuild]
     public static void OnPostprocessBuild(BuildTarget buildTarget, string path)
     {
-
         if (buildTarget == BuildTarget.iOS)
         {
-            // string projPath = path + "/Unity-iPhone.xcodeproj/project.pbxproj";
-            // DisableBitcode(projPath);
             LinkLibraries(path);
         }
     }
@@ -23,10 +21,31 @@ public class BL_BuildPostProcess
     {
         PBXProject proj = new PBXProject();
         proj.ReadFromString(File.ReadAllText(projPath));
-        string target = proj.TargetGuidByName("Unity-iPhone");
+
+        string target = GetTargetGuid(proj);
         proj.SetBuildProperty(target, "ENABLE_BITCODE", "false");
         File.WriteAllText(projPath, proj.WriteToString());
     }
+
+    static string GetTargetGuid(PBXProject proj)
+    {
+#if UNITY_2019_3_OR_NEWER
+        return proj.GetUnityFrameworkTargetGuid();
+#else
+	    return proj.TargetGuidByName("Unity-iPhone");
+#endif
+    }
+    // The followings are the addtional frameworks to add to the project
+    static string[] ProjectFrameworks = new string[] {
+        "Accelerate.framework",
+        "CoreTelephony.framework",
+        "CoreText.framework",
+        "CoreML.framework",
+        "Metal.framework",
+        "VideoToolbox.framework",
+        "libiPhone-lib.a",
+        "libresolv.tbd",
+    };
 
     public static void LinkLibraries(string path)
     {
@@ -34,16 +53,16 @@ public class BL_BuildPostProcess
         string projPath = path + "/Unity-iPhone.xcodeproj/project.pbxproj";
         PBXProject proj = new PBXProject();
         proj.ReadFromFile(projPath);
-        string target = proj.TargetGuidByName("Unity-iPhone");
+        string target = GetTargetGuid(proj);
+
+        // disable bit-code
         proj.SetBuildProperty(target, "ENABLE_BITCODE", "false");
-        proj.AddFrameworkToProject(target, "CoreTelephony.framework", true);
-        proj.AddFrameworkToProject(target, "VideoToolbox.framework", true);
-        proj.AddFrameworkToProject(target, "libresolv.tbd", true);
-        proj.AddFrameworkToProject(target, "libiPhone-lib.a", true);
-        proj.AddFrameworkToProject(target, "CoreText.framework", true);
-        proj.AddFrameworkToProject(target, "Metal.framework", true);
-        proj.AddFrameworkToProject(target, "CoreML.framework", true);
-        proj.AddFrameworkToProject(target, "Accelerate.framework", true);
+
+        // Frameworks
+        foreach (string framework in ProjectFrameworks)
+        {
+            proj.AddFrameworkToProject(target, framework, true);
+        }
         File.WriteAllText(projPath, proj.WriteToString());
 
         // permission
