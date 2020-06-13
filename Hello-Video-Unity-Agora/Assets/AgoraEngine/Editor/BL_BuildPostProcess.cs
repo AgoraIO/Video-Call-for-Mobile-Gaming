@@ -1,4 +1,5 @@
-﻿#if UNITY_IPHONE
+﻿#if UNITY_IPHONE || UNITY_STANDALONE_OSX
+
 using System.IO;
 using UnityEditor;
 using UnityEditor.Callbacks;
@@ -14,6 +15,18 @@ public class BL_BuildPostProcess
         if (buildTarget == BuildTarget.iOS)
         {
             LinkLibraries(path);
+            UpdatePermission(path + "/Info.plist");
+        }
+        else if (buildTarget == BuildTarget.StandaloneOSX)
+        {
+            string plistPath = path + "/Contents/Info.plist"; // straight to a binary
+            if (path.EndsWith(".xcodeproj"))
+            {
+                // This must be a build that exports Xcode
+                string dir = Path.GetDirectoryName(path);
+                plistPath = dir + "/" + PlayerSettings.productName + "/Info.plist";
+            }
+            UpdatePermission(plistPath);
         }
     }
 
@@ -32,7 +45,7 @@ public class BL_BuildPostProcess
 #if UNITY_2019_3_OR_NEWER
         return proj.GetUnityFrameworkTargetGuid();
 #else
-	    return proj.TargetGuidByName("Unity-iPhone");
+        return proj.TargetGuidByName("Unity-iPhone");
 #endif
     }
     // The followings are the addtional frameworks to add to the project
@@ -47,7 +60,7 @@ public class BL_BuildPostProcess
         "libresolv.tbd",
     };
 
-    public static void LinkLibraries(string path)
+    static void LinkLibraries(string path)
     {
         // linked library
         string projPath = path + "/Unity-iPhone.xcodeproj/project.pbxproj";
@@ -64,9 +77,14 @@ public class BL_BuildPostProcess
             proj.AddFrameworkToProject(target, framework, true);
         }
         File.WriteAllText(projPath, proj.WriteToString());
+    }
 
-        // permission
-        string pListPath = path + "/Info.plist";
+    /// <summary>
+    ///   Update the permission 
+    /// </summary>
+    /// <param name="pListPath">path to the Info.plist file</param>
+    static void UpdatePermission(string pListPath)
+    {
         PlistDocument plist = new PlistDocument();
         plist.ReadFromString(File.ReadAllText(pListPath));
         PlistElementDict rootDic = plist.root;
@@ -77,4 +95,5 @@ public class BL_BuildPostProcess
         File.WriteAllText(pListPath, plist.WriteToString());
     }
 }
+
 #endif
