@@ -4,6 +4,7 @@ using UnityEngine;
 #if(UNITY_2018_3_OR_NEWER && UNITY_ANDROID)
 using UnityEngine.Android;
 #endif
+using System.Collections;
 
 /// <summary>
 ///    TestHome serves a game controller object for this application.
