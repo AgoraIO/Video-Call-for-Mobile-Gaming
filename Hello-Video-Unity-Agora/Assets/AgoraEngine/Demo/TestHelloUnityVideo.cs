@@ -54,26 +54,11 @@ public class TestHelloUnityVideo
 
         // join channel
         mRtcEngine.JoinChannel(channel, null, 0);
-
-        // Optional: if a data stream is required, here is a good place to create it
-        int streamID = mRtcEngine.CreateDataStream(true, true);
-        Debug.Log("initializeEngine done, data stream id = " + streamID);
     }
 
     public string getSdkVersion()
     {
         string ver = IRtcEngine.GetSdkVersion();
-        if (ver == "2.9.1.45")
-        {
-            ver = "2.9.2";  // A conversion for the current internal version#
-        }
-        else
-        {
-            if (ver == "2.9.1.46")
-            {
-                ver = "2.9.2.1";  // A conversion for the current internal version#
-            }
-        }
         return ver;
     }
 
@@ -102,7 +87,6 @@ public class TestHelloUnityVideo
             mRtcEngine = null;
         }
     }
-
 
     public void EnableVideo(bool pauseVideo)
     {

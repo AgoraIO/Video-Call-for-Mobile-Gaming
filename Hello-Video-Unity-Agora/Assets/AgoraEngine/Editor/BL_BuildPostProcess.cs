@@ -4,7 +4,7 @@ using System.IO;
 using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEditor.iOS.Xcode;
-
+using UnityEditor.iOS.Xcode.Extensions;
 
 public class BL_BuildPostProcess
 {
@@ -76,6 +76,24 @@ public class BL_BuildPostProcess
         {
             proj.AddFrameworkToProject(target, framework, true);
         }
+
+        // embedded frameworks
+#if UNITY_2019_1_OR_NEWER
+        target = proj.GetUnityMainTargetGuid();
+#endif
+        const string defaultLocationInProj = "Frameworks/AgoraEngine/Plugins/iOS";
+        const string rtcFrameworkName = "AgoraRtcKit.framework";
+        const string cryptoFrameworkName = "AgoraRtcCryptoLoader.framework";
+
+        string fw1 = Path.Combine(defaultLocationInProj, rtcFrameworkName);
+        string fw2 = Path.Combine(defaultLocationInProj, cryptoFrameworkName);
+        string fileGuid = proj.AddFile(fw1, fw1, PBXSourceTree.Source);
+        proj.AddFileToEmbedFrameworks(target, fileGuid);
+        fileGuid = proj.AddFile(fw2, fw2, PBXSourceTree.Source);
+        proj.AddFileToEmbedFrameworks(target, fileGuid);
+        proj.SetBuildProperty(target, "LD_RUNPATH_SEARCH_PATHS", "$(inherited) @executable_path/Frameworks");
+
+        // done, write to the project file
         File.WriteAllText(projPath, proj.WriteToString());
     }
 
@@ -94,6 +112,7 @@ public class BL_BuildPostProcess
         rootDic.SetString(micPermission, "Voice call need to user mic");
         File.WriteAllText(pListPath, plist.WriteToString());
     }
+
 }
 
 #endif
