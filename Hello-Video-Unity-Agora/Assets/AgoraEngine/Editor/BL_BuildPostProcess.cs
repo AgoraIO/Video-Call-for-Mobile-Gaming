@@ -3,12 +3,23 @@
 using System.IO;
 using UnityEditor;
 using UnityEditor.Callbacks;
+
 using UnityEditor.iOS.Xcode;
 using UnityEditor.iOS.Xcode.Extensions;
 
+/// <summary>
+///    This is a post processing build script to help minimize manual developer 
+/// efforts to configure Xcode to build the project with correct framework
+/// and permissions autofilling.  Ideally, both iOS and OSX are included when
+/// you have download Unity.
+///    However, the PBXProject class is only available for iOS support.
+/// For Unity environment that does not include iOS but having MacOS as the target,
+/// you may just DELETE this script from the project.  
+///    Never forget to fill in Camera and Microphone in your Unity Setting if
+/// you delete this file.
+/// </summary>
 public class BL_BuildPostProcess
 {
-
     [PostProcessBuild]
     public static void OnPostprocessBuild(BuildTarget buildTarget, string path)
     {
@@ -78,7 +89,7 @@ public class BL_BuildPostProcess
         }
 
         // embedded frameworks
-#if UNITY_2019_1_OR_NEWER
+#if UNITY_2019_3_OR_NEWER
         target = proj.GetUnityMainTargetGuid();
 #endif
         const string defaultLocationInProj = "Frameworks/AgoraEngine/Plugins/iOS";
