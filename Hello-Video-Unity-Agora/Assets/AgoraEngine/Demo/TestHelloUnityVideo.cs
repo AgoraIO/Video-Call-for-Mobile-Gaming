@@ -15,6 +15,7 @@ public class TestHelloUnityVideo
 
     // instance of agora engine
     private IRtcEngine mRtcEngine;
+    private Text MessageText;
 
     // load agora engine
     public void loadEngine(string appId)
@@ -46,6 +47,11 @@ public class TestHelloUnityVideo
         mRtcEngine.OnJoinChannelSuccess = onJoinChannelSuccess;
         mRtcEngine.OnUserJoined = onUserJoined;
         mRtcEngine.OnUserOffline = onUserOffline;
+        mRtcEngine.OnWarning = (int warn, string msg) =>
+        {
+            Debug.LogWarningFormat("Warning code:{0} msg:{1}", warn, IRtcEngine.GetErrorDescription(warn));
+        };
+        mRtcEngine.OnError = HandleError;
 
         // enable video
         mRtcEngine.EnableVideo();
@@ -111,7 +117,7 @@ public class TestHelloUnityVideo
         GameObject quad = GameObject.Find("Quad");
         if (ReferenceEquals(quad, null))
         {
-            Debug.Log("BBBB: failed to find Quad");
+            Debug.Log("failed to find Quad");
             return;
         }
         else
@@ -122,12 +128,18 @@ public class TestHelloUnityVideo
         GameObject cube = GameObject.Find("Cube");
         if (ReferenceEquals(cube, null))
         {
-            Debug.Log("BBBB: failed to find Cube");
+            Debug.Log("failed to find Cube");
             return;
         }
         else
         {
             cube.AddComponent<VideoSurface>();
+        }
+
+        GameObject text = GameObject.Find("MessageText");
+        if (!ReferenceEquals(text, null))
+        {
+            MessageText = text.GetComponent<Text>();
         }
     }
 
@@ -232,4 +244,37 @@ public class TestHelloUnityVideo
             Object.Destroy(go);
         }
     }
+
+    #region Error Handling
+    private int LastError { get; set; }
+    private void HandleError(int error, string msg)
+    {
+        if (error == LastError)
+        {
+            return;
+        }
+
+        msg = string.Format("Error code:{0} msg:{1}", error, IRtcEngine.GetErrorDescription(error));
+
+        switch (error)
+        {
+            case 101:
+                msg += "\nPlease make sure your AppId is valid and it does not require a certificate for this demo.";
+                break;
+        }
+
+        Debug.LogError(msg);
+        if (MessageText != null)
+        {
+            if (MessageText.text.Length > 0)
+            {
+                msg = "\n" + msg;
+            }
+            MessageText.text += msg;
+        }
+
+        LastError = error;
+    }
+
+    #endregion
 }
