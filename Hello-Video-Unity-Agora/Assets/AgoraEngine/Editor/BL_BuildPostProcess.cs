@@ -14,8 +14,10 @@ public class BL_BuildPostProcess
     {
         if (buildTarget == BuildTarget.iOS)
         {
+            #if UNITY_IPHONE
             LinkLibraries(path);
             UpdatePermission(path + "/Info.plist");
+            #endif
         }
         else if (buildTarget == BuildTarget.StandaloneOSX)
         {
@@ -29,7 +31,7 @@ public class BL_BuildPostProcess
             UpdatePermission(plistPath);
         }
     }
-
+#if UNITY_IPHONE
     public static void DisableBitcode(string projPath)
     {
         PBXProject proj = new PBXProject();
@@ -96,7 +98,7 @@ public class BL_BuildPostProcess
         // done, write to the project file
         File.WriteAllText(projPath, proj.WriteToString());
     }
-
+#endif
     /// <summary>
     ///   Update the permission 
     /// </summary>
