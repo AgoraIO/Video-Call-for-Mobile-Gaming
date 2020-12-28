@@ -14,10 +14,10 @@ public class BL_BuildPostProcess
     {
         if (buildTarget == BuildTarget.iOS)
         {
-            #if UNITY_IPHONE
+#if UNITY_IPHONE
             LinkLibraries(path);
             UpdatePermission(path + "/Info.plist");
-            #endif
+#endif
         }
         else if (buildTarget == BuildTarget.StandaloneOSX)
         {
@@ -50,7 +50,7 @@ public class BL_BuildPostProcess
         return proj.TargetGuidByName("Unity-iPhone");
 #endif
     }
-    // The followings are the addtional frameworks to add to the project
+
     static string[] ProjectFrameworks = new string[] {
         "Accelerate.framework",
         "CoreTelephony.framework",
@@ -62,6 +62,7 @@ public class BL_BuildPostProcess
         "libresolv.tbd",
     };
 
+
     static void LinkLibraries(string path)
     {
         // linked library
@@ -70,29 +71,30 @@ public class BL_BuildPostProcess
         proj.ReadFromFile(projPath);
         string target = GetTargetGuid(proj);
 
-        // disable bit-code
-        proj.SetBuildProperty(target, "ENABLE_BITCODE", "false");
-
-        // Frameworks
-        foreach (string framework in ProjectFrameworks)
-        {
-            proj.AddFrameworkToProject(target, framework, true);
-        }
 
         // embedded frameworks
 #if UNITY_2019_1_OR_NEWER
         target = proj.GetUnityMainTargetGuid();
 #endif
-        const string defaultLocationInProj = "Frameworks/AgoraEngine/Plugins/iOS";
-        const string rtcFrameworkName = "AgoraRtcKit.framework";
-        const string cryptoFrameworkName = "AgoraRtcCryptoLoader.framework";
+        const string defaultLocationInProj = "AgoraEngine/Plugins/iOS";
+        const string AgoraRtcKitFrameworkName = "AgoraRtcKit.framework";
+        const string AgorafdkaacFrameworkName = "Agorafdkaac.framework";
+        const string AgoraffmpegFrameworkName = "Agoraffmpeg.framework";
+        const string AgoraSoundTouchFrameworkName = "AgoraSoundTouch.framework";
 
-        string fw1 = Path.Combine(defaultLocationInProj, rtcFrameworkName);
-        string fw2 = Path.Combine(defaultLocationInProj, cryptoFrameworkName);
-        string fileGuid = proj.AddFile(fw1, fw1, PBXSourceTree.Source);
-        proj.AddFileToEmbedFrameworks(target, fileGuid);
-        fileGuid = proj.AddFile(fw2, fw2, PBXSourceTree.Source);
-        proj.AddFileToEmbedFrameworks(target, fileGuid);
+        string AgoraRtcKitFrameworkPath = Path.Combine(defaultLocationInProj, AgoraRtcKitFrameworkName);
+        string AgorafdkaacFrameworkPath = Path.Combine(defaultLocationInProj, AgorafdkaacFrameworkName);
+        string AgoraffmpegFrameworkPath = Path.Combine(defaultLocationInProj, AgoraffmpegFrameworkName);
+        string AgoraSoundTouchFrameworkPath = Path.Combine(defaultLocationInProj, AgoraSoundTouchFrameworkName);
+
+        string fileGuid = proj.AddFile(AgoraRtcKitFrameworkPath, "Frameworks/" + AgoraRtcKitFrameworkPath, PBXSourceTree.Sdk);
+        PBXProjectExtensions.AddFileToEmbedFrameworks(proj, target, fileGuid);
+        fileGuid = proj.AddFile(AgorafdkaacFrameworkPath, "Frameworks/" + AgorafdkaacFrameworkPath, PBXSourceTree.Sdk);
+        PBXProjectExtensions.AddFileToEmbedFrameworks(proj, target, fileGuid);
+        fileGuid = proj.AddFile(AgoraffmpegFrameworkPath, "Frameworks/" + AgoraffmpegFrameworkPath, PBXSourceTree.Sdk);
+        PBXProjectExtensions.AddFileToEmbedFrameworks(proj, target, fileGuid);
+        fileGuid = proj.AddFile(AgoraSoundTouchFrameworkPath, "Frameworks/" + AgoraSoundTouchFrameworkPath, PBXSourceTree.Sdk);
+        PBXProjectExtensions.AddFileToEmbedFrameworks(proj, target, fileGuid);
         proj.SetBuildProperty(target, "LD_RUNPATH_SEARCH_PATHS", "$(inherited) @executable_path/Frameworks");
 
         // done, write to the project file
