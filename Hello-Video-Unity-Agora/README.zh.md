@@ -21,7 +21,7 @@ Read this in other languages:  [English](README.md)
 
 ## 添加您的AppID
 
-在构建和运行项目之前，您需要将AppID添加到配置中。转到您的[开发者帐户的项目控制台]（https://console.agora.io/projects），创建一个新的AppId或从现有项目中复制该AppId。
+在构建和运行项目之前，您需要将AppID添加到配置中。转到您的 [开发者帐户的项目控制台](https://console.agora.io/projects)，创建一个新的AppId或从现有项目中复制该AppId。
 
 请注意，对于准备投入生产的项目，务必始终使用启用了证书的AppId，这一点很重要。但是，在这个简单的快速入门演示中，我们将跳过这一部分。因此，应为测试模式创建AppId。
 ![enter image description here](https://user-images.githubusercontent.com/1261195/110023464-11eb0480-7ce2-11eb-99d6-031af60715ab.png)
@@ -42,14 +42,10 @@ Read this in other languages:  [English](README.md)
 
 ## 资源
 
-  -完整的API文档可在[文档中心]（https://docs.agora.io/en/）获得。
--您可以在[此处]（https://github.com/AgoraIO/Hello-Video-Unity-Agora/issues）提交有关此示例的错误。
-
--对于潜在的SDK问题，请先看看我们的[FAQ]（https://docs.agora.io/zh/faq）
-
--要查看更多示例Unity项目，请参见https://github.com/AgoraIO/Agora-Unity-Quickstart
-
--由开发人员社区管理的存储库可在[Agora社区]（https://github.com/AgoraIO-Community）中找到
+  - 完整的API文档可在[文档中心](https://docs.agora.io/cn)获得
+  - 您可以在[此处](https://github.com/AgoraIO/Hello-Video-Unity-Agora/issues) 提交有关此示例的错误。
+  - 要查看更多示例Unity项目，请参见 https://github.com/AgoraIO/Agora-Unity-Quickstart
+  - 由开发人员社区管理的存储库可在[Agora社区](https://github.com/AgoraIO-Community)中找到
 
 
 
