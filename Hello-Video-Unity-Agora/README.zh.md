@@ -17,7 +17,22 @@ Read this in other languages:  [English](README.md)
 您无需克隆该项目即可试用该演示。该演示本身捆绑在Agora Video SDK中。您可以通过以下两种方法之一下载SDK：
 
  1.  [Asset Store](https://assetstore.unity.com/packages/tools/video/agora-video-sdk-for-unity-134502): 导入软件包后，您应该在Assets / AgoraEngine / Demo下找到该演示。
- 2. [Agora网站下载页面](https://docs.agora.io/en/Video/downloads?platform=Unity): 您将获得一个zip文件。解压缩后，在samples目录中打开项目。该演示位于上述位置。
+ 2. [Agora网站下载页面](https://docs.agora.io/en/Video/downloads?platform=Unity): 您将获得一个zip文件*。解压缩后，在samples目录中打开项目。该演示位于上述位置。
+
+***将SDK从下载的zip文件添加到项目中**
+  从Agora网站解压缩下载的SDK，然后将以下SDK文件夹中的文件复制到关联的Unity应用程序文件夹中。
+
+SDK Folder|Application Folder
+---|---
+libs/Android/|Assets/Plugins/Android/
+libs/iOS/|Assets/Plugins/iOS/
+libs/macOS/|Assets/Plugins/macOS/
+libs/x86/|Assets/Plugins/x86/
+libs/x86_64/|Assets/Plugins/x86_64/
+libs/Scripts/AgoraGamingSDK/|Assets/Scripts/AgoraGamingSDK/
+
+**如果您从Asset Store下载SDK，则无需进行上述复制**
+
 
 ## 添加您的AppID
 
@@ -51,5 +66,4 @@ Read this in other languages:  [English](README.md)
 
 
 ## 代码许可
-
 该软件受MIT许可证（MIT）约束。[查看许可](LICENSE.md).
