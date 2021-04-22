@@ -84,7 +84,6 @@ public class BL_BuildPostProcess
         const string AgoraAIDenoiseExtensionFrameworkName = "AgoraAIDenoiseExtension.framework";
         const string AgoraCoreFrameworkName = "AgoraCore.framework";
         const string AgoraDav1dExtensionFrameworkName = "AgoraDav1dExtension.framework";
-        const string AgoraSuperResolutionExtensionFrameworkName = "AgoraSuperResolutionExtension.framework";
         const string AgoraJNDExtensionFrameworkName = "AgoraJNDExtension.framework";
 
 
@@ -95,7 +94,6 @@ public class BL_BuildPostProcess
         string AgoraAIDenoiseExtensionFrameworkPath = Path.Combine(defaultLocationInProj, AgoraAIDenoiseExtensionFrameworkName);
         string AgoraCoreFrameworkPath = Path.Combine(defaultLocationInProj, AgoraCoreFrameworkName);
         string AgoraDav1dExtensionFrameworkPath = Path.Combine(defaultLocationInProj, AgoraDav1dExtensionFrameworkName);
-        string AgoraSuperResolutionExtensionPath = Path.Combine(defaultLocationInProj, AgoraSuperResolutionExtensionFrameworkName);
         string AgoraJNDExtensionFrameworkPath = Path.Combine(defaultLocationInProj, AgoraJNDExtensionFrameworkName);
 
 
@@ -112,8 +110,6 @@ public class BL_BuildPostProcess
         fileGuid = proj.AddFile(AgoraCoreFrameworkPath, "Frameworks/" + AgoraCoreFrameworkPath, PBXSourceTree.Sdk);
         PBXProjectExtensions.AddFileToEmbedFrameworks(proj, target, fileGuid);
         fileGuid = proj.AddFile(AgoraDav1dExtensionFrameworkPath, "Frameworks/" + AgoraDav1dExtensionFrameworkPath, PBXSourceTree.Sdk);
-        PBXProjectExtensions.AddFileToEmbedFrameworks(proj, target, fileGuid);
-        fileGuid = proj.AddFile(AgoraSuperResolutionExtensionPath, "Frameworks/" + AgoraSuperResolutionExtensionPath, PBXSourceTree.Sdk);
         PBXProjectExtensions.AddFileToEmbedFrameworks(proj, target, fileGuid);
         fileGuid = proj.AddFile(AgoraJNDExtensionFrameworkPath, "Frameworks/" + AgoraJNDExtensionFrameworkPath, PBXSourceTree.Sdk);
         PBXProjectExtensions.AddFileToEmbedFrameworks(proj, target, fileGuid);
