@@ -95,10 +95,10 @@ done
 }
 
 # remove all meta files
-find $APP -type f -name "*.meta" -delete
+find "$APP" -type f -name "*.meta" -delete
 
 # There are both .framework in Frameworks folder and Resources folder, need only one
-rm -r $APP/Contents/PlugIns/agoraSdkCWrapper.bundle/Contents/Frameworks
+rm -r "$APP/Contents/PlugIns/agoraSdkCWrapper.bundle/Contents/Frameworks"
 
 # re-estasbish version symlinks inside the frameworks
 for framework in $AGORA_FRAMEWORKS/*; do
