@@ -1,7 +1,16 @@
 ## Revision History
 
-Complete release note can be found online:
+Complete release notes can be found online:
 https://docs.agora.io/en/Video/release_unity_video?platform=Unity
+
+## V3.4.2.70
+## V3.4.2 (Agora Website) was released on Jun 2, 2021.
+.70 is Asset Store version
+Key Updates
+1. Windows ScreenSharing UWP supports
+2. Dynamic and extension library updates
+3. AudioRecording
+4. Video degradationPreference
 
 v3.3.1.71
 v3.3.1 (Agora Website) was released on March 12, 2021.
