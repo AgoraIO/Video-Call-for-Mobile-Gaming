@@ -585,7 +585,33 @@ If the `scene.name` is `SceneHelloVideo`:
 	}
 ```
 
+
+
+## Some Trouble Shooting FAQs
+
+**Q:** There are only white cube and box on the demo screen after I join the channel.
+**A:** There may be definite reasons for this. First recommendation is implementing the OnError and OnWarning callbacks to check on what errors are occuring. (Added in the Demo starting from v3.2.1.71). Here are the common causes:
+
+1. You registered an AppId with Certificate enabled, but you didn’t include a secure token in your JoinChannel call. => **You should use an AppId without Certificate if you are new to the SDK.** Create a new AppId with Certificate after you tested the POC and feel comfortable to enforce token security.
+
+2. The Application did not acquire the required OS level permission for Camera. => **Make sure you set those up in the PlayerSettings and Manifest if for Android.**
+
+3. The agoraCWrapper library didn’t get loaded on run-time (usually happens on Standalone, not Editor). Make sure you have the correct Platform Settings flag selected, we recommend you to select **AnyCPU**. See examples in MacOS section for building the App above.
+
+   
+
+**Q:** I press the join button but the scene doesn't change (usually happens on Editor).
+**A:** Make sure you have chosen both two scenes in Build Settings.
+
+
+
+**Q:** When run the app, a pop-up window said agoraSdkCWrapper.bundle cannot be opened because the developer cannot be verified.(usually happens on MacOS).
+**A:** Choose "allow" in Settings/security and privacy, rerun the app.
+
+
+
 ## Resources
+
 - Complete API documentation is available at the [Document Center](https://docs.agora.io/en/).
 - You can file bugs about this sample [here](https://github.com/AgoraIO/Hello-Video-Unity-Agora/issues).
 
