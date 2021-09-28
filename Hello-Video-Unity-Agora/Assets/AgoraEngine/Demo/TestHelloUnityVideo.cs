@@ -141,6 +141,27 @@ public class TestHelloUnityVideo
         {
             MessageText = text.GetComponent<Text>();
         }
+
+        GameObject bobj = GameObject.Find("HelpButton");
+        if (bobj != null)
+        {
+            Button button = bobj.GetComponent<Button>();
+            if (button!=null)
+            {
+                button.onClick.AddListener(HandleHelp);
+	        }
+	    }
+
+    }
+
+    void HandleHelp()
+    {
+#if UNITY_2020_3_OR_NEWER && PLATFORM_STANDALONE_OSX
+        // this very easy to forget for MacOS
+        HandleError(-2, "if you don't see any video, did you set the MacOS plugin bundle to AnyCPU?");
+#else
+        HandleError(-1, "if you don't see any video, please check README for help");
+#endif
     }
 
     // implement engine callbacks
@@ -254,7 +275,10 @@ public class TestHelloUnityVideo
             return;
         }
 
-        msg = string.Format("Error code:{0} msg:{1}", error, IRtcEngine.GetErrorDescription(error));
+        if (string.IsNullOrEmpty(msg))
+        {
+            msg = string.Format("Error code:{0} msg:{1}", error, IRtcEngine.GetErrorDescription(error));
+        }
 
         switch (error)
         {
