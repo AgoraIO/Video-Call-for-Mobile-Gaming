@@ -3,6 +3,14 @@
 Complete release note can be found online:
 https://docs.agora.io/en/Video/release_unity_video?platform=Unity
 
+v3.5.0.70
+v3.5.0.3 (Agora Website) was released on September 15, 2021.
+.70 is the Asset Store version, Mac bundle is code-signed.
+Key Changes
+1. Android audio audio behavior is improved.
+2. Improvement on video quality in terms of color and exposure
+3. Virtual background (beta)
+
 v3.3.1.71
 v3.3.1 (Agora Website) was released on March 12, 2021.
 .71 is Asset Store version
