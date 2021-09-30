@@ -76,9 +76,11 @@ public class BL_BuildPostProcess
         const string AgoraCoreFrameworkName = "AgoraCore.framework";
         const string AgoraDav1dExtensionFrameworkName = "AgoraDav1dExtension.framework";
         const string AgoraJNDExtensionFrameworkName = "AgoraJNDExtension.framework";
+        const string AgoraCIExtensionFrameworkName = "AgoraCIExtension.framework";
 
 
         string AgoraRtcKitFrameworkPath = Path.Combine(defaultLocationInProj, AgoraRtcKitFrameworkName);
+        string AgoraCIExtensionworkPath = Path.Combine(defaultLocationInProj, AgoraCIExtensionFrameworkName);
         string AgorafdkaacFrameworkPath = Path.Combine(defaultLocationInProj, AgorafdkaacFrameworkName);
         string AgoraffmpegFrameworkPath = Path.Combine(defaultLocationInProj, AgoraffmpegFrameworkName);
         string AgoraSoundTouchFrameworkPath = Path.Combine(defaultLocationInProj, AgoraSoundTouchFrameworkName);
@@ -103,6 +105,8 @@ public class BL_BuildPostProcess
         fileGuid = proj.AddFile(AgoraDav1dExtensionFrameworkPath, "Frameworks/" + AgoraDav1dExtensionFrameworkPath, PBXSourceTree.Sdk);
         PBXProjectExtensions.AddFileToEmbedFrameworks(proj, target, fileGuid);
         fileGuid = proj.AddFile(AgoraJNDExtensionFrameworkPath, "Frameworks/" + AgoraJNDExtensionFrameworkPath, PBXSourceTree.Sdk);
+        PBXProjectExtensions.AddFileToEmbedFrameworks(proj, target, fileGuid);
+        fileGuid = proj.AddFile(AgoraCIExtensionworkPath, "Frameworks/" + AgoraCIExtensionworkPath, PBXSourceTree.Sdk);
         PBXProjectExtensions.AddFileToEmbedFrameworks(proj, target, fileGuid);
         proj.SetBuildProperty(target, "LD_RUNPATH_SEARCH_PATHS", "$(inherited) @executable_path/Frameworks");
 
