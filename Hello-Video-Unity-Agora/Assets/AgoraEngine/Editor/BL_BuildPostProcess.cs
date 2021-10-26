@@ -42,17 +42,6 @@ public class BL_BuildPostProcess
 #endif
     }
 
-    static string[] ProjectFrameworks = new string[] {
-        "Accelerate.framework",
-        "CoreTelephony.framework",
-        "CoreText.framework",
-        "CoreML.framework",
-        "Metal.framework",
-        "VideoToolbox.framework",
-        "libiPhone-lib.a",
-        "libresolv.tbd",
-    };
-
     static void LinkLibraries(string path)
     {
         // linked library
