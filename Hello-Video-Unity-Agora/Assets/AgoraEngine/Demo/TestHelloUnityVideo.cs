@@ -17,6 +17,10 @@ public class TestHelloUnityVideo
     private IRtcEngine mRtcEngine;
     private Text MessageText;
 
+    // a token is a channel key that works with a AppID that requires it. 
+    // Generate one by your token server or get a temporary token from the developer console
+    private string token = "";
+
     // load agora engine
     public void loadEngine(string appId)
     {
@@ -59,7 +63,12 @@ public class TestHelloUnityVideo
         mRtcEngine.EnableVideoObserver();
 
         // join channel
-        mRtcEngine.JoinChannel(channel, null, 0);
+        /*  This API Assumes the use of a test-mode AppID
+             mRtcEngine.JoinChannel(channel, null, 0);
+        */
+
+        /*  This API Accepts AppID with token; by default omiting info and use 0 as the local user id */
+        mRtcEngine.JoinChannelByKey(channelKey: token, channelName: channel);
     }
 
     public string getSdkVersion()
@@ -194,7 +203,6 @@ public class TestHelloUnityVideo
             videoSurface.SetForUser(uid);
             videoSurface.SetEnable(true);
             videoSurface.SetVideoSurfaceType(AgoraVideoSurfaceType.RawImage);
-            videoSurface.SetGameFps(30);
         }
     }
 
