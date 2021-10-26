@@ -1,4 +1,4 @@
-#if UNITY_IPHONE || UNITY_STANDALONE_OSX
+﻿#if UNITY_IPHONE || UNITY_STANDALONE_OSX
 
 using System.IO;
 using UnityEditor;
@@ -41,17 +41,6 @@ public class BL_BuildPostProcess
         return proj.TargetGuidByName("Unity-iPhone");
 #endif
     }
-
-    static string[] ProjectFrameworks = new string[] {
-        "Accelerate.framework",
-        "CoreTelephony.framework",
-        "CoreText.framework",
-        "CoreML.framework",
-        "Metal.framework",
-        "VideoToolbox.framework",
-        "libiPhone-lib.a",
-        "libresolv.tbd",
-    };
 
     static void LinkLibraries(string path)
     {
