@@ -16,9 +16,10 @@ fi
 if [ "" == "$SIGNATURE" ]; then
     echo "You must provide signature for codesign!"
     echo possible command line: 
-    echo '  (export SIGNATURE="my apple developer identity (xxxxx)";' $0 $1
-    echo To find available signatures, use 
+    echo '  (export SIGNATURE="my apple developer identity (xxxxx)";' $0 $1 ")"
+    echo To find available signatures, running:
     echo '  security find-identity -v -p codesigning'
+    security find-identity -v -p codesigning
     exit 2
 fi
 
