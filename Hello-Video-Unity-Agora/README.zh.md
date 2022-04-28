@@ -1,39 +1,69 @@
-# Hello Video Unity Agora
 
-*Read this in other languages: [English](README.en.md)*
+## Hello Video Unity Agora
+### 在Unity应用程序中运行视频聊天
 
-这个开源示例项目演示了如何在 Unity 中快速集成 Agora 游戏 SDK，实现在游戏中的音视频通话。
+Read this in other languages:  [English](README.md)
 
-在这个示例项目中包含了以下功能：
+该演示演示了如何使用Agora IO的Video SDK配置和运行Unity应用程序。该SDK支持Unity上的iOS，Android，MacOS和Windows平台。
 
-- 加入通话和离开通话；
+## 先决条件
 
-## 运行示例程序
-首先在 [Agora.io 注册](https://dashboard.agora.io/cn/signup/) 注册账号，并创建自己的测试项目，获取到 AppID。将 AppID 填写进 HelloUnityVideo.cs
+-Unity编辑器（2017年LTS或更高版本）
+    
+-一个带有Agora.io的[开发者帐户](https://sso.agora.io/cn/v3/signup)
+    
 
-```
-private static string appId = #YOUR APP ID#;
-```
+## 入门
+您无需克隆该项目即可试用该演示。该演示本身捆绑在Agora Video SDK中。您可以通过以下两种方法之一下载SDK：
 
-然后在 [Agora.io SDK](https://www.agora.io/cn/download/) 下载 **AMG 游戏 SDK**，解压后
+ 1.  [Asset Store](https://assetstore.unity.com/packages/tools/video/agora-video-sdk-for-unity-134502): 导入软件包后，您应该在Assets / AgoraEngine / Demo下找到该演示。
+ 2. [Agora网站下载页面](https://docs.agora.io/en/Video/downloads?platform=Unity): 您将获得一个zip文件*。解压缩后，在samples目录中打开项目。该演示位于上述位置。
 
-- 把SDK中 **libs/Android/** 下的内容，复制到项目的 **Assets/Plugins/Android/AgoraRtcEngineKit.plugin/libs/** 文件夹下
-- 把SDK中 **libs/iOS/** 下的内容，复制到项目的 **Assets/Plugins/iOS/** 文件夹下
-- 把SDK中 **libs/Scripts/AgoraGamingSDK/** 下的内容，复制到项目的 **Assets/Scripts/AgoraGamingSDK/** 文件夹下
+***将SDK从下载的zip文件添加到项目中**
+  从Agora网站解压缩下载的SDK，然后将以下SDK文件夹中的文件复制到关联的Unity应用程序文件夹中。
 
-最后使用 Unity 打开本项目即可运行。
+SDK Folder|Application Folder
+---|---
+libs/Android/|Assets/Plugins/Android/
+libs/iOS/|Assets/Plugins/iOS/
+libs/macOS/|Assets/Plugins/macOS/
+libs/x86/|Assets/Plugins/x86/
+libs/x86_64/|Assets/Plugins/x86_64/
+libs/Scripts/AgoraGamingSDK/|Assets/Scripts/AgoraGamingSDK/
 
-## 运行环境
-* Unity 5.5+
+**如果您从Asset Store下载SDK，则无需进行上述复制**
 
-## 联系我们
 
-- 完整的 API 文档见 [文档中心](https://docs.agora.io/cn/)
-- 如果在集成中遇到问题, 你可以到 [开发者社区](https://dev.agora.io/cn/) 提问
-- 如果有售前咨询问题, 可以拨打 400 632 6626，或加入官方Q群 12742516 提问
-- 如果需要售后技术支持, 你可以在 [Agora Dashboard](https://dashboard.agora.io) 提交工单
-- 如果发现了示例代码的bug, 欢迎提交 [issue](https://github.com/AgoraIO/Hello-Video-Unity-Agora/issues)
+## 添加您的AppID
+
+在构建和运行项目之前，您需要将AppID添加到配置中。转到您的 [开发者帐户的项目控制台](https://console.agora.io/projects)，创建一个新的AppId或从现有项目中复制该AppId。
+
+请注意，对于准备投入生产的项目，务必始终使用启用了证书的AppId，这一点很重要。但是，在这个简单的快速入门演示中，我们将跳过这一部分。因此，应为测试模式创建AppId。
+![enter image description here](https://user-images.githubusercontent.com/1261195/110023464-11eb0480-7ce2-11eb-99d6-031af60715ab.png)
+
+## 运行演示
+
+执行以下步骤：
+
+1.打开Assets / Demo / SceneHome场景，
+2.从Unity编辑器的“层次结构”面板中选择GameController。
+3. GameController游戏对象具有属性App ID，您可以在其中添加Agora App ID
+![enter image description here](https://user-images.githubusercontent.com/1261195/113456235-88525380-93c1-11eb-9426-f76f7882cccb.png)
+ 4.确保已将SceneHome和SceneHelloVideo添加到构建设置中。
+ 5.从“编辑器”中单击“运行”，或者在设备上构建并运行。
+ 6.最佳地，您应该运行该演示的两个实例以测试视频聊天。
+ 7.点击“加入”，您应该看到类似于此视图的下一个场景：![enter image description here](https://user-images.githubusercontent.com/1261195/113455947-c602ac80-93c0-11eb-8fb5-275ae2544387.png)
+
+
+## 资源
+
+  - 完整的API文档可在[文档中心](https://docs.agora.io/cn)获得
+  - 您可以在[此处](https://github.com/AgoraIO/Hello-Video-Unity-Agora/issues) 提交有关此示例的错误。
+  - 要查看更多示例Unity项目，请参见 https://github.com/AgoraIO/Agora-Unity-Quickstart
+  - 由开发人员社区管理的存储库可在[Agora社区](https://github.com/AgoraIO-Community)中找到
+
+
+
 
 ## 代码许可
-
-The MIT License (MIT).
+该软件受MIT许可证（MIT）约束。[查看许可](LICENSE.md).
