@@ -3,6 +3,15 @@
 Complete release note can be found online:
 https://docs.agora.io/en/Video/release_unity_video?platform=Unity
 
+v3.7.0
+Release April, 2022
+Key Changes
+* 128 publish / 50 subscription
+* Virtual sound card on macOS
+* New features of screen sharing on macOS and Windows
+* First video frame rendering report
+* Spatial audio
+
 v3.6.1.1
 Released: March, 2022.
 Key Changes:
