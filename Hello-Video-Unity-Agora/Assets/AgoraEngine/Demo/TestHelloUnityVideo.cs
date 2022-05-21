@@ -17,6 +17,10 @@ public class TestHelloUnityVideo
     private IRtcEngine mRtcEngine;
     private Text MessageText;
 
+    // a token is a channel key that works with a AppID that requires it. 
+    // Generate one by your token server or get a temporary token from the developer console
+    private string token = "";
+
     // load agora engine
     public void loadEngine(string appId)
     {
@@ -59,7 +63,12 @@ public class TestHelloUnityVideo
         mRtcEngine.EnableVideoObserver();
 
         // join channel
-        mRtcEngine.JoinChannel(channel, null, 0);
+        /*  This API Assumes the use of a test-mode AppID
+             mRtcEngine.JoinChannel(channel, null, 0);
+        */
+
+        /*  This API Accepts AppID with token; by default omiting info and use 0 as the local user id */
+        mRtcEngine.JoinChannelByKey(channelKey: token, channelName: channel);
     }
 
     public string getSdkVersion()
@@ -141,6 +150,27 @@ public class TestHelloUnityVideo
         {
             MessageText = text.GetComponent<Text>();
         }
+
+        GameObject bobj = GameObject.Find("HelpButton");
+        if (bobj != null)
+        {
+            Button button = bobj.GetComponent<Button>();
+            if (button!=null)
+            {
+                button.onClick.AddListener(HandleHelp);
+	        }
+	    }
+
+    }
+
+    void HandleHelp()
+    {
+#if UNITY_2020_3_OR_NEWER && PLATFORM_STANDALONE_OSX
+        // this very easy to forget for MacOS
+        HandleError(-2, "if you don't see any video, did you set the MacOS plugin bundle to AnyCPU?");
+#else
+        HandleError(-1, "if you don't see any video, please check README for help");
+#endif
     }
 
     // implement engine callbacks
@@ -173,7 +203,6 @@ public class TestHelloUnityVideo
             videoSurface.SetForUser(uid);
             videoSurface.SetEnable(true);
             videoSurface.SetVideoSurfaceType(AgoraVideoSurfaceType.RawImage);
-            videoSurface.SetGameFps(30);
         }
     }
 
@@ -254,7 +283,10 @@ public class TestHelloUnityVideo
             return;
         }
 
-        msg = string.Format("Error code:{0} msg:{1}", error, IRtcEngine.GetErrorDescription(error));
+        if (string.IsNullOrEmpty(msg))
+        {
+            msg = string.Format("Error code:{0} msg:{1}", error, IRtcEngine.GetErrorDescription(error));
+        }
 
         switch (error)
         {

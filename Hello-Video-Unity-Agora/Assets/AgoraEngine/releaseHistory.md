@@ -3,6 +3,32 @@
 Complete release note can be found online:
 https://docs.agora.io/en/Video/release_unity_video?platform=Unity
 
+v3.7.0
+Release April, 2022
+Key Changes
+* 128 publish / 50 subscription
+* Virtual sound card on macOS
+* New features of screen sharing on macOS and Windows
+* First video frame rendering report
+* Spatial audio
+
+v3.6.1.1
+Released: March, 2022.
+Key Changes:
+1. Media Push (aka RTMP stream push) API upgrades
+2. New flexible DeviceManager methods
+3. Background blurring
+4. MediaRecorder and Video Snapshot
+5. MacOS ScreenSharing with DisplayID
+
+v3.5.0.70
+v3.5.0.3 (Agora Website) was released on September 15, 2021.
+.70 is the Asset Store version, Mac bundle is code-signed.
+Key Changes
+1. Android audio audio behavior is improved.
+2. Improvement on video quality in terms of color and exposure
+3. Virtual background (beta)
+
 v3.3.1.71
 v3.3.1 (Agora Website) was released on March 12, 2021.
 .71 is Asset Store version
